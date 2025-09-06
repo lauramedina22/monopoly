@@ -1,0 +1,73 @@
+.tablero {
+    position: relative;
+}
+
+.casilla {
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    aspect-ratio: 1 / 1; /* Mantener un mismo tañado cuadrado */
+    font-size: 0.8rem; /* Para ajustar el tamaño del texto */
+    overflow: hidden; /* Evito que el texto descuadre o se me salga de las casillas */
+    flex-direction: column; /* Apilo los elementos verticalmente (para que los logos queden debajo del texto */
+    padding-top: 10px; /* Para que no se sobrepongan cosas en la parte de arriba */
+    
+}
+
+.imagen-centro {
+    position: absolute; /* Uso absolute para poder colocar la imagen encima de las filas */
+    top: 50%; /* Uso para centrar la imagen verticalmente en el tablero */
+    left: 50%; /* Uso para centrar la imagen horizontalmente en el tablero */
+    transform: translate(-50%, -50%); /* Ajusto la posición para que quede centrada */
+    max-width: 60%; /* Ajusto el tamaño que vea necesario */
+    text-align: center;
+}
+
+.imagen-centro img {
+    max-width: 100%;
+    /* Se usa para que la imagen se ajuste seg*/
+    height: auto;
+    /* se usa para ajustar el tamaño de la altura segun se mueva el horizontal, si el horizontal es 300px el vertical igualmente sera 300px */
+}
+
+.casilla.roja {
+    background: linear-gradient(to bottom, red 20%, white 20%);
+
+}
+
+.casilla.azul {
+    background: linear-gradient(to bottom, blue 20%, white 20%);
+}
+
+.casilla.verde {
+    background: linear-gradient(to bottom, green 20%, white 20%);
+}
+
+.casilla.amarilla {
+    background: linear-gradient(to bottom, yellow 20%, white 20%);
+}
+
+.casilla.purpura {
+    background: linear-gradient(to bottom, purple 20%, white 20%);
+}
+
+.casilla.cian {
+    background: linear-gradient(to bottom, cyan 20%, white 20%);
+}
+
+.casilla.marron {
+    background: linear-gradient(to bottom, brown 20%, white 20%);
+}
+
+.casilla.naranja {
+    background: linear-gradient(to bottom, orange 20%, white 20%);
+}
+
+.casilla.compania-electrica {
+    display: flex;
+    flex-direction: column; /* Apilo los elementos verticalmente (para que los logos queden debajo del texto */
+    justify-content: center; /* Centrado de los elementos verticalmente */
+    align-items: center; /* Centrado horizontal */
+}
