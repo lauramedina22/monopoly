@@ -8,11 +8,11 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    aspect-ratio: 1 / 1; /* Mantener un mismo tañado cuadrado */
+    aspect-ratio: 1 / 1; /* Mantener un mismo tamaño cuadrado */
     font-size: 0.8rem; /* Para ajustar el tamaño del texto */
     overflow: hidden; /* Evito que el texto descuadre o se me salga de las casillas */
     flex-direction: column; /* Apilo los elementos verticalmente (para que los logos queden debajo del texto */
-    padding-top: 10px; /* Para que no se sobrepongan cosas en la parte de arriba */
+    padding-top: 1rem; /* Para que no se sobrepongan cosas en la parte de arriba */
     
 }
 
@@ -70,4 +70,14 @@
     flex-direction: column; /* Apilo los elementos verticalmente (para que los logos queden debajo del texto */
     justify-content: center; /* Centrado de los elementos verticalmente */
     align-items: center; /* Centrado horizontal */
+}
+
+.puntaje {
+    /* Acomodo el tamaño en medidas relativas dependiendo de la pantalla */
+    border: 0.2rem solid #464242;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    width: 15rem;       
+    background-color: rgb(255, 255, 255);
+    height: auto;         
 }

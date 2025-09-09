@@ -1,191 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="../styles/tablero.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
 </head>
+
 <body>
+    <div class="container">
+        <div class="row">
 
-  <div class="container tablero">
-    
-    <!-- Casillas arriba -->
-    <div class="row">
-        <div class="col-lg-1 col-md-1 col-12 col casilla free">FREE</div>
-        <div class="col-lg-1 col-md-1 col-12 col casilla roja">KENTUCKY. AV
-            <p>$220</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-12 casilla cambio">CAMBIO
-            <i class="bi bi-question-lg"></i>
-        </div>
-        <div class="col-lg-1 col-md-1 col-12 casilla roja">INDIANA. AV
-            <p>$220</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-12 casilla roja">ILLINOIS. AV
-            <p>$240</p>
-        </div>
-        <div class="col-lg-2 col-md-1 col-12 casilla ferrocarril">B&O. RAILROAD
-            <i class="bi bi-train-front-fill"></i>
-            <p>$200</p> 
-        </div>
-        <div class="col-lg-1 col-md-1 col-12 casilla amarilla">ATLANTIC. AV
-            <p>$260</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-12 casilla amarilla">VENTINOR. AV
-            <p>$260</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-12 casilla agua">WATER. WORKS
-            <i class="bi bi-droplet-half"></i>
-            <p>$150</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-12 casilla amarilla">MARVIN. GARDENS
-            <p>$280</p>
-        </div>
-        <div class="col-lg-1 col-md-2 col-12 casilla ir-carcel">GO JAIL
-            <i class="bi bi-taxi-front-fill"></i>
-        </div>
-    </div> 
+            <!-- Puntaje lo tengo a la izquierda -->
+            <div class="col-lg-2 puntaje">
+                <h2>Puntaje</h2>
+                <label for="jugador">Selecciona jugador:</label>
+                <select id="jugador"">
+                    <option value="1">Jugador 1</option>
+                    <option value="2">Jugador 2</option>
+                    <option value="3">Jugador 3</option>
+                    <option value="4">Jugador 4</option>
+                </select>
+            </div>
 
-    <!-- Todo esto de aqui seran mis casillas laterales--> 
+            <!-- Tablero lo tengo a la derecha -->
+            <div class="col-lg-10 tablero">
 
-    <div class="row">
-        <div class="col-lg-1 casilla naranja">NEW YORK. AV
-            <p>$200</p>
-        </div>
-        <div class="col-lg-10"></div>
-        <div class="col-lg-1 casilla verde">PACIFIC. AV
-            <p>$300</p>
+                <!-- Casillas arriba -->
+                <div class="row">
+                    <div class="col-lg-1 col-md-1 col-12 col casilla free">FREE</div>
+                    <div class="col-lg-1 col-md-1 col-12 col casilla roja">KENTUCKY. AV
+                        <p>$220</p>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-12 casilla cambio">CAMBIO
+                        <i class="bi bi-question-lg"></i>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-12 casilla roja">INDIANA. AV
+                        <p>$220</p>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-12 casilla roja">ILLINOIS. AV
+                        <p>$240</p>
+                    </div>
+                    <div class="col-lg-2 col-md-1 col-12 casilla ferrocarril">B&O. RAILROAD
+                        <i class="bi bi-train-front-fill"></i>
+                        <p>$200</p>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-12 casilla amarilla">ATLANTIC. AV
+                        <p>$260</p>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-12 casilla amarilla">VENTINOR. AV
+                        <p>$260</p>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-12 casilla agua">WATER. WORKS
+                        <i class="bi bi-droplet-half"></i>
+                        <p>$150</p>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-12 casilla amarilla">MARVIN. GARDENS
+                        <p>$280</p>
+                    </div>
+                    <div class="col-lg-1 col-md-2 col-12 casilla ir-carcel">GO JAIL
+                        <i class="bi bi-taxi-front-fill"></i>
+                    </div>
+                </div>
+
+                <!-- Laterales -->
+                <div class="row">
+                    <div class="col-lg-1 casilla naranja">NEW YORK. AV
+                        <p>$200</p>
+                    </div>
+                    <div class="col-lg-10"></div>
+                    <div class="col-lg-1 casilla verde">PACIFIC. AV
+                        <p>$300</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-1 casilla naranja">TENNESSEE. AV
+                        <p>$180</p>
+                    </div>
+                    <div class="col-lg-10"></div>
+                    <div class="col-lg-1 casilla verde">N.CAROLINA. AV
+                        <p>$300</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-1 casilla cofre">COFRE</div>
+                    <div class="col-lg-10"></div>
+                    <div class="col-lg-1 casilla cofre">COFRE</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-1 casilla naranja">JAMES. PLACE
+                        <p>$180</p>
+                    </div>
+                    <div class="col-lg-10"></div>
+                    <div class="col-lg-1 casilla verde">PENNSYLVANIA. AV
+                        <p>$320</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-1 casilla ferrocarril">PENNSYLVANIA. RAILROAD
+                        <i class="bi bi-train-front-fill"></i>
+                        <p>$200</p>
+                    </div>
+                    <div class="col-lg-10"></div>
+                    <div class="col-lg-1 casilla ferrocarril">SHORT. LINE
+                        <i class="bi bi-train-front-fill"></i>
+                        <p>$400</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-1 casilla purpura">VIRGINIA. AV
+                        <p>$160</p>
+                    </div>
+                    <div class="col-lg-10"></div>
+                    <div class="col-lg-1 casilla cambio">CAMBIO
+                        <i class="bi bi-question-lg"></i>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-1 casilla purpura">STATES. AV
+                        <p>$140</p>
+                    </div>
+                    <div class="col-lg-10"></div>
+                    <div class="col-lg-1 casilla azul">PARK. PLACE
+                        <p>$350</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-1 casilla compania-electrica">ELECTRIC. CO
+                        <div><i class="bi bi-lightbulb-fill"></i></div>
+                        <p>$150</p>
+                    </div>
+                    <div class="col-lg-10"></div>
+                    <div class="col-lg-1 casilla impuesto-lujo">LUXURY. TAX
+                        <i class="bi bi-tags-fill"></i>
+                        <p>$100</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-1 casilla purpura">CHARLES. PLACE
+                        <p>$350</p>
+                    </div>
+                    <div class="col-lg-10"></div>
+                    <div class="col-lg-1 casilla azul">BOARDWALK
+                        <p>$400</p>
+                    </div>
+                </div>
+
+                <!-- Imagen centro -->
+                <div class="imagen-centro text-center">
+                    <img src="https://juguetega.com/cdn/shop/articles/Logo_Monopoly.png?v=1701878947" alt="Monopoly"
+                        class="img-fluid">
+                </div>
+
+                <!-- Casillas abajo -->
+                <div class="row">
+                    <div class="col-lg-1 col-md-1 col-12 casilla carcel">CARCEL</div>
+                    <div class="col-lg-1 col-md-1 col-12 casilla cian">CONNECTICUT. AV
+                        <p>$120</p>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-12 casilla cian">VERMONT. AV
+                        <p>$100</p>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-12 casilla cambio">CAMBIO
+                        <i class="bi bi-question-lg"></i>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-12 casilla cian">ORIENTAL. AV
+                        <p>$100</p>
+                    </div>
+                    <div class="col-lg-2 col-md-1 col-12 casilla ferrocarril">READING. RAILROAD
+                        <i class="bi bi-train-front-fill"></i>
+                        <p>$200</p>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-12 casilla impuesto">INCOME TAX
+                        <i class="bi bi-tag-fill"></i>
+                        <p>$200</p>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-12 casilla marron">BALTIC. AV
+                        <p>$60</p>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-12 casilla cofre">COFRE</div>
+                    <div class="col-lg-1 col-md-1 col-12 casilla marron">MEDITERRANEAN. AV
+                        <p>$60</p>
+                    </div>
+                    <div class="col-lg-1 col-md-2 col-12 casilla inicio">GO
+                        <i class="bi bi-arrow-return-left"></i>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-lg-1 casilla naranja">TENNESSEE. AV
-            <p>$180</p>
-        </div>
-        <div class="col-lg-10"></div>
-        <div class="col-lg-1 casilla verde">N.CAROLINA. AV
-            <p>$300</p>
-        </div>
-    </div>
-    
-    <div class="row">
-        <div class="col-lg-1 casilla cofre">COFRE
-            
-        </div>
-        <div class="col-lg-10"></div>
-        <div class="col-lg-1 casilla cofre">COFRE</div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-1 casilla naranja">JAMES. PLACE
-            <p>$180</p>
-        </div>
-        <div class="col-lg-10"></div>
-        <div class="col-lg-1 casilla verde">PENNSYLVANIA. AV
-            <p>$320</p>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-1 casilla ferrocarril">PENNSYLVANIA. RAILROAD
-            <i class="bi bi-train-front-fill"></i>
-            <p>$200</p>
-        </div>
-        <div class="col-lg-10"></div>
-        <div class="col-lg-1 casilla ferrocarril">SHORT. LINE
-            <i class="bi bi-train-front-fill"></i>
-            <p>$400</p>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-1 casilla purpura">VIRGINIA. AV
-            <p>$160</p>
-        </div>
-        <div class="col-lg-10"></div>
-        <div class="col-lg-1 casilla cambio">CAMBIO
-            <i class="bi bi-question-lg"></i>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-1 casilla purpura">STATES. AV
-            <P>$140</P>
-        </div>
-        <div class="col-lg-10"></div>
-        <div class="col-lg-1 casilla azul">PARK. PLACE
-            <p>$350</p>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-1 casilla compania-electrica">ELECTRIC. CO
-            <div><i class="bi bi-lightbulb-fill"></i></div>
-            <p>$150</p>
-        </div>
-        <div class="col-lg-10"></div>
-        <div class="col-lg-1 casilla impuesto-lujo">LUXURY. TAX
-            <i class="bi bi-tags-fill"></i>
-            <p>$100</p>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-1 casilla purpura">CHARLES. PLACE
-            <p>$350</p>
-        </div>
-        <div class="col-lg-10"></div>
-        <div class="col-lg-1 casilla azul">BOARDWALK
-            <p>$400</p>
-        </div>
-    </div>
-
-    <!-- Imagen en el centro absoluto -->
-    <div class="imagen-centro">
-        <img src="https://juguetega.com/cdn/shop/articles/Logo_Monopoly.png?v=1701878947" alt="Monopoly" class="img-fluid">
-    </div>
-   
-    <!-- Casillas abajo -->
-    <div class="row">
-        <div class="col-lg-1 col-md-1 col-12 casilla carcel">CARCEL</div>
-        <div class="col-lg-1 col-md-1 col-12 casilla cian">CONNECTICUT. AV
-            <p>$120</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-12 casilla cian">VERMONT. AV
-            <p>$100</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-12 casilla cambio">CAMBIO
-            <i class="bi bi-question-lg"></i>
-        </div>
-        <div class="col-lg-1 col-md-1 col-12 casilla cian">ORIENTAL. AV
-            <p>$100</p>
-        </div>
-        <div class="col-lg-2 col-md-1 col-12 casilla ferrocarril">READING. RAILROAD
-            <i class="bi bi-train-front-fill"></i>
-            <p>$200</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-12 casilla impuesto">INCOME TAX
-            <i class="bi bi-tag-fill"></i>
-            <p>$200</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-12 casilla marron">BALTIC. AV
-            <p>$60</p>
-        </div>
-        <div class="col-lg-1 col-md-1 col-12 casilla cofre">COFRE</div>
-        <div class="col-lg-1 col-md-1 col-12 casilla marron">MEDITERRANEAN. AV
-           <p>$6p</p> 
-        </div>
-        <div class="col-lg-1 col-md-2 col-12 casilla inicio">GO
-            <i class="bi bi-arrow-return-left"></i>
-        </div>
-    </div>
-
-  </div>
-    
 </body>
+
 </html>
