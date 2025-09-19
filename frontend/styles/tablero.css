@@ -1,19 +1,38 @@
-.tablero {
-    position: relative;
+#tablero {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  grid-template-rows: repeat(11, 1fr);
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
+/* Casillas generales */
 .casilla {
-    border: 1px solid black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    aspect-ratio: 1 / 1; /* Mantener un mismo tañado cuadrado */
-    font-size: 0.8rem; /* Para ajustar el tamaño del texto */
-    overflow: hidden; /* Evito que el texto descuadre o se me salga de las casillas */
-    flex-direction: column; /* Apilo los elementos verticalmente (para que los logos queden debajo del texto */
-    padding-top: 10px; /* Para que no se sobrepongan cosas en la parte de arriba */
-    
+  border: 0.1rem solid black; /* grosor relativo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem; /* relativo al tamaño de fuente base */
+  text-align: center;
+  box-sizing: border-box; /* que el borde no rompa la grilla */
+}
+
+/* Lados */
+.top {
+  grid-row: 1; /* primera fila */
+}
+
+.bottom {
+  grid-row: 11; /* última fila */
+}
+
+.left {
+  grid-column: 1; /* primera columna */
+}
+
+.right {
+  grid-column: 11; /* última columna */
 }
 
 .imagen-centro {
@@ -32,36 +51,36 @@
     /* se usa para ajustar el tamaño de la altura segun se mueva el horizontal, si el horizontal es 300px el vertical igualmente sera 300px */
 }
 
-.casilla.roja {
+.casilla.red {
     background: linear-gradient(to bottom, red 20%, white 20%);
 
 }
 
-.casilla.azul {
+.casilla.blue {
     background: linear-gradient(to bottom, blue 20%, white 20%);
 }
 
-.casilla.verde {
+.casilla.green {
     background: linear-gradient(to bottom, green 20%, white 20%);
 }
 
-.casilla.amarilla {
+.casilla.yellow {
     background: linear-gradient(to bottom, yellow 20%, white 20%);
 }
 
-.casilla.purpura {
+.casilla.pink {
     background: linear-gradient(to bottom, purple 20%, white 20%);
 }
 
-.casilla.cian {
+.casilla.purple {
     background: linear-gradient(to bottom, cyan 20%, white 20%);
 }
 
-.casilla.marron {
+.casilla.brown {
     background: linear-gradient(to bottom, brown 20%, white 20%);
 }
 
-.casilla.naranja {
+.casilla.orange {
     background: linear-gradient(to bottom, orange 20%, white 20%);
 }
 
@@ -70,4 +89,14 @@
     flex-direction: column; /* Apilo los elementos verticalmente (para que los logos queden debajo del texto */
     justify-content: center; /* Centrado de los elementos verticalmente */
     align-items: center; /* Centrado horizontal */
+}
+
+.puntaje {
+    /* Acomodo el tamaño en medidas relativas dependiendo de la pantalla */
+    border: 0.2rem solid #464242;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    width: 15rem;       
+    background-color: rgb(255, 255, 255);
+    height: auto;         
 }
