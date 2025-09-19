@@ -76,6 +76,19 @@ class Jugador {
   modificarDinero(monto) {
     this.dinero += monto;
   }
-}
 
-window.Jugador = Jugador;
+  toJSON() {
+    return {
+      nombre: this.nombre,
+      paisNombre: this.paisNombre,
+      paisCodigo: this.paisCodigo,
+      colorFicha: this.colorFicha,
+      dinero: this.dinero,
+      score: this.score,
+      propiedades: this.propiedades,
+      hipotecas: this.hipotecas,
+      prestamos: this.prestamos
+    };
+  }
+}
+window.Jugador = Jugador; // Hacer la clase global para otros módulos
