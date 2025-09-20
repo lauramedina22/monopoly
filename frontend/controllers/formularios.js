@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
+  window.jugadores = []; // Array global para almacenar los jugadores
   // Seleccionamos todos los botones
   const botones = document.querySelectorAll(".btn-opcion");
   const contenedor2 = document.getElementById("selector");
-  window.jugadores = []; // Array global para almacenar los jugadores
 
   botones.forEach(function (boton) {
     boton.addEventListener("click", function () {
