@@ -30,7 +30,7 @@
     overflow: hidden;
 }
 
-/* Contenedores de cada lado del tablero */
+/* Contenedores de cada lado del tablero - volvemos al original */
 #top {
     grid-row: 1;
     grid-column: 1 / span 11;
@@ -59,7 +59,7 @@
     grid-template-rows: repeat(9, 1fr);
 }
 
-/* Centro del tablero */
+/* Centro del tablero - con imagen controlada */
 #center {
     grid-row: 2 / span 9;
     grid-column: 2 / span 9;
@@ -68,6 +68,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
+    overflow: hidden; /* Evita que la imagen se desborde */
 }
 
 /* Contenedor del logo en el centro */
@@ -77,62 +78,44 @@
     align-items: center;
     width: 100%;
     height: 100%;
+    max-width: 100%;
+    max-height: 100%;
 }
 
-/* Logo de Monopoly en el centro */
+/* Logo de Monopoly en el centro - controlado y responsive */
 .logo-monopoly {
-    max-width: 70%;
-    max-height: 70%;
+    max-width: 60%;
+    max-height: 60%;
     width: auto;
     height: auto;
     object-fit: contain;
-    filter: drop-shadow(0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.3));
-    transition: transform 0.3s ease;
-    /* Con transition puedo hacer animaciónes con las imagenes */
+    filter: drop-shadow(0.1rem 0.1rem 0.3rem rgba(0, 0, 0, 0.3));
+    transition: transform 0.2s ease;
 }
 
 .logo-monopoly:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
 }
 
-/* Estado cuando no hay tablero generado - imagen más grande */
+/* Estado cuando no hay tablero generado - imagen un poco más grande */
 #tablero:not(.tablero-generado) .logo-monopoly {
-    max-width: 90%;
-    max-height: 90%;
+    max-width: 80%;
+    max-height: 80%;
 }
 
-/* Texto alternativo si no hay imagen */
+/* Texto de respaldo si la imagen no carga */
 .centro-monopoly::after {
     content: "MONOPOLY";
-    font-size: clamp(1.5rem, 4vmin, 3rem);
+    font-size: clamp(1.2rem, 3vmin, 2.5rem);
     font-weight: bold;
     color: #2c5530;
     text-shadow: 0.1rem 0.1rem 0.3rem rgba(0, 0, 0, 0.3);
     position: absolute;
     z-index: -1;
-    /* Detrás de la imagen */
+    opacity: 0.7;
 }
 
-/* Casillas del tablero */
-.casilla {
-    border: 0.15rem solid #333;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: clamp(0.7rem, 1.8vmin, 1rem);
-    text-align: center;
-    box-sizing: border-box;
-    background-color: white;
-    padding: clamp(0.3rem, 1vmin, 0.6rem);
-    font-weight: bold;
-    overflow: hidden;
-    line-height: 1.1;
-    word-wrap: break-word;
-    min-height: 0;
-}
-
-/* Precios en las casillas */
+/* Precios en las casillas - simples */
 .casilla p {
     margin: 0.2rem 0 0 0;
     font-size: clamp(0.5rem, 1.2vmin, 0.7rem);
@@ -140,14 +123,51 @@
     color: #666;
 }
 
-/* Casillas de esquina - más destacadas */
-.casilla[id="0"],
-.casilla[id="10"],
-.casilla[id="20"],
+/* Casillas del tablero - cuadradas con más espacio */
+.casilla {
+    border: 0.15rem solid #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(0.6rem, 1.5vmin, 0.9rem);
+    text-align: center;
+    box-sizing: border-box;
+    background-color: white;
+    padding: clamp(0.4rem, 1.2vmin, 0.7rem); /* Más padding para más espacio */
+    font-weight: bold;
+    overflow: hidden;
+    line-height: 1.1;
+    word-wrap: break-word;
+    min-height: 0;
+    aspect-ratio: 1; /* Casillas cuadradas */
+    gap: 0.2rem; /* Espacio entre la franja y el contenido */
+}
+
+/* Separación entre franja de color y texto */
+.casilla.red,
+.casilla.blue,
+.casilla.green,
+.casilla.yellow,
+.casilla.pink,
+.casilla.purple,
+.casilla.brown,
+.casilla.orange {
+    padding-top: calc(25% + 0.3rem); /* Margen después de la franja de color */
+    justify-content: flex-start;
+}
+
+/* Casillas de esquina - texto más grande y legible */
+.casilla[id="0"], 
+.casilla[id="10"], 
+.casilla[id="20"], 
 .casilla[id="30"] {
     background-color: #fff8dc;
     border-width: 0.2rem;
-    font-size: clamp(0.4rem, 1vmin, 0.7rem);
+    font-size: clamp(0.8rem, 2vmin, 1.2rem); /* Texto mucho más grande */
+    padding: clamp(0.5rem, 1.5vmin, 1rem); /* Más padding en esquinas */
+    line-height: 1.2;
+    font-weight: bold;
 }
 
 /* Colores de propiedades */
