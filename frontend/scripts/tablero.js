@@ -16,6 +16,8 @@ document.addEventListener("DOMContentLoaded", function () {
         let primeraCasillaIzquierda = casillas.left.pop();
         casillas.top.unshift(primeraCasillaIzquierda);
 
+        console.log(casillas);
+
         let ultimaCasillaIzquierda = casillas.left.shift();
         casillas.bottom.push(ultimaCasillaIzquierda);
 
