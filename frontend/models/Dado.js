@@ -1,4 +1,4 @@
-class Dados {
+export class Dado {
 
     //atributos
     constructor() {

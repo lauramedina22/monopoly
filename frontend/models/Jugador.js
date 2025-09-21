@@ -1,14 +1,14 @@
 // =============================
 // Clase Jugador
 // =============================
-class Jugador {
-  constructor(nombre, paisNombre, paisCodigo, colorFicha, dineroInicial = 1500, score = 0) {
+export class Jugador {
+  constructor(nombre, paisNombre, paisCodigo, colorFicha, dineroInicial = 1500, puntaje = 0) {
     this.nombre = nombre;              // Nombre del jugador
     this.paisNombre = paisNombre;      // Nombre del país (ej: Colombia)
     this.paisCodigo = paisCodigo;      // Código del país (ej: CO)
     this.colorFicha = colorFicha;      // Color de la ficha
     this.dinero = dineroInicial;       // Dinero disponible
-    this.score = score;                 // Puntuación del jugador
+    this.puntaje = puntaje;                 // Puntuación del jugador
     this.propiedades = []; // lista de propiedades adquiridas
     this.hipotecas = [];   // propiedades hipotecadas
     this.prestamos = [];   // préstamos activos
@@ -24,7 +24,7 @@ class Jugador {
       },
       colorFicha: this.colorFicha,
       dinero: this.dinero,
-      score: this.score,
+      puntaje: this.puntaje,
       propiedades: this.propiedades.map(p => p.nombre),
       hipotecas: this.hipotecas.map(p => p.nombre),
       prestamos: this.prestamos
@@ -84,11 +84,11 @@ class Jugador {
       paisCodigo: this.paisCodigo,
       colorFicha: this.colorFicha,
       dinero: this.dinero,
-      score: this.score,
+      puntaje: this.puntaje,
       propiedades: this.propiedades,
       hipotecas: this.hipotecas,
       prestamos: this.prestamos
     };
   }
 }
-window.Jugador = Jugador; // Hacer la clase global para otros módulos
+

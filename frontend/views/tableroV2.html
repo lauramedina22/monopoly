@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monopoly Game</title>
     <link rel="stylesheet" href="styles/tablero.css">
+    <link rel="icon" href="../assets/favicon.png" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <script src="../scripts/tablero.js" defer></script>
+    <script type="module" src="../controllers/formularios.js" defer></script>
+    <script type="module" src="../controllers/juego.js" defer></script>
+
+
 </head>
+
 <body>
+
     <div class="contenedor">
         <!-- Tablero ocupa todo el ancho superior -->
         <div class="row">
             <div class="col-12 d-flex justify-content-center">
                 <div class="tablero" id="tablero">
-                    <!-- Aquí se generará el tablero dinámicamente --> 
+                    <!-- Aquí se generará el tablero dinámicamente -->
                     <div class="fila" id="top"></div>
                     <div class="columna" id="left"></div>
                     <div id="center">
@@ -31,7 +39,7 @@
                     <div class="fila" id="bottom"></div>
                 </div>
             </div>
-            
+
             <!-- Botón "Generar Tablero" debajo del tablero -->
             <div class="col-12 text-center">
                 <button class="btn btn-generar-tablero" id="generarTablero">
@@ -41,24 +49,32 @@
         </div>
 
         <!-- Panel de controles inferior -->
-        <div class="row mt-4">
-            <div class="col-12">
+        <div class="row mt-4 ">
+            <div class="col-12 ">
                 <div class="panel-controles">
-                    
+
                     <!-- Sección de información del jugador -->
                     <div class="seccion-jugador">
                         <h3>Información del Jugador</h3>
                         <div class="jugador-info">
                             <label for="jugador">Jugador Actual:</label>
-                            <select id="jugador" class="form-select">
-                                <option value="1">Jugador 1</option>
-                                <option value="2">Jugador 2</option>
-                                <option value="3">Jugador 3</option>
-                                <option value="4">Jugador 4</option>
-                            </select>
-                            <div class="dinero-actual">
-                                <span class="etiqueta">Dinero:</span>
-                                <span class="valor">$1,500</span>
+                            <select id="jugador" class="form-select"> </select>
+                            <!-- Modal de Bootstrap -->
+                            <div class="modal fade" id="modalJugador" tabindex="-1" role="dialog"
+                                aria-labelledby="modalJugadorLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalJugadorLabel">Información del Jugador</h5>
+                                        </div>
+                                        <div class="modal-body" id="infoJugador">
+                                            <!-- Aquí cargamos la info dinámica -->
+                                        </div>
+                                        <div class="modal-footer">
+                                           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -80,16 +96,16 @@
                     </div>
 
                     <!-- Sección de intercambios -->
-                    <div class="seccion-intercambios">
+                    <div class="seccion-intercambios ">
                         <h3>Intercambios</h3>
                         <div class="botones-intercambios">
-                            <button class="btn btn-outline-primary" id="intercambiar">
+                            <button class="btn btn-primary" id="intercambiar">
                                 <i class="bi bi-arrow-left-right"></i> Intercambiar
                             </button>
-                            <button class="btn btn-outline-secondary" id="pagarRenta">
+                            <button class="btn btn-secondary" id="pagarRenta">
                                 <i class="bi bi-cash-coin"></i> Pagar Renta
                             </button>
-                            <button class="btn btn-outline-danger" id="declararBancarrota">
+                            <button class="btn btn-danger" id="declararBancarrota">
                                 <i class="bi bi-exclamation-triangle"></i> Bancarrota
                             </button>
                         </div>
@@ -100,4 +116,5 @@
         </div>
     </div>
 </body>
+
 </html>

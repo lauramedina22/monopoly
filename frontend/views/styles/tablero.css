@@ -2,14 +2,16 @@
 .contenedor {
     padding: 2rem;
     min-height: 100vh;
-    background-color: #f8f9fa;
+    background-color: transparent;
 }
 
 /* Contenedor del tablero - más espacioso */
 .tablero {
-    width: min(95vh, 95vw); /* Usar el menor entre alto y ancho disponible */
+    width: min(95vh, 95vw);
+    /* Usar el menor entre alto y ancho disponible */
     height: min(95vh, 95vw);
-    max-width: 90rem; /* Límite más generoso */
+    max-width: 90rem;
+    /* Límite más generoso */
     max-height: 90rem;
     margin: 0 auto 2rem auto;
 }
@@ -85,7 +87,8 @@
     height: auto;
     object-fit: contain;
     filter: drop-shadow(0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.3));
-    transition: transform 0.3s ease; /* Con transition puedo hacer animaciónes con las imagenes */
+    transition: transform 0.3s ease;
+    /* Con transition puedo hacer animaciónes con las imagenes */
 }
 
 .logo-monopoly:hover {
@@ -104,9 +107,10 @@
     font-size: clamp(1.5rem, 4vmin, 3rem);
     font-weight: bold;
     color: #2c5530;
-    text-shadow: 0.1rem 0.1rem 0.3rem rgba(0,0,0,0.3);
+    text-shadow: 0.1rem 0.1rem 0.3rem rgba(0, 0, 0, 0.3);
     position: absolute;
-    z-index: -1; /* Detrás de la imagen */
+    z-index: -1;
+    /* Detrás de la imagen */
 }
 
 /* Casillas del tablero */
@@ -137,9 +141,9 @@
 }
 
 /* Casillas de esquina - más destacadas */
-.casilla[id="0"], 
-.casilla[id="10"], 
-.casilla[id="20"], 
+.casilla[id="0"],
+.casilla[id="10"],
+.casilla[id="20"],
 .casilla[id="30"] {
     background-color: #fff8dc;
     border-width: 0.2rem;
@@ -216,7 +220,8 @@
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     margin-top: 2rem;
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr; /* Jugador | Acciones | Intercambios */
+    grid-template-columns: 1fr 2fr 1fr;
+    /* Jugador | Acciones | Intercambios */
     gap: 3rem;
     align-items: start;
 }
@@ -254,7 +259,7 @@
     margin-bottom: 0.5rem;
 }
 
-.dinero-actual {
+.info-usuario {
     background: #e3f2fd;
     padding: 0.75rem 1.25rem;
     border-radius: 0.5rem;
@@ -303,15 +308,16 @@
 /* Responsive - ajustes para pantallas más pequeñas */
 @media (max-width: 992px) {
     .panel-controles {
-        grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
+        grid-template-columns: 1fr;
+        /* Una columna en pantallas pequeñas */
         gap: 2rem;
     }
-    
+
     .tablero {
         width: min(90vh, 95vw);
         height: min(90vh, 95vw);
     }
-    
+
     .contenedor {
         padding: 1rem;
     }
@@ -321,26 +327,26 @@
     .botones-principales {
         gap: 0.75rem;
     }
-    
+
     .botones-principales .btn,
     .botones-intercambios .btn {
         min-width: 100%;
     }
-    
+
     .panel-controles {
         padding: 1.5rem;
     }
-    
+
     .tablero {
         width: min(85vh, 98vw);
         height: min(85vh, 98vw);
     }
-    
+
     .casilla {
         font-size: clamp(0.6rem, 2vmin, 0.9rem);
         padding: clamp(0.2rem, 0.8vmin, 0.5rem);
     }
-    
+
     .casilla p {
         font-size: clamp(0.4rem, 1.5vmin, 0.6rem);
     }
@@ -351,19 +357,21 @@
         width: min(80vh, 98vw);
         height: min(80vh, 98vw);
     }
-    
+
     .casilla {
         font-size: clamp(0.5rem, 2.5vmin, 0.8rem);
         padding: clamp(0.1rem, 1vmin, 0.4rem);
         line-height: 1;
     }
-    
+
     .casilla p {
         font-size: clamp(0.4rem, 2vmin, 0.55rem);
         margin-top: 0.1rem;
     }
-    
+
     #center {
         font-size: 1rem;
     }
+
+    
 }

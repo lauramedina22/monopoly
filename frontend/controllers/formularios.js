@@ -1,3 +1,5 @@
+import { Jugador } from "../models/Jugador.js";
+
 document.addEventListener("DOMContentLoaded", function () {
   window.jugadores = []; // Array global para almacenar los jugadores
   // Seleccionamos todos los botones
@@ -54,22 +56,31 @@ function cargarPaises(select) {
 // Función para generar formularios dinámicamente
 function generarFormularios(cantidad, jugadorActual = 1) {
   const contenedor = document.getElementById("contenedorForm");
-  const Jugador = window.Jugador; // Asegurarse de que la clase Jugador esté disponible
-
   // Si ya completamos todos los jugadores
   if (jugadorActual > cantidad) {
-    contenedor.innerHTML = `
-  <div class="d-flex justify-content-center">
-    <div class="p-4 border rounded bg-white bg-opacity-75 shadow w-75 w-md-50 text-center">
-      <h3 class="mb-3">¡Todos los jugadores registrados!</h3>
-      <button type="button" class="btn btn-success rounded-pill fw-bold">
-        Iniciar juego
-      </button>
+  contenedor.innerHTML = `
+    <div class="d-flex justify-content-center">
+      <div class="p-4 border rounded bg-white bg-opacity-75 shadow w-75 w-md-50 text-center">
+        <h3 class="mb-3">¡Todos los jugadores registrados!</h3>
+        <button id="btnIniciarPartida" type="button" class="btn btn-success rounded-pill fw-bold">
+          Iniciar partida
+        </button>
+      </div>
     </div>
-  </div>
-`;
-    return;
-  }
+  `;
+
+  // 🔹 Selecciona el botón recién creado
+  const btnIniciar = document.getElementById("btnIniciarPartida");
+
+  // 🔹 Ahora sí puedes asignar el evento
+  btnIniciar.addEventListener("click", () => {
+    window.open("tableroV2.html", "_blank"); 
+    // o si quieres en la misma pestaña:
+    // window.location.href = "tablero.html";
+  });
+
+  return;
+}
 
   // Generamos el formulario solo para el jugador actual
   contenedor.innerHTML = `
