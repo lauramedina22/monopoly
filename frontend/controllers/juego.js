@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const selector = document.getElementById("jugador");
     const infoJugador = document.getElementById("infoJugador");
 
-    selector.innerHTML = "";
+    selector.innerHTML = `<option selected disabled>Jugadores`;
     jugadores.forEach((j, index) => {
         const option = document.createElement("option");
         option.value = index;
