@@ -350,28 +350,39 @@
     .casilla p {
         font-size: clamp(0.4rem, 1.5vmin, 0.6rem);
     }
-}
 
-@media (max-width: 480px) {
-    .tablero {
-        width: min(80vh, 98vw);
-        height: min(80vh, 98vw);
+    /* Modo escalera en pantallas pequeñas */
+@media (max-width: 768px) {
+    #tablero {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr); /* 5 columnas como "escalera/matriz" */
+        grid-auto-rows: minmax(70px, auto);
+        width: 100%;
+        height: auto;
+        border: none;
+        background: none;
     }
 
     .casilla {
-        font-size: clamp(0.5rem, 2.5vmin, 0.8rem);
-        padding: clamp(0.1rem, 1vmin, 0.4rem);
-        line-height: 1;
-    }
-
-    .casilla p {
-        font-size: clamp(0.4rem, 2vmin, 0.55rem);
-        margin-top: 0.1rem;
+        min-height: 70px;
+        font-size: clamp(0.6rem, 2vmin, 1rem);
+        padding: 0.3rem;
     }
 
     #center {
-        font-size: 1rem;
+        display: none; /* en móvil no se muestra */
     }
 
-    
+    /* Los lados dejan de tener grid propio */
+    #bottom,
+    #left,
+    #top,
+    #right {
+        display: contents;
+    }
 }
+
+}
+
+
+

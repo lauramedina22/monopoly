@@ -126,7 +126,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const selector = document.getElementById("jugador");
     const infoJugador = document.getElementById("infoJugador");
-
     selector.innerHTML = `<option selected disabled>Jugadores`;
     jugadores.forEach((j, index) => {
         const option = document.createElement("option");
@@ -141,11 +140,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (jugador) {
             infoJugador.innerHTML = `
       <p><strong>Usuario:</strong> ${jugador.nombre}</p>
-      <p><strong>País:</strong> <span>${jugador.paisNombre}</span> <img src="https://flagsapi.com/${jugador.paisCodigo}/shiny/64.png" alt="Bandera de ${jugador.paisNombre}" class="me-2"></p>
+      <p><strong>País:</strong> <span>${jugador.paisCodigo}</span> <img src="https://flagsapi.com/${jugador.paisCodigo}/shiny/64.png" alt="Bandera de ${jugador.paisNombre}" class="me-2"></p>
       <p><strong>Ficha:</strong> ${jugador.colorFicha}</p>
       <p><strong>Dinero:</strong> $${jugador.dinero}</p>
       <p><strong>Puntaje:</strong> ${jugador.puntaje ?? 0}</p>
       <p><strong>Propiedades:</strong> ${jugador.propiedades?.join(", ") || "Ninguna"}</p>
+      <p><strong>Hipotecas:</strong> ${jugador.hipotecas?.join(", ") || "Ninguna"}</p>
+      <p><strong>Préstamos:</strong> ${jugador.prestamos?.length || 0}</p>
+
     `;
 
             // Mostrar modal con Bootstrap
