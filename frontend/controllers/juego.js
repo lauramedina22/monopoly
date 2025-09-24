@@ -33,95 +33,135 @@ document.addEventListener("DOMContentLoaded", () => {
 
     btnCargar.addEventListener("click", cargarTablero);
 
+    btnCargar.addEventListener("click", cargarTablero);
+
     function cargarTablero() {
-        fetch("http://127.0.0.1:5000/board")
-            .then((response) => response.json())
-            .then((casillas) => {
-                // let tablero = document.getElementById("tablero");
+    fetch("http://127.0.0.1:5000/board") // 1. Llamo al backend para obtener las casillas
+        .then((response) => response.json())
+        .then((casillas) => {
+            // Agrego una clase al tablero para marcar que ya se generó
+            tablero.classList.add("tablero-generado");
 
-                tablero.classList.add("tablero-generado");
+            //  Ajuste de las esquinas para que encajen correctamente
+            let primeraCasillaIzquierda = casillas.left.pop();
+            casillas.top.unshift(primeraCasillaIzquierda);
 
-                // Primero voy a arreglar el problema de disparidad que tengo en las listas
-                let primeraCasillaIzquierda = casillas.left.pop();
-                casillas.top.unshift(primeraCasillaIzquierda);
+            let ultimaCasillaIzquierda = casillas.left.shift();
+            casillas.bottom.push(ultimaCasillaIzquierda);
 
-                let ultimaCasillaIzquierda = casillas.left.shift();
-                casillas.bottom.push(ultimaCasillaIzquierda);
+            // Referencias a los 4 lados del tablero
+            const top = document.getElementById("top");
+            const left = document.getElementById("left");
+            const right = document.getElementById("right");
+            const bottom = document.getElementById("bottom");
 
-                // Creo los contenedores por cada lado 
-
-                /* Preguntar que es mejor, crear los divs por JS o tenerlos ya en el HTML y solo llenarlos
-                const top = document.createElement("div");
-                top.id = "top";
-                top.classList.add("fila");
-                tablero.appendChild(top);
-        
-                console.log(top);
-        
-                const left = document.createElement("div");
-                left.id = "left";
-                left.classList.add("columna");
-                tablero.appendChild(left);
-        
-                const right = document.createElement("div");
-                right.id = "right";
-                right.classList.add("columna");
-                tablero.appendChild(right);
-        
-                const bottom = document.createElement("div");
-                bottom.id = "bottom";
-                bottom.classList.add("fila");
-                tablero.appendChild(bottom); 
-                */
-
-                // Opcion de llenarlos
-
-                const top = document.getElementById("top");
-                const left = document.getElementById("left");
-                const right = document.getElementById("right");
-                const bottom = document.getElementById("bottom");
-
-                // Limpiar el tablero
+            /**
+             * Función interna `render`
+             * Recibe un booleano (isMobile) que indica si estamos en móvil o en escritorio.
+             * Dependiendo de eso dibuja el tablero de distinta forma.
+             */
+            function render(isMobile) {
+                // Primero limpiamos todos los lados antes de volver a dibujar
                 top.innerHTML = "";
                 left.innerHTML = "";
                 right.innerHTML = "";
                 bottom.innerHTML = "";
 
+                if (isMobile) {
+                    /**
+                     * Vista móvil:
+                     * En pantallas pequeñas no usamos 4 lados,
+                     * sino que "aplanamos" el tablero en un solo recorrido lineal.
+                     * 
+                     * El orden de recorrido es el orden real de un tablero de Monopoly:
+                     * bottom → left → top → right
+                     */
+                    const recorrido = [
+                        ...casillas.bottom,
+                        ...casillas.left,
+                        ...casillas.top,
+                        ...casillas.right
+                    ];
 
-                // Renderizo el tablero por cada lado 
-                for (let casilla of casillas.top) {
-                    const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : ''; // Si tiene precio, lo muestro y lo mismo con los demas
-                    top.innerHTML += `<div class="casilla top ${casilla.color || ''}" id="${casilla.id}">
-            ${casilla.name}
-            ${precioHtml}
-          </div>`;
-                }
+                    // Dibujamos todas las casillas dentro de "top"
+                    recorrido.forEach(casilla => {
+                        const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
+                        top.innerHTML += `
+                          <div class="casilla ${casilla.color || ''}" id="${casilla.id}">
+                              ${casilla.name}
+                              ${precioHtml}
+                          </div>`;
+                    });
 
-                for (let casilla of casillas.bottom.slice().reverse()) {
-                    const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
-                    bottom.innerHTML += `<div class="casilla bottom ${casilla.color || ''}" id="${casilla.id}">
-            ${casilla.name}
-            ${precioHtml}
-          </div>`;
-                }
+                } else {
+                    /**
+                     * Vista PC:
+                     * Aquí mantenemos la estructura tradicional con 4 lados.
+                     * Cada lado se dibuja de forma independiente con su propio bucle.
+                     */
+                    
+                    // Lado inferior (bottom) → va en orden invertido
+                    for (let casilla of casillas.bottom.slice().reverse()) {
+                        const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
+                        bottom.innerHTML += `<div class="casilla bottom ${casilla.color || ''}" id="${casilla.id}">
+                            ${casilla.name}
+                            ${precioHtml}
+                        </div>`;
+                    }
 
-                for (let casilla of casillas.left.slice().reverse()) {
-                    const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
-                    left.innerHTML += `<div class="casilla left ${casilla.color || ''}" id="${casilla.id}">
-            ${casilla.name}
-            ${precioHtml}
-          </div>`;
-                }
+                    // 🔹 Lado izquierdo (left) → también invertido
+                    for (let casilla of casillas.left.slice().reverse()) {
+                        const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
+                        left.innerHTML += `<div class="casilla left ${casilla.color || ''}" id="${casilla.id}">
+                            ${casilla.name}
+                            ${precioHtml}
+                        </div>`;
+                    }
 
-                for (let casilla of casillas.right) {
-                    const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
-                    right.innerHTML += `<div class="casilla right ${casilla.color || ''}" id="${casilla.id}">
-            ${casilla.name}
-            ${precioHtml}
-          </div>`;
+                    // 🔹 Lado superior (top) → orden natural
+                    for (let casilla of casillas.top) {
+                        const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
+                        top.innerHTML += `<div class="casilla top ${casilla.color || ''}" id="${casilla.id}">
+                            ${casilla.name}
+                            ${precioHtml}
+                        </div>`;
+                    }
+
+                    // 🔹 Lado derecho (right) → orden natural
+                    for (let casilla of casillas.right) {
+                        const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
+                        right.innerHTML += `<div class="casilla right ${casilla.color || ''}" id="${casilla.id}">
+                            ${casilla.name}
+                            ${precioHtml}
+                        </div>`;
+                    }
                 }
+            }
+
+            /**
+             *  Responsividad con `matchMedia`
+             * `window.matchMedia("(max-width: 768px)")`
+             * → devuelve un objeto que nos dice si el ancho actual de la pantalla
+             * es menor o igual a 768px (true en móvil, false en PC).
+             */
+            const mediaQuery = window.matchMedia("(max-width: 768px)");
+            console.log(mediaQuery);
+            
+            //  Render inicial según el tamaño actual de la pantalla
+            render(mediaQuery.matches);
+
+            /**
+             * Re-renderizado dinámico:
+             * Escuchamos el evento "change" de `matchMedia`.
+             * Cada vez que la pantalla cambia de estado (ej: pasamos de PC → móvil en inspeccionar),
+             * se vuelve a llamar a `render` con el valor actualizado.
+             */
+            mediaQuery.addEventListener("change", (e) => {
+                render(e.matches); // `e.matches` es true si ahora está en móvil
             });
-    }
+        });
+}
+
 
 
     const selector = document.getElementById("jugador");
