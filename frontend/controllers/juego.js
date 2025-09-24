@@ -1,5 +1,6 @@
 import { Partida } from "../models/Partida.js";
 import { Jugador } from "../models/Jugador.js";
+import  Casilla from "../models/Casilla.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     let btnCargar = document.getElementById("generarTablero");
@@ -7,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. Recuperar jugadores desde localStorage
     let jugadoresGuardados = JSON.parse(localStorage.getItem("jugadores")) || [];
 
-    // Convertirlos de nuevo en objetos Jugador (si tu clase tiene métodos)
+    // Convertirlos de nuevo en objetos Jugador
     const jugadores = jugadoresGuardados.map(j =>
         new Jugador(j.nombre, j.paisNombre, j.paisCodigo, j.colorFicha, j.dinero)
     );
