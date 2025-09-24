@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>`;
                     }
 
-                    // 🔹 Lado izquierdo (left) → también invertido
+                    // Lado izquierdo (left) → también invertido
                     for (let casilla of casillas.left.slice().reverse()) {
                         const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
                         left.innerHTML += `<div class="casilla left ${casilla.color || ''}" id="${casilla.id}">
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>`;
                     }
 
-                    // 🔹 Lado superior (top) → orden natural
+                    // Lado superior (top) → orden natural
                     for (let casilla of casillas.top) {
                         const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
                         top.innerHTML += `<div class="casilla top ${casilla.color || ''}" id="${casilla.id}">
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>`;
                     }
 
-                    // 🔹 Lado derecho (right) → orden natural
+                    // Lado derecho (right) → orden natural
                     for (let casilla of casillas.right) {
                         const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
                         right.innerHTML += `<div class="casilla right ${casilla.color || ''}" id="${casilla.id}">
