@@ -28,18 +28,18 @@
             <div class="col-12 d-flex justify-content-center">
                 <div class="tablero" id="tablero">
                     <!-- Aquí se generará el tablero dinámicamente -->
-                    <div class="fila" id="top"></div>
-                    <div class="columna" id="left"></div>
+                    <div class="fila" id="right"></div>
+                    <div class="columna" id="top"></div>
                     <div id="center">
                         <div class="centro-monopoly">
                             <img src="../assets/Monopoly-Logo.svg.png" alt="Monopoly Logo" class="logo-monopoly">
                         </div>
                     </div>
-                    <div class="columna" id="right"></div>
+                    <div class="columna" id="left"></div>
                     <div class="fila" id="bottom"></div>
                 </div>
             </div>
-
+           
             <!-- Botón "Generar Tablero" debajo del tablero -->
             <div class="col-12 text-center">
                 <button class="btn btn-generar-tablero" id="generarTablero">
@@ -71,7 +71,8 @@
                                             <!-- Aquí cargamos la info dinámica -->
                                         </div>
                                         <div class="modal-footer">
-                                           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-danger"
+                                                data-bs-dismiss="modal">Cerrar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -99,13 +100,13 @@
                     <div class="seccion-intercambios ">
                         <h3>Intercambios</h3>
                         <div class="botones-intercambios">
-                            <button class="btn btn-primary" id="intercambiar">
+                            <button class="btn btn-outline-primary" id="intercambiar">
                                 <i class="bi bi-arrow-left-right"></i> Intercambiar
                             </button>
-                            <button class="btn btn-secondary" id="pagarRenta">
+                            <button class="btn btn-outline-secondary" id="pagarRenta">
                                 <i class="bi bi-cash-coin"></i> Pagar Renta
                             </button>
-                            <button class="btn btn-danger" id="declararBancarrota">
+                            <button class="btn btn-outline-danger" id="declararBancarrota">
                                 <i class="bi bi-exclamation-triangle"></i> Bancarrota
                             </button>
                         </div>
