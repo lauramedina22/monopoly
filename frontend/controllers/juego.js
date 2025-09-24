@@ -48,6 +48,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 let ultimaCasillaIzquierda = casillas.left.shift();
                 casillas.bottom.push(ultimaCasillaIzquierda);
 
+                console.log(casillas);
+
+
                 // Creo los contenedores por cada lado 
 
                 /* Preguntar que es mejor, crear los divs por JS o tenerlos ya en el HTML y solo llenarlos
@@ -89,13 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
                 // Renderizo el tablero por cada lado 
-                for (let casilla of casillas.top) {
-                    const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : ''; // Si tiene precio, lo muestro y lo mismo con los demas
-                    top.innerHTML += `<div class="casilla top ${casilla.color || ''}" id="${casilla.id}">
-            ${casilla.name}
-            ${precioHtml}
-          </div>`;
-                }
+
 
                 for (let casilla of casillas.bottom.slice().reverse()) {
                     const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
@@ -105,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>`;
                 }
 
+
                 for (let casilla of casillas.left.slice().reverse()) {
                     const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
                     left.innerHTML += `<div class="casilla left ${casilla.color || ''}" id="${casilla.id}">
@@ -112,6 +110,15 @@ document.addEventListener("DOMContentLoaded", () => {
             ${precioHtml}
           </div>`;
                 }
+
+                for (let casilla of casillas.top) {
+                    const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : ''; // Si tiene precio, lo muestro y lo mismo con los demas
+                    top.innerHTML += `<div class="casilla top ${casilla.color || ''}" id="${casilla.id}">
+            ${casilla.name}
+            ${precioHtml}
+          </div>`;
+                }
+
 
                 for (let casilla of casillas.right) {
                     const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
