@@ -5,12 +5,13 @@ let players = JSON.parse(localStorage.getItem("players")) || [];
 // === Mostrar mensaje en la página ===
 function mostrarMensaje(texto, tipo = "success", tiempo = 3000) {
   const statusDiv = document.getElementById("statusMessage");
+
   statusDiv.innerHTML = `
     <div class="alert alert-${tipo} text-center fw-bold" role="alert">
       ${texto}
     </div>
   `;
-    // Ocultar automáticamente después de "tiempo" milisegundos
+  // Ocultar automáticamente después de "tiempo" milisegundos
   setTimeout(() => {
     statusDiv.innerHTML = "";
   }, tiempo);
@@ -21,13 +22,13 @@ function calcularPatrimonio(player) {
   let patrimonio = player.cash || 0;
 
   if (player.properties && player.properties.length > 0) {
-    player.properties.forEach(prop => {
+    player.properties.forEach((prop) => {
       patrimonio += prop.price || 0;
     });
   }
 
   if (player.mortgages && player.mortgages.length > 0) {
-    player.mortgages.forEach(mort => {
+    player.mortgages.forEach((mort) => {
       patrimonio -= mort.amount || 0;
     });
   }
@@ -38,7 +39,10 @@ function calcularPatrimonio(player) {
 // === Enviar resultados ===
 async function enviarResultados() {
   if (players.length === 0) {
-    mostrarMensaje("No hay jugadores registrados para finalizar el juego.", "warning");
+    mostrarMensaje(
+      "No hay jugadores registrados para finalizar el juego.",
+      "warning"
+    );
     return;
   }
 
@@ -47,13 +51,13 @@ async function enviarResultados() {
       const payload = {
         nick_name: player.nickname,
         score: calcularPatrimonio(player),
-        country_code: player.countryCode
+        country_code: player.countryCode,
       };
 
       const res = await fetch(`${API_BASE}/score-recorder`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+        body: JSON.stringify(payload),
       });
 
       if (!res.ok) {
@@ -64,7 +68,10 @@ async function enviarResultados() {
       console.log("Jugador registrado:", data);
     }
 
-    mostrarMensaje("✅ Resultados enviados correctamente. El juego ha finalizado.", "success");
+    mostrarMensaje(
+      "✅ Resultados enviados correctamente. El juego ha finalizado.",
+      "success"
+    );
 
     localStorage.removeItem("players");
     players = [];
@@ -88,7 +95,7 @@ async function cargarRanking() {
     const tbody = document.querySelector("#rankingPanel tbody");
     tbody.innerHTML = "";
 
-    data.forEach(entry => {
+    data.forEach((entry) => {
       const row = document.createElement("tr");
       row.innerHTML = `
         <td>${entry.nick_name}</td>
@@ -99,15 +106,15 @@ async function cargarRanking() {
     });
   } catch (err) {
     console.error("Error cargando ranking:", err);
-    const tbody = document.querySelector("#rankingPanel tbody");
+    const tbody = document.querySelector("#rankingPanel .table");
     tbody.innerHTML = `<tr><td colspan="3" class="text-danger">No se pudo cargar el ranking</td></tr>`;
   }
 }
 
 // === Eventos ===
-document.getElementById("btnEndGame").addEventListener("click", enviarResultados);
+document
+  .getElementById("finalizarBtn")
+  .addEventListener("click", enviarResultados);
 
 // === Ranking inicial ===
 cargarRanking();
-
-
