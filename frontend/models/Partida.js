@@ -1,4 +1,5 @@
 import { Dado } from "./Dado.js";
+import { Propiedad } from "./Propiedad.js"
 
 export class Partida {
   constructor(jugadores = [], casillas = []) {
@@ -44,12 +45,14 @@ export class Partida {
   // Manejar qué pasa cuando un jugador cae en una casilla
   jugadorCaeEnCasilla(jugador, casilla) {
     if (casilla.type === "property") {
-      let propiedad = casilla.propiedad; // instancia de Propiedad ya asociada a la Casilla
+      let propiedad = new Propiedad(casilla) // instancia de Propiedad ya asociada a la Casilla
 
-      if (!propiedad.dueno) {
+      if (!propiedad.dueno) { // Entonces preguntar si desea comprarla
         propiedad.comprarPropiedad(jugador);
       } else if (propiedad.dueno !== jugador) {
-        propiedad.cobrarRenta(jugador);
+        let descuento = propiedad.getRenta();
+        jugador.dinero = jugador.dinero - descuento;
+
       } else {
         console.log(`${jugador.nombre} cayó en su propia propiedad`);
       }

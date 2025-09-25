@@ -1,4 +1,4 @@
-class Casilla {
+export class Casilla {
   constructor(data) {
     // Atributos básicos del backend
     this.id = data.id;
@@ -91,4 +91,3 @@ class Casilla {
   }
 }
 
-export default Casilla;
