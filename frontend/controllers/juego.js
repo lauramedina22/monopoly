@@ -70,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
             for (let casillaData of casillas[lado]) {
               // Crear objeto Casilla con los datos del backend
               const casillaObjeto = new Casilla(casillaData);
+              partida.casillas[casillaData.id] = casillaObjeto; // Agregar la casilla a la partida por su ID
 
               // Agregarlo a la lista correspondiente
               casillasObjetos[lado].push(casillaObjeto);
@@ -117,7 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
               // Lado inferior (bottom) → orden invertido
               for (let casillaObjeto of casillasObjetos.bottom.slice().reverse()) {
-                console.log(casillaObjeto);
                 const precioHtml = casillaObjeto.price
                   ? `<p>$${casillaObjeto.price}</p>`
                   : "";
@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
               // Lado izquierdo (left) → orden invertido
               for (let casillaObjeto of casillasObjetos.left.slice().reverse()) {
-                console.log(casillaObjeto.left);
+                console.log(partida.casillas);
                 const precioHtml = casillaObjeto.price
                   ? `<p>$${casillaObjeto.price}</p>`
                   : "";
@@ -145,8 +145,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
               // Lado superior (top) → orden natural
               for (let casillaObjeto of casillasObjetos.top) {
-                console.log(casillaObjeto.top)
-
                 const precioHtml = casillaObjeto.price
                   ? `<p>$${casillaObjeto.price}</p>`
                   : "";
@@ -160,7 +158,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
               // Lado derecho (right) → orden natural
               for (let casillaObjeto of casillasObjetos.right) {
-                console.log(casillaObjeto.right);
                 const precioHtml = casillaObjeto.price
                   ? `<p>$${casillaObjeto.price}</p>`
                   : "";
@@ -173,6 +170,8 @@ document.addEventListener("DOMContentLoaded", () => {
               }
             }
           }
+
+          console.log("Partida con casillas:", partida.casillas);
 
           /**
            *  Responsividad con `matchMedia`
