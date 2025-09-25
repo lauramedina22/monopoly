@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   console.log("Jugadores cargados:", jugadores);
+  console.log("Jugadores cargados:", jugadores);
 
   // 2. Crear la partida con los jugadores
   const partida = new Partida(jugadores);
@@ -55,10 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
         let primeraCasillaIzquierda = casillas.left.pop();
         casillas.top.unshift(primeraCasillaIzquierda);
 
-        let ultimaCasillaIzquierda = casillas.left.shift();
-        casillas.bottom.push(ultimaCasillaIzquierda);
-
-        console.log("Casillas cargadas:", casillas);
+            let ultimaCasillaIzquierda = casillas.left.shift();
+            casillas.bottom.push(ultimaCasillaIzquierda);
 
         // Referencias a los 4 lados del tablero
         const top = document.getElementById("top");
@@ -106,89 +105,76 @@ document.addEventListener("DOMContentLoaded", () => {
           right.innerHTML = "";
           bottom.innerHTML = "";
 
-          if (isMobile) {
-            // Vista móvil: usar los objetos Casilla en lugar de los datos originales
-            const recorrido = [
-              ...casillasObjetos.bottom,
-              ...casillasObjetos.left,
-              ...casillasObjetos.top,
-              ...casillasObjetos.right,
-            ];
+                if (isMobile) {
+                    /**
+                     * Vista móvil:
+                     * En pantallas pequeñas no usamos 4 lados,
+                     * sino que "aplanamos" el tablero en un solo recorrido lineal.
+                     * 
+                     * El orden de recorrido es el orden real de un tablero de Monopoly:
+                     * bottom → left → top → right
+                     */
+                    const recorrido = [
+                        ...casillas.bottom,
+                        ...casillas.left,
+                        ...casillas.top,
+                        ...casillas.right
+                    ];
 
-            // Dibujamos todas las casillas dentro de "top"
-            recorrido.forEach((casillaObjeto) => {
-              const precioHtml = casillaObjeto.price
-                ? `<p>$${casillaObjeto.price}</p>`
-                : "";
-              top.innerHTML += `
-                <div class="casilla ${casillaObjeto.color || ""}" id="${
-                casillaObjeto.id
-              }">
-                    ${casillaObjeto.name}
-                    ${precioHtml}
-                </div>`;
-            });
-          } else {
-            // Vista PC: usar los objetos Casilla
+                    // Dibujamos todas las casillas dentro de "top"
+                    recorrido.forEach(casilla => {
+                        const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
+                        top.innerHTML += `
+                          <div class="casilla ${casilla.color || ''}" id="${casilla.id}">
+                              ${casilla.name}
+                              ${precioHtml}
+                          </div>`;
+                    });
 
-            // Lado inferior (bottom) → orden invertido
-            for (let casillaObjeto of casillasObjetos.bottom
-              .slice()
-              .reverse()) {
-              const precioHtml = casillaObjeto.price
-                ? `<p>$${casillaObjeto.price}</p>`
-                : "";
-              bottom.innerHTML += `<div class="casilla bottom ${
-                casillaObjeto.color || ""
-              }" id="${casillaObjeto.id}">
-                ${casillaObjeto.name}
-                ${precioHtml}
-            </div>`;
+                } else {
+                    /**
+                     * Vista PC:
+                     * Aquí mantenemos la estructura tradicional con 4 lados.
+                     * Cada lado se dibuja de forma independiente con su propio bucle.
+                     */
+                    
+                    // Lado inferior (bottom) → va en orden invertido
+                    for (let casilla of casillas.bottom.slice().reverse()) {
+                        const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
+                        bottom.innerHTML += `<div class="casilla bottom ${casilla.color || ''}" id="${casilla.id}">
+                            ${casilla.name}
+                            ${precioHtml}
+                        </div>`;
+                    }
+
+                    // 🔹 Lado izquierdo (left) → también invertido
+                    for (let casilla of casillas.left.slice().reverse()) {
+                        const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
+                        left.innerHTML += `<div class="casilla left ${casilla.color || ''}" id="${casilla.id}">
+                            ${casilla.name}
+                            ${precioHtml}
+                        </div>`;
+                    }
+
+                    // 🔹 Lado superior (top) → orden natural
+                    for (let casilla of casillas.top) {
+                        const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
+                        top.innerHTML += `<div class="casilla top ${casilla.color || ''}" id="${casilla.id}">
+                            ${casilla.name}
+                            ${precioHtml}
+                        </div>`;
+                    }
+
+                    // 🔹 Lado derecho (right) → orden natural
+                    for (let casilla of casillas.right) {
+                        const precioHtml = casilla.price ? `<p>$${casilla.price}</p>` : '';
+                        right.innerHTML += `<div class="casilla right ${casilla.color || ''}" id="${casilla.id}">
+                            ${casilla.name}
+                            ${precioHtml}
+                        </div>`;
+                    }
+                }
             }
-
-            // Lado izquierdo (left) → orden invertido
-            for (let casillaObjeto of casillasObjetos.left.slice().reverse()) {
-              console.log(partida.casillas);
-              const precioHtml = casillaObjeto.price
-                ? `<p>$${casillaObjeto.price}</p>`
-                : "";
-              left.innerHTML += `<div class="casilla left ${
-                casillaObjeto.color || ""
-              }" id="${casillaObjeto.id}">
-                ${casillaObjeto.name}
-                ${precioHtml}
-            </div>`;
-            }
-
-            // Lado superior (top) → orden natural
-            for (let casillaObjeto of casillasObjetos.top) {
-              const precioHtml = casillaObjeto.price
-                ? `<p>$${casillaObjeto.price}</p>`
-                : "";
-              top.innerHTML += `<div class="casilla top ${
-                casillaObjeto.color || ""
-              }" id="${casillaObjeto.id}">
-                ${casillaObjeto.name}
-                ${precioHtml}
-            </div>`;
-            }
-
-            // Lado derecho (right) → orden natural
-            for (let casillaObjeto of casillasObjetos.right) {
-              const precioHtml = casillaObjeto.price
-                ? `<p>$${casillaObjeto.price}</p>`
-                : "";
-              right.innerHTML += `<div class="casilla right ${
-                casillaObjeto.color || ""
-              }" id="${casillaObjeto.id}">
-                ${casillaObjeto.name}
-                ${precioHtml}
-            </div>`;
-            }
-          }
-        }
-
-        console.log("Partida con casillas:", partida.casillas);
 
         /**
          *  Responsividad con `matchMedia`
@@ -248,8 +234,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     `;
 
-      // Mostrar modal con Bootstrap
-      $("#modalJugador").modal("show");
-    }
-  });
+            // Mostrar modal con Bootstrap
+            $('#modalJugador').modal('show');
+        }
+    });
+
 });
