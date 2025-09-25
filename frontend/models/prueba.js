@@ -5,9 +5,9 @@ import { Propiedad } from "./Propiedad.js";
 // 1. Crear jugadores
 const j1 = new Jugador("Alice", "Colombia", "CO", "Rojo", 1500);
 const j2 = new Jugador("Bob", "Perú", "PE", "Azul", 1500);
-let casillas = []
+let casillas = [];
 
-// 2. Crear algunas casillas de prueba
+// 2. Crear una casilla de tipo propiedad
 const casilla1 = new Propiedad({
   id: 1,
   type: "property",
@@ -18,28 +18,29 @@ const casilla1 = new Propiedad({
   rent: {
     base: 2,
     withHouse: [10, 30, 90, 160],
-    withHotel: 250
+    withHotel: 250,
   },
-  dueno: null
 });
 casillas.push(casilla1);
 
-// 3. Crear partida con los jugadores
+// 3. Crear partida
 const partida = new Partida([j1, j2], casillas);
 
-// 4. Simular un turno (ejemplo forzado)
+// 4. Simular turnos
 console.log("\n=== Turno de Alice ===");
-partida.jugadorCaeEnCasilla(j1, casillas[0]); // Alice cae en la propiedad 1
-casilla1.comprarPropiedad(j1); // Alice la compra
+partida.jugadorCaeEnCasilla(j1, casillas[0]); 
+// Decisión: comprar
+casillas[0].comprarPropiedad(j1);
+
+console.log(j1.toString()); // <-- debería mostrar Mediterranean Avenue
+
 
 console.log("\n=== Turno de Bob ===");
-partida.jugadorCaeEnCasilla(j2, casillas[0]);// Bob cae en la propiedad de Alice
-// Aquí se debería disparar la renta automáticamente
+partida.jugadorCaeEnCasilla(j2, casillas[0]); // paga renta porque Alice es dueña
 
+
+// 5. Estado final
 console.log("\n=== Estado final ===");
 console.log(j1.toString());
 console.log(j2.toString());
 console.log(casilla1.toString());
-
-
-// LOGRAR QUE SE RESTE EL DINERO Y QUE SE ACTUALICE EL DUEÑO

@@ -43,25 +43,32 @@ export class Partida {
   }
 
   // Manejar qué pasa cuando un jugador cae en una casilla
-  jugadorCaeEnCasilla(jugador, casilla) {
-  if (casilla.type === "property") {
-    let propiedad = casilla; 
+jugadorCaeEnCasilla(jugador, casilla) {
+  switch (casilla.type) {
+    case "property":
+      if (!casilla.dueno) {
+        console.log(`${jugador.nombre} cayó en ${casilla.name}, está libre por $${casilla.precio}.`);
+        // 👀 Aquí NO se compra automáticamente, se deja la decisión al jugador
+      } else if (casilla.dueno !== jugador) {
+        let renta = casilla.getRenta();
+        jugador.dinero -= renta;
+        casilla.dueno.dinero += renta;
+        console.log(`${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre}`);
+      } else {
+        console.log(`${jugador.nombre} cayó en su propia propiedad`);
+      }
+      break;
 
-    if (!propiedad.dueno) { 
-      propiedad.comprarPropiedad(jugador);
-    } else if (propiedad.dueno !== jugador) {
-      let renta = propiedad.getRenta();
-      jugador.dinero -= renta;
-      propiedad.dueno.dinero += renta; // ✅ sumar renta al dueño
-      console.log(`${jugador.nombre} pagó $${renta} a ${propiedad.dueno.nombre}`);
-    } else {
-      console.log(`${jugador.nombre} cayó en su propia propiedad`);
-    }
-
-    } else if (casilla.type === "railroad") {
+    case "railroad":
       console.log(`${jugador.nombre} cayó en una casilla especial: ${casilla.nombre}`);
-    }
+      break;
+
+    default:
+      console.log(`${jugador.nombre} cayó en una casilla de tipo ${casilla.type}`);
   }
+}
+
+
 
   // Partida.js
   toString() {

@@ -68,7 +68,8 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    overflow: hidden; /* Evita que la imagen se desborde */
+    overflow: hidden;
+    /* Evita que la imagen se desborde */
 }
 
 /* Contenedor del logo en el centro */
@@ -115,10 +116,10 @@
     opacity: 0.7;
 }
 
-/* Precios en las casillas - simples */
+/* Precios en las casillas */
 .casilla p {
     margin: 0.2rem 0 0 0;
-    font-size: clamp(0.5rem, 1.2vmin, 0.7rem);
+    font-size: clamp(0.7rem, 1.8vmin, 1rem); 
     font-weight: 600;
     color: #666;
 }
@@ -134,14 +135,17 @@
     text-align: center;
     box-sizing: border-box;
     background-color: white;
-    padding: clamp(0.4rem, 1.2vmin, 0.7rem); /* Más padding para más espacio */
+    padding: clamp(0.8rem, 2vmin, 1.5rem);
+    /* Más padding para más espacio */
     font-weight: bold;
     overflow: hidden;
     line-height: 1.1;
     word-wrap: break-word;
     min-height: 0;
-    aspect-ratio: 1; /* Casillas cuadradas */
-    gap: 0.2rem; /* Espacio entre la franja y el contenido */
+    aspect-ratio: 1;
+    /* Casillas cuadradas */
+    gap: 0.2rem;
+    /* Espacio entre la franja y el contenido */
 }
 
 /* Separación entre franja de color y texto */
@@ -153,19 +157,22 @@
 .casilla.purple,
 .casilla.brown,
 .casilla.orange {
-    padding-top: calc(25% + 0.3rem); /* Margen después de la franja de color */
+    padding-top: calc(25% + 0.3rem);
+    /* Margen después de la franja de color */
     justify-content: flex-start;
 }
 
 /* Casillas de esquina - texto más grande y legible */
-.casilla[id="0"], 
-.casilla[id="10"], 
-.casilla[id="20"], 
+.casilla[id="0"],
+.casilla[id="10"],
+.casilla[id="20"],
 .casilla[id="30"] {
     background-color: #fff8dc;
     border-width: 0.2rem;
-    font-size: clamp(0.8rem, 2vmin, 1.2rem); /* Texto mucho más grande */
-    padding: clamp(0.5rem, 1.5vmin, 1rem); /* Más padding en esquinas */
+    font-size: clamp(0.8rem, 2vmin, 1.2rem);
+    /* Texto mucho más grande */
+    padding: clamp(0.5rem, 1.5vmin, 1rem);
+    /* Más padding en esquinas */
     line-height: 1.2;
     font-weight: bold;
 }
@@ -344,7 +351,7 @@
 }
 
 
-    /* Modo escalera en pantallas pequeñas */
+/* Modo escalera en pantallas pequeñas */
 @media (max-width: 768px) {
 
     .botones-principales {
@@ -362,7 +369,8 @@
 
     #tablero {
         display: grid;
-        grid-template-columns: repeat(5, 1fr); /* 5 columnas como "escalera/matriz" */
+        grid-template-columns: repeat(5, 1fr);
+        /* 5 columnas como "escalera/matriz" */
         grid-auto-rows: minmax(70px, auto);
         width: 100%;
         height: auto;
@@ -377,7 +385,8 @@
     }
 
     #center {
-        display: none; /* en móvil no se muestra */
+        display: none;
+        /* en móvil no se muestra */
     }
 
     /* Los lados dejan de tener grid propio */
@@ -388,7 +397,3 @@
         display: contents;
     }
 }
-
-
-
-

@@ -23,8 +23,8 @@ export class Jugador {
       colorFicha: this.colorFicha,
       dinero: this.dinero,
       puntaje: this.puntaje,
-      propiedades: this.propiedades.map(p => p.nombre),
-      hipotecas: this.hipotecas.map(p => p.nombre),
+      propiedades: this.propiedades.map(p => p.name),
+      hipotecas: this.hipotecas.map(p => p.name),
       prestamos: this.prestamos,
       posicion: this.posicion
     };
@@ -46,7 +46,7 @@ export class Jugador {
   }
   
   toString() {
-    let props = this.propiedades.map(p => p.nombre).join(", ") || "Ninguna";
+    let props = this.propiedades.map(p => p.name).join(", ") || "Ninguna";
     return `Jugador ${this.nombre} (${this.colorFicha}) | Dinero: $${this.dinero} | Propiedades: ${props}`;
   }
 
