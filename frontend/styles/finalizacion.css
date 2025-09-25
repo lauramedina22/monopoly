@@ -2,23 +2,69 @@
 body {
   background-size: cover;
   margin: 0;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 /* Encabezado centrado */
 header {
-  background: rgba(0,0,0,0.4); /* un overlay oscuro para que se lea mejor */
+  background: rgba(0,0,0,0.4); /* overlay oscuro */
   margin-bottom: 30px;
   border-radius: 0 0 15px 15px;
+  text-align: center;
+  padding: 1.5rem;
 }
 
-/* Card central que agrupa la info */
+header h1 {
+  margin-bottom: 0.5rem;
+}
+
+header p {
+  font-size: 1rem;
+  color: #ddd;
+}
+
+/* Card central */
 .card {
   border-radius: 15px;
-  background: rgba(255,255,255,0.9); /* fondo claro translúcido */
+  background: rgba(255,255,255,0.95); /* fondo claro translúcido */
   border: none;
+  margin-bottom: 20px;
+  padding: 1.5rem;
 }
 
-/* Cada bloque de jugador */
-#playersPanel > div {
-  border: 1px solid #ddd;
+/* Botón */
+#btnEndGame {
+  font-size: 1.1rem;
+}
+
+/* Tabla de ranking */
+#rankingPanel table {
+  margin-bottom: 0;
+}
+
+#rankingPanel img {
+  border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.6rem;
+  }
+  .card {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 1.3rem;
+  }
+  header p {
+    font-size: 0.9rem;
+  }
+  #btnEndGame {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
 }
