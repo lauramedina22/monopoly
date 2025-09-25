@@ -10,6 +10,7 @@ export class Jugador {
     this.propiedades = []; // lista de propiedades adquiridas
     this.hipotecas = [];   // propiedades hipotecadas
     this.prestamos = [];   // préstamos activos
+    this.posicion = 0;    // posición en el tablero
   }
 
   // ---- Panel de jugador ----
@@ -25,7 +26,8 @@ export class Jugador {
       puntaje: this.puntaje,
       propiedades: this.propiedades.map(p => p.nombre),
       hipotecas: this.hipotecas.map(p => p.nombre),
-      prestamos: this.prestamos
+      prestamos: this.prestamos,
+      posicion: this.posicion
     };
   }
 
