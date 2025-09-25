@@ -33,12 +33,13 @@ partida.jugadorCaeEnCasilla(j1, casillas[0]); // Alice cae en la propiedad 1
 casilla1.comprarPropiedad(j1); // Alice la compra
 
 console.log("\n=== Turno de Bob ===");
-partida.jugadorCaeEnCasilla(j2, casillas[0]);
-casilla1.comprarPropiedad(j2); // Bob cae en la propiedad de Alice
+partida.jugadorCaeEnCasilla(j2, casillas[0]);// Bob cae en la propiedad de Alice
 // Aquí se debería disparar la renta automáticamente
 
 console.log("\n=== Estado final ===");
-console.log(j1);
-console.log(j2); 
+console.log(j1.toString());
+console.log(j2.toString());
+console.log(casilla1.toString());
+
 
 // LOGRAR QUE SE RESTE EL DINERO Y QUE SE ACTUALICE EL DUEÑO

@@ -14,11 +14,11 @@ export class Propiedad {
         // Estado de la propiedad
         this.casas = 0;
         this.hotel = false;
-        this.dueno = null; 
+        this.dueno = null;
     }
 
     // Comprar la propiedad (Verificar q no tenga dueñ@)
-    comprarPropiedad(jugador){
+    comprarPropiedad(jugador) {
         if (this.dueno) {
             console.log(`${this.nombre} ya tiene dueño.`);
             return false;
@@ -103,4 +103,10 @@ export class Propiedad {
         if (jugador.dinero < 250) return false;
         return true;
     }
+    // Propiedad.js
+    toString() {
+        let duenoNombre = this.dueno ? this.dueno.nombre : "Nadie";
+        return `Propiedad ${this.nombre} (${this.color}) | Precio: $${this.precio} | Dueño: ${duenoNombre}`;
+    }
+
 }

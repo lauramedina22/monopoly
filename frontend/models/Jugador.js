@@ -1,4 +1,3 @@
-import {Propiedad} from "./Propiedad.js";
 export class Jugador {
   constructor(nombre, paisNombre, paisCodigo, colorFicha, dineroInicial = 1500, puntaje = 0) {
     this.nombre = nombre;              // Nombre del jugador
@@ -31,7 +30,7 @@ export class Jugador {
     };
   }
 
-  
+
   toJSON() {
     return {
       nombre: this.nombre,
@@ -45,5 +44,11 @@ export class Jugador {
       prestamos: this.prestamos
     };
   }
+  
+  toString() {
+    let props = this.propiedades.map(p => p.nombre).join(", ") || "Ninguna";
+    return `Jugador ${this.nombre} (${this.colorFicha}) | Dinero: $${this.dinero} | Propiedades: ${props}`;
+  }
+
 }
 
