@@ -44,21 +44,28 @@ export class Partida {
 
   // Manejar qué pasa cuando un jugador cae en una casilla
   jugadorCaeEnCasilla(jugador, casilla) {
-    if (casilla.type === "property") {
-      let propiedad = new Propiedad(casilla) // instancia de Propiedad ya asociada a la Casilla
+  if (casilla.type === "property") {
+    let propiedad = casilla; 
 
-      if (!propiedad.dueno) { // Entonces preguntar si desea comprarla
-        propiedad.comprarPropiedad(jugador);
-      } else if (propiedad.dueno !== jugador) {
-        let descuento = propiedad.getRenta();
-        jugador.dinero = jugador.dinero - descuento;
-
-      } else {
-        console.log(`${jugador.nombre} cayó en su propia propiedad`);
-      }
+    if (!propiedad.dueno) { 
+      propiedad.comprarPropiedad(jugador);
+    } else if (propiedad.dueno !== jugador) {
+      let renta = propiedad.getRenta();
+      jugador.dinero -= renta;
+      propiedad.dueno.dinero += renta; // ✅ sumar renta al dueño
+      console.log(`${jugador.nombre} pagó $${renta} a ${propiedad.dueno.nombre}`);
+    } else {
+      console.log(`${jugador.nombre} cayó en su propia propiedad`);
+    }
 
     } else if (casilla.type === "railroad") {
       console.log(`${jugador.nombre} cayó en una casilla especial: ${casilla.nombre}`);
     }
   }
+
+  // Partida.js
+  toString() {
+    return `Partida con ${this.jugadores.length} jugadores y ${this.casillas.length} casillas.`;
+  }
+
 }
