@@ -1,0 +1,24 @@
+/* Fondo de la página */
+body {
+  background-size: cover;
+  margin: 0;
+}
+
+/* Encabezado centrado */
+header {
+  background: rgba(0,0,0,0.4); /* un overlay oscuro para que se lea mejor */
+  margin-bottom: 30px;
+  border-radius: 0 0 15px 15px;
+}
+
+/* Card central que agrupa la info */
+.card {
+  border-radius: 15px;
+  background: rgba(255,255,255,0.9); /* fondo claro translúcido */
+  border: none;
+}
+
+/* Cada bloque de jugador */
+#playersPanel > div {
+  border: 1px solid #ddd;
+}
