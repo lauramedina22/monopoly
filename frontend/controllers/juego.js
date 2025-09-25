@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 2. Crear la partida con los jugadores
     const partida = new Partida(jugadores);
+    console.log(partida.casillas)
 
     console.log("Partida creada:", partida);
     // 3. (opcional) Mostrar el estado inicial de cada jugador
@@ -29,17 +30,18 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(`  Hipotecas: ${jugador.hipotecas.map(p => p.nombre).join(", ") || "Ninguna"}`);
         console.log(`  Préstamos: ${jugador.prestamos.length}`);
         console.log(`  Puntaje: ${jugador.puntaje}`);
+        
 
     });
 
     btnCargar.addEventListener("click", cargarTablero);
 
-    btnCargar.addEventListener("click", cargarTablero);
 
     function cargarTablero() {
       fetch("http://127.0.0.1:5000/board") // 1. Llamo al backend para obtener las casillas
         .then((response) => response.json())
         .then((casillas) => {
+        
           // Agrego una clase al tablero para marcar que ya se generó
           tablero.classList.add("tablero-generado");
 
@@ -102,6 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
               // Dibujamos todas las casillas dentro de "top"
               recorrido.forEach((casillaObjeto) => {
+
                 const precioHtml = casillaObjeto.price
                   ? `<p>$${casillaObjeto.price}</p>`
                   : "";
