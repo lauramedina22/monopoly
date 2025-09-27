@@ -1,12 +1,9 @@
 import { Partida } from "./Partida.js";
 import { Jugador } from "./Jugador.js";
 import { Propiedad } from "./Propiedad.js";
-<<<<<<< HEAD
 import { Especial } from "./Especial.js"; // 👈 Importamos Especial
-=======
 import { Impuesto } from "./Impuesto.js";
 import { Railroad } from "./Ferrocarril.js";
->>>>>>> 406dc296cabeed92a9d04ff2b7bfe6a5427c2419
 
 // 1. Crear jugadores
 const j1 = new Jugador("Alice", "Colombia", "CO", "Rojo", 1500);
@@ -35,7 +32,6 @@ const casilla1 = new Propiedad( {
     });
 casillas.push(casilla1);
 
-<<<<<<< HEAD
 const casilla2 = new Propiedad({
       "color": "purple",
       "id": 6,
@@ -89,7 +85,6 @@ const irCarcel = new Especial(
 casillas.push(irCarcel);
 
 // 4. Crear partida
-=======
 const casillaTax = new Impuesto({
   id: 4,
   name: "Impuesto sobre ingresos",
@@ -118,7 +113,6 @@ casillas.push(railroad1);
 casillas.push(casillaTax);
 
 // 3. Crear partida
->>>>>>> 406dc296cabeed92a9d04ff2b7bfe6a5427c2419
 const partida = new Partida([j1, j2], casillas);
 
 // 5. Simular turnos
@@ -172,12 +166,10 @@ console.log(j2.toString());
 console.log(casillas)
 
 
-<<<<<<< HEAD
 // 6. Estado final
 console.log("\n=== Estado final ===");
 console.log(j1.toString());
 console.log(j2.toString());
-=======
 console.log("\n=== Turno de Bob ===");
 partida.jugadorCaeEnCasilla(j2, casillas[0]); // paga renta porque Alice es dueña
 
@@ -205,4 +197,3 @@ console.log(j2.toString());
 console.log(j1.toString());
 
 partida.jugadorCaeEnCasilla(j1, );
->>>>>>> 406dc296cabeed92a9d04ff2b7bfe6a5427c2419

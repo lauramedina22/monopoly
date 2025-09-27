@@ -1,19 +1,4 @@
 export class Jugador {
-<<<<<<< HEAD
-  constructor(nombre, paisNombre, paisCodigo, colorFicha, dinero = 1500, puntaje = 0) {
-    this.nombre = nombre;              // Nombre del jugador
-    this.paisNombre = paisNombre;      // Nombre del país (ej: Colombia)
-    this.paisCodigo = paisCodigo;      // Código del país (ej: CO)
-    this.colorFicha = colorFicha;      // Color de la ficha
-    this.dinero = dinero;       // Dinero disponible
-    this.puntaje = puntaje;                 // Puntuación del jugador
-    this.propiedades = []; // lista de propiedades adquiridas
-    this.hipotecas = [];   // propiedades hipotecadas
-    this.prestamos = [];   // préstamos activos
-    this.posicion = 0; 
-    this.enCarcel = false; // posición en el tablero
-    this.turnosCarcel = 0;
-=======
   constructor(
     nombre,
     paisNombre,
@@ -32,7 +17,6 @@ export class Jugador {
     this.hipotecas = []; // propiedades hipotecadas
     this.prestamos = []; // préstamos activos
     this.posicion = 0; // posición en el tablero
->>>>>>> 406dc296cabeed92a9d04ff2b7bfe6a5427c2419
   }
 
   // ---- Panel de jugador ----
@@ -53,11 +37,16 @@ export class Jugador {
     };
   }
 
-  mover(totalCasillas, posiciones, fichas) {
+  mover(totalCasillas, posiciones) {
     this.posicion = (this.posicion + posiciones) % totalCasillas;
-    const casillaDestino = document.getElementById(this.posicion);
-    if (casillaDestino) return casillaDestino;
+    return this.posicion; // devuelve índice, no el div
   }
+  
+  modificarDinero(monto) {
+    this.dinero += monto;
+    return this.dinero;
+  }
+
 
   toJSON() {
     return {
@@ -74,12 +63,7 @@ export class Jugador {
   }
 
   toString() {
-<<<<<<< HEAD
     let props = this.propiedades.map(p => p.name).join(", ") || "Ninguna";
     return `Jugador ${this.nombre} (${this.colorFicha}) | Dinero: $${this.dinero} | Propiedades: ${props} | En Cárcel? ${this.enCarcel} | Posición: ${this.posicion}`;
-=======
-    let props = this.propiedades.map((p) => p.name).join(", ") || "Ninguna";
-    return `Jugador ${this.nombre} (${this.colorFicha}) | Dinero: $${this.dinero} | Propiedades: ${props}`;
->>>>>>> 406dc296cabeed92a9d04ff2b7bfe6a5427c2419
   }
 }
