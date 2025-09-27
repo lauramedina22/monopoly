@@ -1,4 +1,4 @@
-import { mostrarToast } from "../js/toast.js";
+import { mostrarToast } from "../controllers/toast.js";
 
 const API_BASE = "http://127.0.0.1:5000";
 
@@ -39,7 +39,7 @@ async function enviarResultados() {
 
     cargarRanking();
   } catch (err) {
-    mostrarMensaje("❌ Ocurrió un error al enviar los resultados.", "danger");
+    mostrarToast("❌ Ocurrió un error al enviar los resultados.", "danger");
   }
 }
 

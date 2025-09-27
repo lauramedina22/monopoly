@@ -1,5 +1,5 @@
 import { Casilla } from "./Casilla.js";
-import { mostrarToast } from "../js/toast.js";
+import { mostrarToast } from "../controllers/toast.js";
 
 export class Propiedad extends Casilla {
   constructor(data) {
@@ -37,7 +37,7 @@ export class Propiedad extends Casilla {
       return false;
     }
 
-    jugador.dinero -= this.precio;
+    jugador.dinero -= this.price;
     jugador.propiedades.push(this);
     this.dueno = jugador;
 
@@ -163,7 +163,7 @@ export class Propiedad extends Casilla {
     }
 
     jugador.hipotecas = jugador.hipotecas.filter((p) => p !== this);
-    jugador.dinero -= Math.round(this.mortgage * 1.1) ; // 10% de interés
+    jugador.dinero -= Math.round(this.mortgage * 1.1); // 10% de interés
     this.dueno = jugador;
     mostrarToast(
       `${jugador.nombre} deshipotecó ${this.name} por $${Math.round(
@@ -174,6 +174,6 @@ export class Propiedad extends Casilla {
 
   toString() {
     let duenoNombre = this.dueno ? this.dueno.nombre : "Nadie";
-    return `Propiedad ${this.name} (${this.color}) | Precio: $${this.precio} | Dueño: ${duenoNombre}`;
+    return `Propiedad ${this.name} (${this.color}) | Precio: $${this.price} | Dueño: ${duenoNombre}`;
   }
 }
