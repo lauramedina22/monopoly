@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ficha.className = "ficha-jugador";
     ficha.id = `ficha-jugador-${idx}`;
     ficha.style.backgroundColor =
-      colors[jugador.colorFicha.trim().toLowerCase()] || "#000";
+    colors[jugador.colorFicha.trim().toLowerCase()] || "#000";
     ficha.style.width = "24px";
     ficha.style.height = "24px";
     ficha.style.borderRadius = "50%";
