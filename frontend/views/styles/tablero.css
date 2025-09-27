@@ -148,6 +148,24 @@
   /* Espacio entre la franja y el contenido */
 }
 
+.propietario-rojo {
+  background-color: #dc3545;
+}
+
+.propietario-verde {
+  background-color: #198754;
+}
+
+.propietario-azul {
+  background-color: #0d6efd;
+}
+
+.propietario-amarillo {
+  background-color: #fedc79;
+}
+
+
+
 /* Separación entre franja de color y texto */
 .casilla.red,
 .casilla.blue,
@@ -429,4 +447,12 @@
   #right {
     display: contents;
   }
+
+  .casa-icon, .hotel-icon {
+  font-size: 20px;         /* tamaño base */
+  transform: scale(2);     /* los hace el doble de grandes */
+  display: inline-block;
+}
+
+
 }

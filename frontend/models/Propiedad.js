@@ -6,7 +6,8 @@ export class Propiedad extends Casilla {
     super({
       id: data.id,
       name: data.name,
-      type: "property", // fijo para esta clase
+      type: "property",
+      dueno: data.dueno // fijo para esta clase
     });
 
     this.color = data.color;
@@ -31,9 +32,7 @@ export class Propiedad extends Casilla {
     }
 
     if (jugador.dinero < this.price) {
-      console.log(
-        `${jugador.nombre} no tiene suficiente dinero para comprar ${this.name}`
-      );
+      console.log(`${jugador.nombre} no tiene suficiente dinero para comprar ${this.name}`);
       return false;
     }
 
@@ -42,8 +41,11 @@ export class Propiedad extends Casilla {
     this.dueno = jugador;
 
     console.log(`${jugador.nombre} compró la propiedad ${this.name}`);
+    this.marcarColorDueño();
+
     return true;
   }
+
 
   // Obtener renta actual
   getRenta() {
@@ -64,6 +66,7 @@ export class Propiedad extends Casilla {
     console.log(
       `${jugador.nombre} compró una casa en ${this.name} (total casas: ${this.casas})`
     );
+    this.actualizarConstrucciones();
     return true;
   }
 
@@ -93,6 +96,7 @@ export class Propiedad extends Casilla {
     this.hotel = true;
 
     console.log(`${jugador.nombre} compró un hotel en ${this.name}`);
+    this.actualizarConstrucciones();
     return true;
   }
 
@@ -170,6 +174,68 @@ export class Propiedad extends Casilla {
         this.mortgage * 1.1
       )}`
     );
+  }
+
+
+  marcarColorDueño() {
+    const casillaDiv = document.getElementById(this.id);
+    console.log("Div:", casillaDiv);
+
+    casillaDiv.classList.remove(
+      "brown",
+      "purple",
+      "pink",
+      "orange",
+      "red",
+      "yellow",
+      "green",
+      "blue"
+    );
+
+
+    // Quitar posibles clases de colores de jugador anteriores
+    casillaDiv.classList.remove(
+      "propietario-rojo",
+      "propietario-verde",
+      "propietario-azul",
+      "propietario-amarillo"
+    );
+
+    // Añadir clase según color del jugador
+    const clase = `propietario-${this.dueno.colorFicha.toLowerCase()}`;
+    casillaDiv.classList.add(clase);
+    console.log("Clase a agregar:", { clase });
+
+  }
+
+  actualizarConstrucciones() {
+    const casillaDiv = document.getElementById(this.id);
+    if (!casillaDiv) return;
+
+    // Si no existe el contenedor, lo creamos
+    let construccionesDiv = casillaDiv.querySelector(".construcciones");
+    if (!construccionesDiv) {
+      construccionesDiv = document.createElement("div");
+      construccionesDiv.classList.add("construcciones");
+      casillaDiv.appendChild(construccionesDiv);
+    }
+
+    // Limpiar lo que haya
+    construccionesDiv.innerHTML = "";
+
+    // Si tiene hotel, mostramos solo hotel
+    if (this.hotel) {
+      const hotelIcon = document.createElement("i");
+      hotelIcon.classList.add("fa-solid", "fa-hotel", "hotel-icon", "fa-2x");
+      construccionesDiv.appendChild(hotelIcon);
+      return;
+    }
+
+    for (let i = 0; i < this.casas; i++) {
+      const casaIcon = document.createElement("i");
+      casaIcon.classList.add("fa-solid", "fa-house", "casa-icon", "fa-lg");
+      construccionesDiv.appendChild(casaIcon);
+    }
   }
 
   toString() {

@@ -5,6 +5,7 @@ export class Casilla {
     this.name = data.name;
     this.type = data.type; // "property", "railroad", "tax", "chance", "community_chest", "special"
     this.action = data.action || null; // Acción específica de la casilla
+    this.color = data.color
 
     // Estado común
     this.dueno = null; // Por defecto, ninguna casilla tiene dueño
