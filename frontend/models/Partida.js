@@ -67,20 +67,28 @@ export class Partida {
 
 
       case "railroad":
-        if (!casilla.dueno) {
-          mostrarToast(`${jugador.nombre} cayó en ${casilla.name}, libre por $${casilla.price}`);
-        } else if (casilla.dueno !== jugador) {
-          let renta = casilla.getRenta(this.casillas);
-          jugador.dinero -= renta;
-          casilla.dueno.dinero += renta;
-          mostrarToast(`${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre} por el ferrocarril`);
-        } else {
-          mostrarToast(`${jugador.nombre} cayó en su propio ferrocarril`);
-        }
+              if (!casilla.dueno) {
+                mostrarModalCasilla(casilla, jugador);
+              } else if (casilla.dueno !== jugador && !casilla.hipotecada) {
+                let renta = casilla.getRenta();
+                jugador.dinero -= renta;
+                casilla.dueno.dinero += renta;
+                mostrarToast(
+                  `${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre}`
+                );
+              } else if (casilla.dueno !== jugador && casilla.hipotecada) {
+                mostrarToast(
+                  `El ferrocarril ${casilla.name} está hipotecada, no se paga renta.`
+                );
+              } else {
+                mostrarToast(`${jugador.nombre} cayó en su propio ferrocarril`);
+                mostrarModalCasilla(casilla, jugador);
+              }
         break;
 
       case "tax":
         casilla.aplicarImpuesto(jugador);
+        mostrarToast(`${jugador.nombre} pagó impuesto de $${casilla.monto}`);
         break;
 
       case "community_chest":
@@ -95,9 +103,9 @@ export class Partida {
           Math.random() * this.chancesDeck.length
         );
         const cartaSorpresa = this.chancesDeck[randomChanceIndex];
-
         console.log(`${jugador.nombre} sacó: ${cartaSorpresa.description}`);
         const montoSorpresa = cartaSorpresa.aplicar(jugador);
+        mostrarToast(`${jugador.nombre} sacó: ${cartaSorpresa.description}`);
         break;
 
       default:

@@ -1,4 +1,3 @@
-
 {
   "extends": [
     "development"
@@ -9,6 +8,7 @@
       {
         "select-name": "off"
       }
-    ]
+    ],
+    "no-inline-styles": "off"
   }
 }
