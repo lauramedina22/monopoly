@@ -57,6 +57,11 @@ export class Jugador {
     };
   }
 
+  modificarDinero(monto) {
+    this.dinero += monto;
+    return this.dinero;
+  }
+
   toString() {
     let props = this.propiedades.map((p) => p.name).join(", ") || "Ninguna";
     return `Jugador ${this.nombre} (${this.colorFicha}) | Dinero: $${this.dinero} | Propiedades: ${props}`;

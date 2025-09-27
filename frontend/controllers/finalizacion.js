@@ -2,7 +2,10 @@ import { mostrarToast } from "../controllers/toast.js";
 
 const API_BASE = "http://127.0.0.1:5000";
 
+
 let jugadores = JSON.parse(localStorage.getItem("jugadores")) || [];
+
+console.log("Jugadores al finalizar:", jugadores);
 
 async function enviarResultados() {
   if (jugadores.length === 0) {
@@ -20,6 +23,8 @@ async function enviarResultados() {
         score: calcularPatrimonio(jugador),
         country_code: jugador.paisCodigo,
       };
+
+      console.log("Enviando al backend:", jugadorData);
 
       const res = await fetch(`${API_BASE}/score-recorder`, {
         method: "POST",

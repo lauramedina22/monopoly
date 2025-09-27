@@ -97,6 +97,16 @@ export class Partida {
         const monto = carta.aplicar(jugador);
         break;
 
+      case "chance":
+        const randomChanceIndex = Math.floor(
+          Math.random() * this.chancesDeck.length
+        );
+        const cartaSorpresa = this.chancesDeck[randomChanceIndex];
+
+        console.log(`${jugador.nombre} sacó: ${cartaSorpresa.description}`);
+        const montoSorpresa = cartaSorpresa.aplicar(jugador);
+        break;
+
       default:
         console.log(
           `${jugador.nombre} cayó en una casilla de tipo ${casilla.type}`
