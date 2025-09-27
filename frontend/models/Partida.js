@@ -1,13 +1,13 @@
+import { mostrarToast } from "../js/toast.js";
 import { Dado } from "./Dado.js";
-import { Propiedad } from "./Propiedad.js"
 
 export class Partida {
   constructor(jugadores = [], casillas = []) {
-    this.jugadores = jugadores;   // Array de instancias de Jugador
-    this.casillas = casillas;     // Array de instancias de Casilla
-    this.dados = new Dado();      // Instancia de Dado
-    this.turnoActual = 0;         // Índice del jugador que juega
-    this.enJuego = true;          // Estado de la partida
+    this.jugadores = jugadores; // Array de instancias de Jugador
+    this.casillas = casillas; // Array de instancias de Casilla
+    this.dados = new Dado(); // Instancia de Dado
+    this.turnoActual = 0; // Índice del jugador que juega
+    this.enJuego = true; // Estado de la partida
   }
 
   // Método para iniciar la partida
@@ -43,36 +43,49 @@ export class Partida {
   }
 
   // Manejar qué pasa cuando un jugador cae en una casilla
-jugadorCaeEnCasilla(jugador, casilla) {
-  switch (casilla.type) {
-    case "property":
-      if (!casilla.dueno) {
-        console.log(`${jugador.nombre} cayó en ${casilla.name}, está libre por $${casilla.precio}.`);
-        // 👀 Aquí NO se compra automáticamente, se deja la decisión al jugador
-      } else if (casilla.dueno !== jugador) {
-        let renta = casilla.getRenta();
-        jugador.dinero -= renta;
-        casilla.dueno.dinero += renta;
-        console.log(`${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre}`);
-      } else {
-        console.log(`${jugador.nombre} cayó en su propia propiedad`);
-      }
-      break;
+  jugadorCaeEnCasilla(jugador, casilla) {
+    switch (casilla.type) {
+      case "property":
+        if (!casilla.dueno) {
+          console.log(
+            `${jugador.nombre} cayó en ${casilla.name}, está libre por $${casilla.precio}.`
+          );
+          // 👀 Aquí NO se compra automáticamente, se deja la decisión al jugador
+        } else if (casilla.dueno !== jugador) {
+          let renta = casilla.getRenta();
+          jugador.dinero -= renta;
+          casilla.dueno.dinero += renta;
+          console.log(
+            `${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre}`
+          );
+        } else {
+          console.log(`${jugador.nombre} cayó en su propia propiedad`);
+        }
+        break;
 
-    case "railroad":
-      console.log(`${jugador.nombre} cayó en una casilla especial: ${casilla.nombre}`);
-      break;
+      case "railroad":
+        console.log(
+          `${jugador.nombre} cayó en una casilla especial: ${casilla.nombre}`
+        );
+        break;
 
-    default:
-      console.log(`${jugador.nombre} cayó en una casilla de tipo ${casilla.type}`);
+      default:
+        console.log(
+          `${jugador.nombre} cayó en una casilla de tipo ${casilla.type}`
+        );
+    }
   }
-}
 
-
+  tirarDados(jugador, fichas) {
+    const dado = Dado.lanzar().sumarDados();
+    mostrarToast(
+      `${jugador.nombre} ha sacado un ${Dado.dados[0]} y un ${Dado.dados[1]} (Total: ${dado})`
+    );
+    return jugador.mover(this.casillas.length, dado, fichas);
+  }
 
   // Partida.js
   toString() {
     return `Partida con ${this.jugadores.length} jugadores y ${this.casillas.length} casillas.`;
   }
-
 }

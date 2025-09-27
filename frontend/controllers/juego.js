@@ -2,7 +2,7 @@ import { Partida } from "../models/Partida.js";
 import { Jugador } from "../models/Jugador.js";
 import { Casilla } from "../models/Casilla.js";
 import { Propiedad } from "../models/Propiedad.js";
-import { Dado } from "../models/Dado.js";
+import { mostrarToast } from "../js/toast.js";
 
 const colors = {
   rojo: "#ff4d4d",
@@ -32,11 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
     ficha.id = `ficha-jugador-${idx}`;
     ficha.style.backgroundColor =
       colors[jugador.colorFicha.trim().toLowerCase()] || "#000";
-    ficha.style.width = "24px";
-    ficha.style.height = "24px";
-    ficha.style.borderRadius = "50%";
-    ficha.style.border = "2px solid #222";
-    ficha.style.margin = "2px";
     ficha.title = jugador.nombre;
     fichas[jugador.nombre] = ficha;
   });
@@ -288,16 +283,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!contenedor) {
       contenedor = document.createElement("div");
       contenedor.className = "ficha-container";
-      contenedor.style.display = "flex";
-      contenedor.style.flexWrap = "wrap";
-      contenedor.style.alignItems = "center";
-      contenedor.style.justifyContent = "center";
-      contenedor.style.position = "absolute";
-      contenedor.style.top = "0";
-      contenedor.style.left = "0";
-      contenedor.style.width = "100%";
-      contenedor.style.height = "100%";
-      contenedor.style.pointerEvents = "none";
       casillaElem.style.position = "relative";
       casillaElem.appendChild(contenedor);
     }
@@ -311,73 +296,72 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Función para mover la ficha del jugador
-  function moverFicha(jugador, posiciones) {
-    // El tablero tiene 40 casillas (Monopoly clásico)
-    const totalCasillas = Object.keys(partida.casillas).length;
-    jugador.posicion = (jugador.posicion + posiciones) % totalCasillas;
-    const casillaDestino = document.getElementById(jugador.posicion);
-    if (casillaDestino) {
-      const ficha = fichas[jugador.nombre];
-      posicionarFichaEnCasilla(ficha, casillaDestino);
-    }
-  }
-
-  function mostrarToast(mensaje) {
-    // Crear contenedor de toasts si no existe
-    let toastContainer = document.getElementById("toast-container");
-    if (!toastContainer) {
-      toastContainer = document.createElement("div");
-      toastContainer.id = "toast-container";
-      toastContainer.style.position = "fixed";
-      toastContainer.style.bottom = "24px";
-      toastContainer.style.right = "24px";
-      toastContainer.style.zIndex = "9999";
-      document.body.appendChild(toastContainer);
-    }
-
-    // Crear el toast
-    const toastEl = document.createElement("div");
-    toastEl.className =
-      "toast align-items-center text-white bg-primary border-0 show";
-    toastEl.setAttribute("role", "alert");
-    toastEl.setAttribute("aria-live", "assertive");
-    toastEl.setAttribute("aria-atomic", "true");
-    toastEl.style.minWidth = "220px";
-    toastEl.style.marginBottom = "8px";
-    toastEl.innerHTML = `
-      <div class="d-flex">
-        <div class="toast-body">
-          ${mensaje}
-        </div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-    `;
-    toastContainer.appendChild(toastEl);
-
-    // Cerrar el toast al hacer click en el botón
-    toastEl.querySelector(".btn-close").onclick = () => {
-      toastEl.classList.remove("show");
-      setTimeout(() => toastEl.remove(), 300);
-    };
-
-    // Ocultar automáticamente después de 5 segundos
-    setTimeout(() => {
-      toastEl.classList.remove("show");
-      setTimeout(() => toastEl.remove(), 300);
-    }, 5000);
-  }
-
   // Evento para tirar dados y mover ficha
   document.getElementById("tirarDados").addEventListener("click", () => {
     const idx = selector.value;
     const jugador = jugadores[idx];
-    if (!jugador) alert("Por favor selecciona un jugador");
+    if (!jugador) {
+      mostrarToast("Por favor selecciona un jugador");
+      return;
+    }
+    const casillaDestino = partida.tirarDados(jugador, fichas);
+    posicionarFichaEnCasilla(fichas[jugador.nombre], casillaDestino);
+  });
 
-    const dado = Dado.lanzar().sumarDados();
-    mostrarToast(
-      `${jugador.nombre} ha sacado un ${Dado.dados[0]} y un ${Dado.dados[1]} (Total: ${dado})`
-    );
-    moverFicha(jugador, dado);
+  document.getElementById("comprarPropiedad").addEventListener("click", () => {
+    const idx = selector.value;
+    const jugador = jugadores[idx];
+    if (!jugador) {
+      mostrarToast("Por favor selecciona un jugador");
+      return;
+    }
+    const posicion = jugador.posicion;
+    const propiedad = partida.casillas[posicion];
+    console.log(propiedad);
+  });
+
+  document.getElementById("dhipotecar").addEventListener("click", () => {
+    const idx = selector.value;
+    const jugador = jugadores[idx];
+    if (!jugador) {
+      mostrarToast("Por favor selecciona un jugador");
+      return;
+    }
+    const posicion = jugador.posicion;
+    const propiedad = partida.casillas[posicion];
+
+    if (!(propiedad instanceof Propiedad)) {
+      mostrarToast("El jugador no está en una propiedad.");
+      return;
+    }
+
+    if (!jugador.propiedades.includes(propiedad)) {
+      mostrarToast("El jugador no es dueño de esta propiedad.");
+      return;
+    }
+
+    const action = propiedad.dueno === jugador ? "hipotecar" : "deshipotecar";
+    if (action === "hipotecar") {
+      propiedad.hipotecar(jugador);
+    } else {
+      propiedad.deshipotecar(jugador);
+    }
+  });
+
+  document.getElementById("pagarRenta").addEventListener("click", () => {
+    const idx = selector.value;
+    const jugador = jugadores[idx];
+    if (!jugador) {
+      mostrarToast("Por favor selecciona un jugador");
+      return;
+    }
+
+    const posicion = jugador.posicion;
+    const propiedad = partida.casillas[posicion];
+    if (propiedad instanceof Propiedad) {
+      propiedad.PagarRenta(jugador);
+    } else {
+      mostrarToast("El jugador no está en una propiedad.");
+    }
   });
 });

@@ -1,10 +1,10 @@
 {
-    "fbc": {
-        "score": 120,
-        "country_code": "co"
+    "arroz con pollo": {
+        "score": 1500,
+        "country_code": "AL"
     },
-    "abc": {
-        "score": 105,
-        "country_code": "co"
+    "arroz con leche": {
+        "score": 1500,
+        "country_code": "CY"
     }
 }
