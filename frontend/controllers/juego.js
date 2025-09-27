@@ -3,6 +3,7 @@ import { Jugador } from "../models/Jugador.js";
 import { Casilla } from "../models/Casilla.js";
 import { Propiedad } from "../models/Propiedad.js";
 import { Dado } from "../models/Dado.js";
+import { Impuesto } from "../models/Impuesto.js";
 
 const colors = {
   rojo: "#ff4d4d",
@@ -10,6 +11,7 @@ const colors = {
   verde: "#004030",
   amarillo: "#ffff4d",
 };
+
 
 document.addEventListener("DOMContentLoaded", () => {
   let btnCargar = document.getElementById("generarTablero");
@@ -97,6 +99,8 @@ document.addEventListener("DOMContentLoaded", () => {
             let casillaObjeto;
             if (casillaData.type === "property") {
               casillaObjeto = new Propiedad(casillaData);
+            }else if (casillaData.type === "tax") {
+              casillaObjeto = new Impuesto(casillaData);
             } else {
               casillaObjeto = new Casilla(casillaData);
             }

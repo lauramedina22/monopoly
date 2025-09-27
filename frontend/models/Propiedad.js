@@ -29,12 +29,12 @@ export class Propiedad extends Casilla {
       return false;
     }
 
-    if (jugador.dinero < this.precio) {
+    if (jugador.dinero < this.price) {
       console.log(`${jugador.nombre} no tiene suficiente dinero para comprar ${this.name}`);
       return false;
     }
 
-    jugador.dinero -= this.precio;
+    jugador.dinero -= this.price;
     jugador.propiedades.push(this);
     this.dueno = jugador;
 
@@ -100,6 +100,6 @@ export class Propiedad extends Casilla {
 
   toString() {
     let duenoNombre = this.dueno ? this.dueno.nombre : "Nadie";
-    return `Propiedad ${this.name} (${this.color}) | Precio: $${this.precio} | Dueño: ${duenoNombre}`;
+    return `Propiedad ${this.name} (${this.color}) | Precio: $${this.price} | Dueño: ${duenoNombre}`;
   }
 }
