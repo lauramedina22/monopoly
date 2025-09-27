@@ -1,5 +1,7 @@
+import { mostrarToast } from "../controllers/toast.js";
 import { Dado } from "./Dado.js";
 import { CofreComunidad } from "./CofreComunidad.js";
+import { Propiedad } from "./Propiedad.js";
 
 export class Partida {
   constructor(jugadores = [], casillas = []) {
@@ -85,6 +87,7 @@ export class Partida {
         break;
 
       case "community_chest":
+        // Sacar carta al azar
         const randomIndex = Math.floor(
           Math.random() * this.communityChestDeck.length
         );
@@ -99,6 +102,14 @@ export class Partida {
           `${jugador.nombre} cayó en una casilla de tipo ${casilla.type}`
         );
     }
+  }
+
+  tirarDados(jugador, fichas) {
+    const dado = Dado.lanzar().sumarDados();
+    mostrarToast(
+      `${jugador.nombre} ha sacado un ${Dado.dados[0]} y un ${Dado.dados[1]} (Total: ${dado})`
+    );
+    return jugador.mover(this.casillas.length, dado, fichas);
   }
 
   // Partida.js

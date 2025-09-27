@@ -1,4 +1,5 @@
 import { Casilla } from "./Casilla.js";
+import { mostrarToast } from "../controllers/toast.js";
 
 export class Propiedad extends Casilla {
   constructor(data) {
@@ -30,7 +31,9 @@ export class Propiedad extends Casilla {
     }
 
     if (jugador.dinero < this.price) {
-      console.log(`${jugador.nombre} no tiene suficiente dinero para comprar ${this.name}`);
+      console.log(
+        `${jugador.nombre} no tiene suficiente dinero para comprar ${this.name}`
+      );
       return false;
     }
 
@@ -58,7 +61,9 @@ export class Propiedad extends Casilla {
 
     jugador.dinero -= 100; // 💡 después lo hacemos dinámico según color
     this.casas++;
-    console.log(`${jugador.nombre} compró una casa en ${this.name} (total casas: ${this.casas})`);
+    console.log(
+      `${jugador.nombre} compró una casa en ${this.name} (total casas: ${this.casas})`
+    );
     return true;
   }
 
@@ -66,7 +71,8 @@ export class Propiedad extends Casilla {
     if (this.dueno !== jugador) return false;
 
     // Debe tener todas las propiedades del mismo color
-    let todasDelColor = jugador.propiedades.filter(p => p.color === this.color).length >= 2; 
+    let todasDelColor =
+      jugador.propiedades.filter((p) => p.color === this.color).length >= 2;
     // (luego ajustamos según grupo de color real)
 
     if (this.hotel) return false;
@@ -96,6 +102,74 @@ export class Propiedad extends Casilla {
     if (this.casas < 4) return false;
     if (jugador.dinero < 250) return false;
     return true;
+  }
+
+  PagarRenta(jugador) {
+    if (!this.dueno) {
+      mostrarToast(`${this.name} no tiene dueño, no se paga renta.`);
+      return;
+    }
+
+    if (this.dueno === jugador) {
+      mostrarToast(
+        `${jugador.nombre} es el dueño de ${this.name}, no paga renta.`
+      );
+      return;
+    }
+
+    if (jugador.hipotecas.includes(this)) {
+      mostrarToast(
+        `${jugador.nombre} tiene hipoteca en ${this.name}, no paga renta.`
+      );
+      return;
+    }
+
+    const renta = this.getRenta();
+    if (jugador.dinero < renta) {
+      mostrarToast(
+        `${jugador.nombre} no tiene suficiente dinero para pagar la renta de ${this.name}`
+      );
+
+      // Aquí se podría implementar lógica de bancarrota o venta de propiedades
+      return;
+    }
+
+    jugador.dinero -= renta;
+    this.dueno.dinero += renta;
+    mostrarToast(
+      `${jugador.nombre} pagó $${renta} de renta a ${this.dueno.nombre} por ${this.name}`
+    );
+  }
+
+  hipotecar(jugador) {
+    if (this.dueno !== jugador) {
+      mostrarToast(`${jugador.nombre} no es el dueño de ${this.name}`);
+      return;
+    }
+
+    this.dueno = null;
+    jugador.hipotecas.push(this);
+    mostrarToast(
+      `${jugador.nombre} hipotecó ${this.name} por $${this.mortgage}`
+    );
+    jugador.dinero += this.mortgage;
+    return;
+  }
+
+  deshipotecar(jugador) {
+    if (!jugador.hipotecas.includes(this)) {
+      mostrarToast(`${this.name} no está hipotecada por ${jugador.nombre}`);
+      return;
+    }
+
+    jugador.hipotecas = jugador.hipotecas.filter((p) => p !== this);
+    jugador.dinero -= Math.round(this.mortgage * 1.1); // 10% de interés
+    this.dueno = jugador;
+    mostrarToast(
+      `${jugador.nombre} deshipotecó ${this.name} por $${Math.round(
+        this.mortgage * 1.1
+      )}`
+    );
   }
 
   toString() {
