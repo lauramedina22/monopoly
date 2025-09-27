@@ -2,10 +2,22 @@ import { Partida } from "../models/Partida.js";
 import { Jugador } from "../models/Jugador.js";
 import { Casilla } from "../models/Casilla.js";
 import { Propiedad } from "../models/Propiedad.js";
+import { mostrarToast } from "../controllers/toast.js";
+import { Impuesto } from "../models/Impuesto.js";
+import { Ferrocarril } from "../models/Ferrocarril.js";
+import { CofreComunidad } from "../models/CofreComunidad.js";
+
+const colors = {
+  rojo: "#ff4d4d",
+  azul: "#4d79ff",
+  verde: "#004030",
+  amarillo: "#ffff4d",
+};
 
 document.addEventListener("DOMContentLoaded", () => {
   let btnCargar = document.getElementById("generarTablero");
   let tablero = document.getElementById("tablero");
+  let fichas = {}; // Almacena los elementos ficha por jugador
   // 1. Recuperar jugadores desde localStorage
   let jugadoresGuardados = JSON.parse(localStorage.getItem("jugadores")) || [];
 
@@ -15,13 +27,17 @@ document.addEventListener("DOMContentLoaded", () => {
       new Jugador(j.nombre, j.paisNombre, j.paisCodigo, j.colorFicha, j.dinero)
   );
 
-  console.log("Jugadores cargados:", jugadores);
-
   // 2. Crear la partida con los jugadores
   const partida = new Partida(jugadores);
-  console.log(partida.casillas);
-
-  console.log("Partida creada:", partida);
+  jugadores.forEach((jugador, idx) => {
+    const ficha = document.createElement("div");
+    ficha.className = "ficha-jugador";
+    ficha.id = `ficha-jugador-${idx}`;
+    ficha.style.backgroundColor =
+      colors[jugador.colorFicha.trim().toLowerCase()] || "#000";
+    ficha.title = jugador.nombre;
+    fichas[jugador.nombre] = ficha;
+  });
   // 3. (opcional) Mostrar el estado inicial de cada jugador
   jugadores.forEach((jugador) => {
     console.log(`Estado inicial de ${jugador.nombre}:`);
@@ -50,6 +66,8 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((casillas) => {
         // Agrego una clase al tablero para marcar que ya se generó
         tablero.classList.add("tablero-generado");
+        // Las fichas se mostrarán al posicionarlas en las casillas
+        btnCargar.style.display = "none";
 
         //  Ajuste de las esquinas para que encajen correctamente
         let primeraCasillaIzquierda = casillas.left.pop();
@@ -57,8 +75,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let ultimaCasillaIzquierda = casillas.left.shift();
         casillas.bottom.push(ultimaCasillaIzquierda);
-
-        console.log("Casillas cargadas:", casillas);
 
         // Referencias a los 4 lados del tablero
         const top = document.getElementById("top");
@@ -80,6 +96,10 @@ document.addEventListener("DOMContentLoaded", () => {
             let casillaObjeto;
             if (casillaData.type === "property") {
               casillaObjeto = new Propiedad(casillaData);
+            } else if (casillaData.type === "tax") {
+              casillaObjeto = new Impuesto(casillaData);
+            } else if (casillaData.type === "railroad") {
+              casillaObjeto = new Ferrocarril(casillaData);
             } else {
               casillaObjeto = new Casilla(casillaData);
             }
@@ -94,6 +114,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         console.log("Casillas objetos creadas:", casillasObjetos);
 
+        // Crear mazo de cartas de Caja de Comunidad
+        partida.communityChestDeck = [];
+        for (let cartaData of casillas.community_chest) {
+          const carta = new CofreComunidad(cartaData);
+          partida.communityChestDeck.push(carta);
+        }
+
+        console.log(
+          "Cartas de Caja de Comunidad creadas:",
+          partida.communityChestDeck
+        );
+
         /**
          * Función interna `render`
          * Recibe un booleano (isMobile) que indica si estamos en móvil o en escritorio.
@@ -107,26 +139,33 @@ document.addEventListener("DOMContentLoaded", () => {
           bottom.innerHTML = "";
 
           if (isMobile) {
-            // Vista móvil: usar los objetos Casilla en lugar de los datos originales
+            /**
+             * Vista móvil:
+             * En pantallas pequeñas no usamos 4 lados,
+             * sino que "aplanamos" el tablero en un solo recorrido lineal.
+             *
+             * El orden de recorrido es el orden real de un tablero de Monopoly:
+             * bottom → left → top → right
+             */
             const recorrido = [
-              ...casillasObjetos.bottom,
-              ...casillasObjetos.left,
-              ...casillasObjetos.top,
-              ...casillasObjetos.right,
+              ...casillas.bottom,
+              ...casillas.left,
+              ...casillas.top,
+              ...casillas.right,
             ];
 
             // Dibujamos todas las casillas dentro de "top"
-            recorrido.forEach((casillaObjeto) => {
-              const precioHtml = casillaObjeto.price
-                ? `<p>$${casillaObjeto.price}</p>`
+            recorrido.forEach((casilla) => {
+              const precioHtml = casilla.price
+                ? `<p>$${casilla.price}</p>`
                 : "";
               top.innerHTML += `
-                <div class="casilla ${casillaObjeto.color || ""}" id="${
-                casillaObjeto.id
+                          <div class="casilla ${casilla.color || ""}" id="${
+                casilla.id
               }">
-                    ${casillaObjeto.name}
-                    ${precioHtml}
-                </div>`;
+                              ${casilla.name}
+                              ${precioHtml}
+                          </div>`;
             });
           } else {
             // Vista PC: usar los objetos Casilla
@@ -148,7 +187,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Lado izquierdo (left) → orden invertido
             for (let casillaObjeto of casillasObjetos.left.slice().reverse()) {
-              console.log(partida.casillas);
               const precioHtml = casillaObjeto.price
                 ? `<p>$${casillaObjeto.price}</p>`
                 : "";
@@ -186,9 +224,16 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>`;
             }
           }
-        }
 
-        console.log("Partida con casillas:", partida.casillas);
+          jugadores.forEach((jugador, idx) => {
+            const ficha = fichas[jugador.nombre];
+            const casillaInicial = document.getElementById("0");
+            if (casillaInicial && ficha) {
+              posicionarFichaEnCasilla(ficha, casillaInicial);
+              jugador.posicion = 0;
+            }
+          });
+        }
 
         /**
          *  Responsividad con `matchMedia`
@@ -197,8 +242,6 @@ document.addEventListener("DOMContentLoaded", () => {
          * es menor o igual a 768px (true en móvil, false en PC).
          */
         const mediaQuery = window.matchMedia("(max-width: 768px)");
-        console.log(mediaQuery);
-
         //  Render inicial según el tamaño actual de la pantalla
         render(mediaQuery.matches);
 
@@ -250,6 +293,95 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Mostrar modal con Bootstrap
       $("#modalJugador").modal("show");
+    }
+  });
+
+  // Función para posicionar la ficha en una casilla
+  function posicionarFichaEnCasilla(ficha, casillaElem) {
+    // Busca o crea el contenedor de fichas dentro de la casilla
+    let contenedor = casillaElem.querySelector(".ficha-container");
+    if (!contenedor) {
+      contenedor = document.createElement("div");
+      contenedor.className = "ficha-container";
+      casillaElem.style.position = "relative";
+      casillaElem.appendChild(contenedor);
+    }
+    // Elimina la ficha de cualquier contenedor anterior
+    if (ficha.parentElement && ficha.parentElement !== contenedor) {
+      ficha.parentElement.removeChild(ficha);
+    }
+    // Añade la ficha al contenedor de la casilla
+    if (!contenedor.contains(ficha)) {
+      contenedor.appendChild(ficha);
+    }
+  }
+
+  // Evento para tirar dados y mover ficha
+  document.getElementById("tirarDados").addEventListener("click", () => {
+    const idx = selector.value;
+    const jugador = jugadores[idx];
+    if (!jugador) {
+      mostrarToast("Por favor selecciona un jugador");
+      return;
+    }
+    const casillaDestino = partida.tirarDados(jugador, fichas);
+    posicionarFichaEnCasilla(fichas[jugador.nombre], casillaDestino);
+  });
+
+  document.getElementById("comprarPropiedad").addEventListener("click", () => {
+    const idx = selector.value;
+    const jugador = jugadores[idx];
+    if (!jugador) {
+      mostrarToast("Por favor selecciona un jugador");
+      return;
+    }
+    const posicion = jugador.posicion;
+    const propiedad = partida.casillas[posicion];
+    console.log(propiedad);
+  });
+
+  document.getElementById("dhipotecar").addEventListener("click", () => {
+    const idx = selector.value;
+    const jugador = jugadores[idx];
+    if (!jugador) {
+      mostrarToast("Por favor selecciona un jugador");
+      return;
+    }
+    const posicion = jugador.posicion;
+    const propiedad = partida.casillas[posicion];
+
+    if (!(propiedad instanceof Propiedad)) {
+      mostrarToast("El jugador no está en una propiedad.");
+      return;
+    }
+
+    if (!jugador.propiedades.includes(propiedad)) {
+      mostrarToast("El jugador no es dueño de esta propiedad.");
+      return;
+    }
+
+    const action = propiedad.dueno === jugador ? "hipotecar" : "deshipotecar";
+    if (action === "hipotecar") {
+      propiedad.hipotecar(jugador);
+    } else {
+      propiedad.deshipotecar(jugador);
+    }
+  });
+
+  document.getElementById("pagarRenta").addEventListener("click", () => {
+    const idx = selector.value;
+    const jugador = jugadores[idx];
+    if (!jugador) {
+      mostrarToast("Por favor selecciona un jugador");
+      return;
+    }
+
+    const posicion = jugador.posicion;
+    const propiedad = partida.casillas[posicion];
+    if (propiedad instanceof Propiedad) {
+      propiedad.PagarRenta(jugador);
+    } else {
+      mostrarToast("El jugador no está en una propiedad.");
     }
   });
 });

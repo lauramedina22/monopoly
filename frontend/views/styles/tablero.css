@@ -1,151 +1,151 @@
 /* Layout principal */
 .contenedor {
-    padding: 2rem;
-    min-height: 100vh;
-    background-color: transparent;
+  padding: 2rem;
+  min-height: 100vh;
+  background-color: transparent;
 }
 
 /* Contenedor del tablero - más espacioso */
 .tablero {
-    width: min(95vh, 95vw);
-    /* Usar el menor entre alto y ancho disponible */
-    height: min(95vh, 95vw);
-    max-width: 90rem;
-    /* Límite más generoso */
-    max-height: 90rem;
-    margin: 0 auto 2rem auto;
+  width: min(95vh, 95vw);
+  /* Usar el menor entre alto y ancho disponible */
+  height: min(95vh, 95vw);
+  max-width: 90rem;
+  /* Límite más generoso */
+  max-height: 90rem;
+  margin: 0 auto 2rem auto;
 }
 
 /* Grid principal del tablero */
 #tablero {
-    display: grid;
-    grid-template-columns: repeat(11, 1fr);
-    grid-template-rows: repeat(11, 1fr);
-    width: 100%;
-    height: 100%;
-    border: 0.3rem solid #333;
-    background-color: #e8f5e8;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
-    border-radius: 0.5rem;
-    overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  grid-template-rows: repeat(11, 1fr);
+  width: 100%;
+  height: 100%;
+  border: 0.3rem solid #333;
+  background-color: #e8f5e8;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  overflow: hidden;
 }
 
 /* Contenedores de cada lado del tablero - volvemos al original */
 #top {
-    grid-row: 1;
-    grid-column: 1 / span 11;
-    display: grid;
-    grid-template-columns: repeat(11, 1fr);
+  grid-row: 1;
+  grid-column: 1 / span 11;
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
 }
 
 #bottom {
-    grid-row: 11;
-    grid-column: 1 / span 11;
-    display: grid;
-    grid-template-columns: repeat(11, 1fr);
+  grid-row: 11;
+  grid-column: 1 / span 11;
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
 }
 
 #left {
-    grid-row: 2 / span 9;
-    grid-column: 1;
-    display: grid;
-    grid-template-rows: repeat(9, 1fr);
+  grid-row: 2 / span 9;
+  grid-column: 1;
+  display: grid;
+  grid-template-rows: repeat(9, 1fr);
 }
 
 #right {
-    grid-row: 2 / span 9;
-    grid-column: 11;
-    display: grid;
-    grid-template-rows: repeat(9, 1fr);
+  grid-row: 2 / span 9;
+  grid-column: 11;
+  display: grid;
+  grid-template-rows: repeat(9, 1fr);
 }
 
 /* Centro del tablero - con imagen controlada */
 #center {
-    grid-row: 2 / span 9;
-    grid-column: 2 / span 9;
-    background: linear-gradient(135deg, #e8f5e8, #d4edda);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    /* Evita que la imagen se desborde */
+  grid-row: 2 / span 9;
+  grid-column: 2 / span 9;
+  background: linear-gradient(135deg, #e8f5e8, #d4edda);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  /* Evita que la imagen se desborde */
 }
 
 /* Contenedor del logo en el centro */
 .centro-monopoly {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 /* Logo de Monopoly en el centro - controlado y responsive */
 .logo-monopoly {
-    max-width: 60%;
-    max-height: 60%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    filter: drop-shadow(0.1rem 0.1rem 0.3rem rgba(0, 0, 0, 0.3));
-    transition: transform 0.2s ease;
+  max-width: 60%;
+  max-height: 60%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0.1rem 0.1rem 0.3rem rgba(0, 0, 0, 0.3));
+  transition: transform 0.2s ease;
 }
 
 .logo-monopoly:hover {
-    transform: scale(1.02);
+  transform: scale(1.02);
 }
 
 /* Estado cuando no hay tablero generado - imagen un poco más grande */
 #tablero:not(.tablero-generado) .logo-monopoly {
-    max-width: 80%;
-    max-height: 80%;
+  max-width: 80%;
+  max-height: 80%;
 }
 
 /* Texto de respaldo si la imagen no carga */
 .centro-monopoly::after {
-    content: "MONOPOLY";
-    font-size: clamp(1.2rem, 3vmin, 2.5rem);
-    font-weight: bold;
-    color: #2c5530;
-    text-shadow: 0.1rem 0.1rem 0.3rem rgba(0, 0, 0, 0.3);
-    position: absolute;
-    z-index: -1;
-    opacity: 0.7;
+  content: "MONOPOLY";
+  font-size: clamp(1.2rem, 3vmin, 2.5rem);
+  font-weight: bold;
+  color: #2c5530;
+  text-shadow: 0.1rem 0.1rem 0.3rem rgba(0, 0, 0, 0.3);
+  position: absolute;
+  z-index: -1;
+  opacity: 0.7;
 }
 
 /* Precios en las casillas */
 .casilla p {
-    margin: 0.2rem 0 0 0;
-    font-size: clamp(0.7rem, 1.8vmin, 1rem); 
-    font-weight: 600;
-    color: #666;
+  margin: 0.2rem 0 0 0;
+  font-size: clamp(0.7rem, 1.8vmin, 1rem);
+  font-weight: 600;
+  color: #666;
 }
 
 /* Casillas del tablero - cuadradas con más espacio */
 .casilla {
-    border: 0.15rem solid #333;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: clamp(0.6rem, 1.5vmin, 0.9rem);
-    text-align: center;
-    box-sizing: border-box;
-    background-color: white;
-    padding: clamp(0.8rem, 2vmin, 1.5rem);
-    /* Más padding para más espacio */
-    font-weight: bold;
-    overflow: hidden;
-    line-height: 1.1;
-    word-wrap: break-word;
-    min-height: 0;
-    aspect-ratio: 1;
-    /* Casillas cuadradas */
-    gap: 0.2rem;
-    /* Espacio entre la franja y el contenido */
+  border: 0.15rem solid #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(0.6rem, 1.5vmin, 0.9rem);
+  text-align: center;
+  box-sizing: border-box;
+  background-color: white;
+  padding: clamp(0.8rem, 2vmin, 1.5rem);
+  /* Más padding para más espacio */
+  font-weight: bold;
+  overflow: hidden;
+  line-height: 1.1;
+  word-wrap: break-word;
+  min-height: 0;
+  aspect-ratio: 1;
+  /* Casillas cuadradas */
+  gap: 0.2rem;
+  /* Espacio entre la franja y el contenido */
 }
 
 /* Separación entre franja de color y texto */
@@ -157,9 +157,9 @@
 .casilla.purple,
 .casilla.brown,
 .casilla.orange {
-    padding-top: calc(25% + 0.3rem);
-    /* Margen después de la franja de color */
-    justify-content: flex-start;
+  padding-top: calc(25% + 0.3rem);
+  /* Margen después de la franja de color */
+  justify-content: flex-start;
 }
 
 /* Casillas de esquina - texto más grande y legible */
@@ -167,233 +167,266 @@
 .casilla[id="10"],
 .casilla[id="20"],
 .casilla[id="30"] {
-    background-color: #fff8dc;
-    border-width: 0.2rem;
-    font-size: clamp(0.8rem, 2vmin, 1.2rem);
-    /* Texto mucho más grande */
-    padding: clamp(0.5rem, 1.5vmin, 1rem);
-    /* Más padding en esquinas */
-    line-height: 1.2;
-    font-weight: bold;
+  background-color: #fff8dc;
+  border-width: 0.2rem;
+  font-size: clamp(0.8rem, 2vmin, 1.2rem);
+  /* Texto mucho más grande */
+  padding: clamp(0.5rem, 1.5vmin, 1rem);
+  /* Más padding en esquinas */
+  line-height: 1.2;
+  font-weight: bold;
 }
 
 /* Colores de propiedades */
 .casilla.red {
-    background: linear-gradient(to bottom, #dc3545 0%, #dc3545 25%, white 25%);
+  background: linear-gradient(to bottom, #dc3545 0%, #dc3545 25%, white 25%);
 }
 
 .casilla.blue {
-    background: linear-gradient(to bottom, #0d6efd 0%, #0d6efd 25%, white 25%);
+  background: linear-gradient(to bottom, #0d6efd 0%, #0d6efd 25%, white 25%);
 }
 
 .casilla.green {
-    background: linear-gradient(to bottom, #198754 0%, #198754 25%, white 25%);
+  background: linear-gradient(to bottom, #198754 0%, #198754 25%, white 25%);
 }
 
 .casilla.yellow {
-    background: linear-gradient(to bottom, #ffc107 0%, #ffc107 25%, white 25%);
+  background: linear-gradient(to bottom, #ffc107 0%, #ffc107 25%, white 25%);
 }
 
 .casilla.pink {
-    background: linear-gradient(to bottom, #d63384 0%, #d63384 25%, white 25%);
+  background: linear-gradient(to bottom, #d63384 0%, #d63384 25%, white 25%);
 }
 
 .casilla.purple {
-    background: linear-gradient(to bottom, #6f42c1 0%, #6f42c1 25%, white 25%);
+  background: linear-gradient(to bottom, #6f42c1 0%, #6f42c1 25%, white 25%);
 }
 
 .casilla.brown {
-    background: linear-gradient(to bottom, #8b4513 0%, #8b4513 25%, white 25%);
+  background: linear-gradient(to bottom, #8b4513 0%, #8b4513 25%, white 25%);
 }
 
 .casilla.orange {
-    background: linear-gradient(to bottom, #fd7e14 0%, #fd7e14 25%, white 25%);
+  background: linear-gradient(to bottom, #fd7e14 0%, #fd7e14 25%, white 25%);
 }
 
 /* Casillas especiales */
 .casilla.compania-electrica {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Botón "Generar Tablero" - debajo del tablero y centrado */
 .btn-generar-tablero {
-    display: block;
-    margin: 1.5rem auto 0 auto;
-    padding: 1rem 2rem;
-    font-size: 1.1rem;
-    font-weight: bold;
-    background: linear-gradient(135deg, #28a745, #20c997);
-    border: none;
-    border-radius: 0.5rem;
-    color: white;
-    box-shadow: 0 0.25rem 0.5rem rgba(40, 167, 69, 0.3);
-    transition: transform 0.2s ease;
+  display: block;
+  margin: 1.5rem auto 0 auto;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background: linear-gradient(135deg, #28a745, #20c997);
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  box-shadow: 0 0.25rem 0.5rem rgba(40, 167, 69, 0.3);
+  transition: transform 0.2s ease;
 }
 
 .btn-generar-tablero:hover {
-    transform: translateY(-0.1rem);
-    box-shadow: 0 0.375rem 0.75rem rgba(40, 167, 69, 0.4);
-    color: white;
+  transform: translateY(-0.1rem);
+  box-shadow: 0 0.375rem 0.75rem rgba(40, 167, 69, 0.4);
+  color: white;
 }
 
 /* Panel de controles inferior - mejor organización y centrado */
 .panel-controles {
-    background: white;
-    border-radius: 1rem;
-    padding: 2rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    margin-top: 2rem;
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
-    /* Jugador | Acciones | Intercambios */
-    gap: 3rem;
-    align-items: start;
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  /* Jugador | Acciones | Intercambios */
+  gap: 3rem;
+  align-items: start;
 }
 
 .seccion-jugador,
 .seccion-acciones,
 .seccion-intercambios {
-    text-align: center;
+  text-align: center;
 }
 
 .seccion-jugador h3,
 .seccion-acciones h3,
 .seccion-intercambios h3 {
-    margin-bottom: 1.5rem;
-    color: #333;
-    font-size: 1.2rem;
-    font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 /* Información del jugador - más compacta y centrada */
 .jugador-info {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
 }
 
 .jugador-info .form-select {
-    max-width: 10rem;
+  max-width: 10rem;
 }
 
 .jugador-info label {
-    font-weight: 600;
-    color: #495057;
-    margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 0.5rem;
 }
 
 .info-usuario {
-    background: #e3f2fd;
-    padding: 0.75rem 1.25rem;
-    border-radius: 0.5rem;
-    border: 0.1rem solid #90caf9;
-    text-align: center;
+  background: #e3f2fd;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  border: 0.1rem solid #90caf9;
+  text-align: center;
 }
 
 .dinero-actual .etiqueta {
-    font-weight: 600;
-    color: #1976d2;
+  font-weight: 600;
+  color: #1976d2;
 }
 
 .dinero-actual .valor {
-    font-weight: bold;
-    color: #0d47a1;
-    font-size: 1.1rem;
+  font-weight: bold;
+  color: #0d47a1;
+  font-size: 1.1rem;
 }
 
 /* Botones principales - centrados y bien organizados */
 .botones-principales {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
 }
 
 .botones-principales .btn {
-    min-width: 12rem;
-    padding: 0.75rem 1.5rem;
-    font-weight: 600;
+  min-width: 12rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
 }
 
 /* Botones de intercambio - más compactos */
 .botones-intercambios {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
 }
 
 .botones-intercambios .btn {
-    min-width: 10rem;
-    padding: 0.5rem 1rem;
+  min-width: 10rem;
+  padding: 0.5rem 1rem;
+}
+
+#toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+}
+
+.toast {
+  min-width: 220px;
+  margin-bottom: 8px;
+  align-items: center;
+  border: none;
+}
+
+.ficha-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ficha-jugador {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #222;
+  margin: 2px;
 }
 
 /* Responsive - ajustes para pantallas más pequeñas */
 @media (max-width: 992px) {
-    .panel-controles {
-        grid-template-columns: 1fr;
-        /* Una columna en pantallas pequeñas */
-        gap: 2rem;
-    }
+  .panel-controles {
+    grid-template-columns: 1fr;
+    /* Una columna en pantallas pequeñas */
+    gap: 2rem;
+  }
 
-    .tablero {
-        width: min(90vh, 95vw);
-        height: min(90vh, 95vw);
-    }
+  .tablero {
+    width: min(90vh, 95vw);
+    height: min(90vh, 95vw);
+  }
 
-    .contenedor {
-        padding: 1rem;
-    }
+  .contenedor {
+    padding: 1rem;
+  }
 }
-
 
 /* Modo escalera en pantallas pequeñas */
 @media (max-width: 768px) {
+  .botones-principales {
+    gap: 0.75rem;
+  }
 
-    .botones-principales {
-        gap: 0.75rem;
-    }
+  .botones-principales .btn,
+  .botones-intercambios .btn {
+    min-width: 100%;
+  }
 
-    .botones-principales .btn,
-    .botones-intercambios .btn {
-        min-width: 100%;
-    }
+  .panel-controles {
+    padding: 1.5rem;
+  }
 
-    .panel-controles {
-        padding: 1.5rem;
-    }
+  #tablero {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    /* 5 columnas como "escalera/matriz" */
+    grid-auto-rows: minmax(70px, auto);
+    width: 100%;
+    height: auto;
+    border: none;
+    background: none;
+  }
 
-    #tablero {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        /* 5 columnas como "escalera/matriz" */
-        grid-auto-rows: minmax(70px, auto);
-        width: 100%;
-        height: auto;
-        border: none;
-        background: none;
-    }
+  .casilla {
+    min-height: 70px;
+    font-size: clamp(0.6rem, 2vmin, 1rem);
+    padding: 0.3rem;
+  }
 
-    .casilla {
-        min-height: 70px;
-        font-size: clamp(0.6rem, 2vmin, 1rem);
-        padding: 0.3rem;
-    }
+  #center {
+    display: none;
+    /* en móvil no se muestra */
+  }
 
-    #center {
-        display: none;
-        /* en móvil no se muestra */
-    }
-
-    /* Los lados dejan de tener grid propio */
-    #bottom,
-    #left,
-    #top,
-    #right {
-        display: contents;
-    }
+  /* Los lados dejan de tener grid propio */
+  #bottom,
+  #left,
+  #top,
+  #right {
+    display: contents;
+  }
 }

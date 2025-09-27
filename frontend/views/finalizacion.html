@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Finalización</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="../assets/favicon.png" type="image/png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../views/styles/tablero.css" rel="stylesheet">
+  <link href="../views/styles/finalizacion.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script defer type="module" src="../controllers/finalizacion.js"></script>
+</head>
+<body>
+  
+  <img src="../assets/fondo-registrof.jpg" alt="fondo-registrof" class="position-fixed top-0 start-0 w-100 h-100 object-fit-cover z-n1">
+  
+  <header class="text-center py-5">
+    <h1 class="fw-bold text-white fs-3 fs-md-4 fs-lg-5">Finalización del Juego</h1>
+    <p class="fw-bold text-white fs-3 fs-md-4 fs-lg-5">Registra el patrimonio final y consulta el ranking global</p>
+  </header>
+  
+
+   <main class="container d-flex justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-lg p-4">
+        <div id="playersPanel">
+
+    <!-- Botón para finalizar -->
+     <div id="statusMessage"></div>
+    <div class="d-grid mb-4">
+      <button id="finalizarBtn" class="btn btn-danger fw-bold rounded-pill py-2">
+        Finalizar Juego
+      </button>
+    </div>
+      
+       <!-- Ranking -->
+    <div class="card shadow-lg p-4">
+      <h2 class="h4 fw-bold mb-3">Ranking Global</h2>
+      <div id="rankingPanel" class="table-responsive">
+        <table class="table table-striped table-bordered align-middle text-center">
+          <thead class="table-dark">
+            <tr>
+              <th>Jugador</th>
+              <th>Puntaje</th>
+              <th>País</th>
+            </tr>
+          </thead>
+          <tbody id="table">
+            <!-- Se llena dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
