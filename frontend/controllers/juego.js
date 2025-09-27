@@ -4,6 +4,8 @@ import { Casilla } from "../models/Casilla.js";
 import { Propiedad } from "../models/Propiedad.js";
 import { Dado } from "../models/Dado.js";
 import { Impuesto } from "../models/Impuesto.js";
+import { Ferrocarril } from "../models/Ferrocarril.js";
+import { CofreComunidad } from "../models/CofreComunidad.js";
 
 const colors = {
   rojo: "#ff4d4d",
@@ -71,6 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Agrego una clase al tablero para marcar que ya se generó
         tablero.classList.add("tablero-generado");
         // Las fichas se mostrarán al posicionarlas en las casillas
+        btnCargar.style.display = "none";
 
         //  Ajuste de las esquinas para que encajen correctamente
         let primeraCasillaIzquierda = casillas.left.pop();
@@ -99,8 +102,10 @@ document.addEventListener("DOMContentLoaded", () => {
             let casillaObjeto;
             if (casillaData.type === "property") {
               casillaObjeto = new Propiedad(casillaData);
-            }else if (casillaData.type === "tax") {
+            } else if (casillaData.type === "tax") {
               casillaObjeto = new Impuesto(casillaData);
+            } else if (casillaData.type === "railroad") {
+              casillaObjeto = new Ferrocarril(casillaData);
             } else {
               casillaObjeto = new Casilla(casillaData);
             }
@@ -112,6 +117,17 @@ document.addEventListener("DOMContentLoaded", () => {
             casillasObjetos[lado].push(casillaObjeto);
           }
         }
+
+        console.log("Casillas objetos creadas:", casillasObjetos);
+
+        // Crear mazo de cartas de Caja de Comunidad
+        partida.communityChestDeck = [];
+        for (let cartaData of casillas.community_chest) {
+          const carta = new CofreComunidad(cartaData);
+          partida.communityChestDeck.push(carta);
+        }
+
+        console.log("Cartas de Caja de Comunidad creadas:", partida.communityChestDeck);
 
         /**
          * Función interna `render`
@@ -174,10 +190,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         </div>`;
             }
 
-            // 🔹 Lado izquierdo (left) → también invertido
-            for (let casilla of casillas.left.slice().reverse()) {
-              const precioHtml = casilla.price
-                ? `<p>$${casilla.price}</p>`
+            // Lado izquierdo (left) → orden invertido
+            for (let casillaObjeto of casillasObjetos.left.slice().reverse()) {
+              const precioHtml = casillaObjeto.price
+                ? `<p>$${casillaObjeto.price}</p>`
                 : "";
               left.innerHTML += `<div class="casilla left ${
                 casilla.color || ""

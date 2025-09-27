@@ -91,3 +91,5 @@ partida.jugadorCaeEnCasilla(j2, railroad1);
 
 console.log(j2.toString());
 console.log(j1.toString());
+
+partida.jugadorCaeEnCasilla(j1, );
