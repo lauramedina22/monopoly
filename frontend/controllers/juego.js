@@ -6,6 +6,7 @@ import { mostrarToast } from "../controllers/toast.js";
 import { Impuesto } from "../models/Impuesto.js";
 import { Ferrocarril } from "../models/Ferrocarril.js";
 import { CofreComunidad } from "../models/CofreComunidad.js";
+import { Sorpresa } from "../models/Sorpresa.js";
 
 const colors = {
   rojo: "#ff4d4d",
@@ -123,6 +124,15 @@ document.addEventListener("DOMContentLoaded", () => {
           "Cartas de Caja de Comunidad creadas:",
           partida.communityChestDeck
         );
+
+        // Crear mazo de cartas de Sorpresa
+        partida.chancesDeck = [];
+        for (let cartaData of casillas.chance) {
+          const carta = new Sorpresa(cartaData);
+          partida.chancesDeck.push(carta);
+        }
+
+        console.log("Cartas de Sorpresa creadas:", partida.chancesDeck);
 
         /**
          * Función interna `render`

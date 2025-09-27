@@ -13,7 +13,6 @@ export class Propiedad extends Casilla {
     this.color = data.color;
     this.price = data.price;
     this.mortgage = data.mortgage;
-    this.hipotecada = false;
 
     // Rentas
     this.rentaBase = data.rent.base;
@@ -62,7 +61,7 @@ export class Propiedad extends Casilla {
       return false;
     }
 
-    jugador.dinero -= 100; // después lo hacemos dinámico según color
+    jugador.dinero -= 100; // 💡 después lo hacemos dinámico según color
     this.casas++;
     console.log(
       `${jugador.nombre} compró una casa en ${this.name} (total casas: ${this.casas})`
@@ -76,7 +75,7 @@ export class Propiedad extends Casilla {
 
     // Debe tener todas las propiedades del mismo color
     let todasDelColor =
-      jugador.propiedades.filter((p) => p.color === this.color).length >= 3;
+      jugador.propiedades.filter((p) => p.color === this.color).length >= 2;
     // (luego ajustamos según grupo de color real)
 
     if (this.hotel) return false;
@@ -109,7 +108,25 @@ export class Propiedad extends Casilla {
     return true;
   }
 
-  pagarRenta(jugador) {
+  PagarRenta(jugador) {
+    if (!this.dueno) {
+      mostrarToast(`${this.name} no tiene dueño, no se paga renta.`);
+      return;
+    }
+
+    if (this.dueno === jugador) {
+      mostrarToast(
+        `${jugador.nombre} es el dueño de ${this.name}, no paga renta.`
+      );
+      return;
+    }
+
+    if (jugador.hipotecas.includes(this)) {
+      mostrarToast(
+        `${jugador.nombre} tiene hipoteca en ${this.name}, no paga renta.`
+      );
+      return;
+    }
 
     const renta = this.getRenta();
     if (jugador.dinero < renta) {
@@ -134,15 +151,13 @@ export class Propiedad extends Casilla {
       return;
     }
 
-    if (this.hipotecada) {
-      mostrarToast(`${this.name} ya está hipotecada`);
-      return;
-    }
-
-    this.hipotecada = true; // <<--- importante
+    this.dueno = null;
     jugador.hipotecas.push(this);
+    mostrarToast(
+      `${jugador.nombre} hipotecó ${this.name} por $${this.mortgage}`
+    );
     jugador.dinero += this.mortgage;
-    mostrarToast(`${jugador.nombre} hipotecó ${this.name} por $${this.mortgage}`);
+    return;
   }
 
   deshipotecar(jugador) {
@@ -151,11 +166,13 @@ export class Propiedad extends Casilla {
       return;
     }
 
-    this.hipotecada = false; // <<--- importante
     jugador.hipotecas = jugador.hipotecas.filter((p) => p !== this);
-    jugador.dinero -= Math.round(this.mortgage * 1.1);
+    jugador.dinero -= Math.round(this.mortgage * 1.1); // 10% de interés
+    this.dueno = jugador;
     mostrarToast(
-      `${jugador.nombre} deshipotecó ${this.name} por $${Math.round(this.mortgage * 1.1)}`
+      `${jugador.nombre} deshipotecó ${this.name} por $${Math.round(
+        this.mortgage * 1.1
+      )}`
     );
   }
 
@@ -223,6 +240,6 @@ export class Propiedad extends Casilla {
 
   toString() {
     let duenoNombre = this.dueno ? this.dueno.nombre : "Nadie";
-    return `${this.name} (${this.color}) | Precio: $${this.price} |`;
+    return `Propiedad ${this.name} (${this.color}) | Precio: $${this.price} | Dueño: ${duenoNombre}`;
   }
 }
