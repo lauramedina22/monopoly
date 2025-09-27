@@ -174,11 +174,9 @@ document.addEventListener("DOMContentLoaded", () => {
             for (let casillaObjeto of casillasObjetos.bottom
               .slice()
               .reverse()) {
-              const precioHtml = casillaObjeto.price ? (
-                <p>$${casillaObjeto.price}</p>
-              ) : (
-                ""
-              );
+              const precioHtml = casillaObjeto.price
+                ? `<p>$${casillaObjeto.price}</p>`
+                : "";
               bottom.innerHTML += `<div class="casilla bottom ${
                 casillaObjeto.color || ""
               }" id="${casillaObjeto.id}">
@@ -189,12 +187,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Lado izquierdo (left) → orden invertido
             for (let casillaObjeto of casillasObjetos.left.slice().reverse()) {
-              console.log(partida.casillas);
-              const precioHtml = casillaObjeto.price ? (
-                <p>$${casillaObjeto.price}</p>
-              ) : (
-                ""
-              );
+              const precioHtml = casillaObjeto.price
+                ? `<p>$${casillaObjeto.price}</p>`
+                : "";
               left.innerHTML += `<div class="casilla left ${
                 casillaObjeto.color || ""
               }" id="${casillaObjeto.id}">
@@ -205,11 +200,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Lado superior (top) → orden natural
             for (let casillaObjeto of casillasObjetos.top) {
-              const precioHtml = casillaObjeto.price ? (
-                <p>$${casillaObjeto.price}</p>
-              ) : (
-                ""
-              );
+              const precioHtml = casillaObjeto.price
+                ? `<p>$${casillaObjeto.price}</p>`
+                : "";
               top.innerHTML += `<div class="casilla top ${
                 casillaObjeto.color || ""
               }" id="${casillaObjeto.id}">
@@ -220,11 +213,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Lado derecho (right) → orden natural
             for (let casillaObjeto of casillasObjetos.right) {
-              const precioHtml = casillaObjeto.price ? (
-                <p>$${casillaObjeto.price}</p>
-              ) : (
-                ""
-              );
+              const precioHtml = casillaObjeto.price
+                ? `<p>$${casillaObjeto.price}</p>`
+                : "";
               right.innerHTML += `<div class="casilla right ${
                 casillaObjeto.color || ""
               }" id="${casillaObjeto.id}">
