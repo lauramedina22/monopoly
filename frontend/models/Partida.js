@@ -1,5 +1,4 @@
 import { Dado } from "./Dado.js";
-import { Propiedad } from "./Propiedad.js"
 
 export class Partida {
   constructor(jugadores = [], casillas = []) {
@@ -43,31 +42,52 @@ export class Partida {
   }
 
   // Manejar qué pasa cuando un jugador cae en una casilla
-jugadorCaeEnCasilla(jugador, casilla) {
-  switch (casilla.type) {
-    case "property":
-      if (!casilla.dueno) {
-        console.log(`${jugador.nombre} cayó en ${casilla.name}, está libre por $${casilla.precio}.`);
-        // 👀 Aquí NO se compra automáticamente, se deja la decisión al jugador
-      } else if (casilla.dueno !== jugador) {
-        let renta = casilla.getRenta();
-        jugador.dinero -= renta;
-        casilla.dueno.dinero += renta;
-        console.log(`${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre}`);
-      } else {
-        console.log(`${jugador.nombre} cayó en su propia propiedad`);
-      }
-      break;
+  jugadorCaeEnCasilla(jugador, casilla) {
+    let resultado = { accion: null, mensaje: "" };
 
-    case "railroad":
-      console.log(`${jugador.nombre} cayó en una casilla especial: ${casilla.nombre}`);
-      break;
+    switch (casilla.type) {
+      case "property":
+        if (!casilla.dueno) {
+          resultado.accion = "comprarPropiedad";
+          resultado.mensaje = `${jugador.nombre} cayó en ${casilla.name}, está libre por $${casilla.price}.`;
+        } else if (casilla.dueno !== jugador) {
+          let renta = casilla.getRenta();
+          jugador.dinero -= renta;
+          casilla.dueno.dinero += renta;
 
-    default:
-      console.log(`${jugador.nombre} cayó en una casilla de tipo ${casilla.type}`);
+          resultado.accion = "pagarRenta";
+          resultado.mensaje = `${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre}`;
+        } else {
+          resultado.mensaje = `${jugador.nombre} cayó en su propia propiedad`;
+
+          if (casilla.puedeComprarCasa(jugador)) {
+            resultado.accion = "comprarCasa";
+          } else if (casilla.puedeComprarHotel(jugador)) {
+            resultado.accion = "comprarHotel";
+          } else {
+            resultado.accion = "nada";
+          }
+        }
+        break;
+
+      case "railroad":
+        resultado.accion = "especial";
+        resultado.mensaje = `${jugador.nombre} cayó en ${casilla.name} (ferrocarril)`;
+        break;
+
+      case "special":
+        casilla.ejecutarAccion(jugador);
+        resultado.accion = "especial";
+        resultado.mensaje = `${jugador.nombre} ejecutó acción especial en ${casilla.name}`;
+        break;
+
+      default:
+        resultado.accion = "nada";
+        resultado.mensaje = `${jugador.nombre} cayó en una casilla de tipo ${casilla.type}`;
+    }
+
+    return resultado;
   }
-}
-
 
 
   // Partida.js

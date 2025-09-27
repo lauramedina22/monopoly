@@ -1,15 +1,17 @@
 export class Jugador {
-  constructor(nombre, paisNombre, paisCodigo, colorFicha, dineroInicial = 1500, puntaje = 0) {
+  constructor(nombre, paisNombre, paisCodigo, colorFicha, dinero = 1500, puntaje = 0) {
     this.nombre = nombre;              // Nombre del jugador
     this.paisNombre = paisNombre;      // Nombre del país (ej: Colombia)
     this.paisCodigo = paisCodigo;      // Código del país (ej: CO)
     this.colorFicha = colorFicha;      // Color de la ficha
-    this.dinero = dineroInicial;       // Dinero disponible
+    this.dinero = dinero;       // Dinero disponible
     this.puntaje = puntaje;                 // Puntuación del jugador
     this.propiedades = []; // lista de propiedades adquiridas
     this.hipotecas = [];   // propiedades hipotecadas
     this.prestamos = [];   // préstamos activos
-    this.posicion = 0;    // posición en el tablero
+    this.posicion = 0; 
+    this.enCarcel = false; // posición en el tablero
+    this.turnosCarcel = 0;
   }
 
   // ---- Panel de jugador ----
@@ -47,7 +49,7 @@ export class Jugador {
   
   toString() {
     let props = this.propiedades.map(p => p.name).join(", ") || "Ninguna";
-    return `Jugador ${this.nombre} (${this.colorFicha}) | Dinero: $${this.dinero} | Propiedades: ${props}`;
+    return `Jugador ${this.nombre} (${this.colorFicha}) | Dinero: $${this.dinero} | Propiedades: ${props} | En Cárcel? ${this.enCarcel} | Posición: ${this.posicion}`;
   }
 
 }
