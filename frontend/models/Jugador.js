@@ -37,11 +37,16 @@ export class Jugador {
     };
   }
 
-  mover(totalCasillas, posiciones, fichas) {
+  mover(totalCasillas, posiciones) {
     this.posicion = (this.posicion + posiciones) % totalCasillas;
-    const casillaDestino = document.getElementById(this.posicion);
-    if (casillaDestino) return casillaDestino;
+    return this.posicion; // devuelve índice, no el div
   }
+  
+  modificarDinero(monto) {
+    this.dinero += monto;
+    return this.dinero;
+  }
+
 
   toJSON() {
     return {
@@ -63,7 +68,7 @@ export class Jugador {
   }
 
   toString() {
-    let props = this.propiedades.map((p) => p.name).join(", ") || "Ninguna";
-    return `Jugador ${this.nombre} (${this.colorFicha}) | Dinero: $${this.dinero} | Propiedades: ${props}`;
+    let props = this.propiedades.map(p => p.name).join(", ") || "Ninguna";
+    return `Jugador ${this.nombre} (${this.colorFicha}) | Dinero: $${this.dinero} | Propiedades: ${props} | En Cárcel? ${this.enCarcel} | Posición: ${this.posicion}`;
   }
 }

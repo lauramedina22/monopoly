@@ -1,4 +1,5 @@
 import { mostrarToast } from "../controllers/toast.js";
+import { mostrarModalCasilla } from "../controllers/modalCasilla.js";
 import { Dado } from "./Dado.js";
 import { CofreComunidad } from "./CofreComunidad.js";
 import { Propiedad } from "./Propiedad.js";
@@ -46,39 +47,35 @@ export class Partida {
 
   // Manejar qué pasa cuando un jugador cae en una casilla
   jugadorCaeEnCasilla(jugador, casilla) {
+    console.log("DEBUG casilla.type:", casilla.type, typeof casilla.type);
     switch (casilla.type) {
       case "property":
         if (!casilla.dueno) {
-          console.log(
-            `${jugador.nombre} cayó en ${casilla.name}, está libre por $${casilla.price}.`
-          );
-          // aquí el jugador decide si compra
-        } else if (casilla.dueno !== jugador) {
+          mostrarModalCasilla(casilla, jugador);
+        } else if (casilla.dueno !== jugador && !casilla.hipotecada) {
           let renta = casilla.getRenta();
           jugador.dinero -= renta;
           casilla.dueno.dinero += renta;
-          console.log(
-            `${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre}`
-          );
+          mostrarToast(`${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre}`);
+        } else if (casilla.dueno !== jugador && casilla.hipotecada) {
+          mostrarToast(`La propiedad ${casilla.name} está hipotecada, no se paga renta.`);
         } else {
-          console.log(`${jugador.nombre} cayó en su propia propiedad`);
+          mostrarToast(`${jugador.nombre} cayó en su propia propiedad`);
+          mostrarModalCasilla(casilla, jugador);
         }
         break;
 
+
       case "railroad":
         if (!casilla.dueno) {
-          console.log(
-            `${jugador.nombre} cayó en ${casilla.name}, está libre por $${casilla.price}.`
-          );
+          mostrarToast(`${jugador.nombre} cayó en ${casilla.name}, libre por $${casilla.price}`);
         } else if (casilla.dueno !== jugador) {
-          let renta = casilla.getRenta(this.casillas); // la renta depende de cuántos railroads tiene el dueño
+          let renta = casilla.getRenta(this.casillas);
           jugador.dinero -= renta;
           casilla.dueno.dinero += renta;
-          console.log(
-            `${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre} por usar el ferrocarril`
-          );
+          mostrarToast(`${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre} por el ferrocarril`);
         } else {
-          console.log(`${jugador.nombre} cayó en su propio ferrocarril`);
+          mostrarToast(`${jugador.nombre} cayó en su propio ferrocarril`);
         }
         break;
 
@@ -87,14 +84,10 @@ export class Partida {
         break;
 
       case "community_chest":
-        // Sacar carta al azar
-        const randomIndex = Math.floor(
-          Math.random() * this.communityChestDeck.length
-        );
+        const randomIndex = Math.floor(Math.random() * this.communityChestDeck.length);
         const carta = this.communityChestDeck[randomIndex];
-
-        console.log(`${jugador.nombre} sacó: ${carta.description}`);
-        const monto = carta.aplicar(jugador);
+        mostrarToast(`${jugador.nombre} sacó: ${carta.description}`);
+        carta.aplicar(jugador);
         break;
 
       case "chance":
@@ -108,18 +101,17 @@ export class Partida {
         break;
 
       default:
-        console.log(
-          `${jugador.nombre} cayó en una casilla de tipo ${casilla.type}`
-        );
+        mostrarToast(`${jugador.nombre} cayó en una casilla de tipo ${casilla.type}`);
     }
   }
 
-  tirarDados(jugador, fichas) {
+  tirarDados(jugador) {
     const dado = Dado.lanzar().sumarDados();
     mostrarToast(
       `${jugador.nombre} ha sacado un ${Dado.dados[0]} y un ${Dado.dados[1]} (Total: ${dado})`
     );
-    return jugador.mover(this.casillas.length, dado, fichas);
+    const nuevaPos = jugador.mover(this.casillas.length, dado);
+    return nuevaPos; // número
   }
 
   // Partida.js

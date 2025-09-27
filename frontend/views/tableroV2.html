@@ -16,8 +16,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script type="module" src="../controllers/formularios.js" defer></script>
     <script type="module" src="../controllers/juego.js" defer></script>
-
-
 </head>
 
 <body>
@@ -39,7 +37,7 @@
                     <div class="fila" id="bottom"></div>
                 </div>
             </div>
-           
+
             <!-- Botón "Generar Tablero" debajo del tablero -->
             <div class="col-12 text-center">
                 <button class="btn btn-generar-tablero" id="generarTablero">
@@ -59,15 +57,7 @@
                         <div class="jugador-info">
                             <label for="jugador">Jugador Actual:</label>
                             <select id="jugador" class="form-select"> </select>
-
-                            <!-- 🔹 Botón para ir a Finalización -->
-                            <div class="text-end mt-3">
-                             <a href="../views/finalizacion.html" class="btn btn-danger fw-bold rounded-pill w-100 w-md-auto">
-                                Ir a Finalización
-                             </a>   
-                            </div>
-                            
-                            <!-- Modal de Bootstrap -->
+                            <!-- Modal de Bootstrap para Jugador -->
                             <div class="modal fade" id="modalJugador" tabindex="-1" role="dialog"
                                 aria-labelledby="modalJugadorLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
@@ -91,6 +81,13 @@
                     <!-- Sección de acciones principales -->
                     <div class="seccion-acciones">
                         <h3>Acciones del Juego</h3>
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <input type="number" id="inputDados" class="form-control" placeholder="Número de dados"
+                                min="1" max="12" style="width:120px;">
+                            <button class="btn btn-secondary" id="btnTestDados">
+                                <i class="bi bi-hammer"></i> Test Mover
+                            </button>
+                        </div>
                         <div class="botones-principales">
                             <button class="btn btn-primary" id="tirarDados">
                                 <i class="bi bi-dice-3"></i> Tirar Dados
@@ -98,8 +95,8 @@
                             <button class="btn btn-warning" id="comprarPropiedad">
                                 <i class="bi bi-house"></i> Comprar Propiedad
                             </button>
-                            <button class="btn btn-info" id="dhipotecar">
-                                <i class="bi bi-bank"></i> Hipotecar/Deshipotecar
+                            <button class="btn btn-info" id="hipotecar">
+                                <i class="bi bi-bank"></i> Hipotecar
                             </button>
                         </div>
                     </div>
@@ -124,6 +121,52 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal de Información de Casilla -->
+    <!-- Modal de Información de Casilla -->
+    <div class="modal fade" id="modalInfoCasilla" tabindex="-1" role="dialog" aria-labelledby="modalInfoCasillaLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalInfoCasillaLabel">Información de la Casilla</h5>
+                </div>
+
+                <div class="modal-body" id="infoCasillaBody">
+                    <p><strong>Nombre:</strong> <span id="casillaNombre"></span></p>
+                    <p><strong>Precio:</strong> $<span id="casillaPrecio"></span></p>
+                    <p><strong>Propietario:</strong> <span id="casillaPropietario"></span></p>
+                    <p><strong>Casas:</strong> <span id="casillaCasas">0</span></p>
+                    <p><strong>Hotel:</strong> <span id="casillaHotel">No</span></p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="btnComprarPropiedad">
+                        <i class="bi bi-house-add"></i> Comprar Propiedad
+                    </button>
+                    <button type="button" class="btn btn-primary" id="btnComprarCasa">
+                        <i class="bi bi-house"></i> Comprar Casa
+                    </button>
+                    <button type="button" class="btn btn-dark" id="btnComprarHotel">
+                        <i class="bi bi-building"></i> Comprar Hotel
+                    </button>
+                    <button type="button" class="btn btn-warning" id="btnHipotecar">
+                        <i class="bi bi-bank"></i> Hipotecar / Deshipotecar
+                    </button>
+                    <button type="button" class="btn btn-info" id="btnPagarRenta">
+                        <i class="bi bi-cash-coin"></i> Pagar Renta
+                    </button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        Cerrar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
 </body>
 
 </html>

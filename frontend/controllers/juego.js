@@ -46,13 +46,11 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(`  Color de ficha: ${jugador.colorFicha}`);
     console.log(`  Dinero: $${jugador.dinero}`);
     console.log(
-      `  Propiedades: ${
-        jugador.propiedades.map((p) => p.nombre).join(", ") || "Ninguna"
+      `  Propiedades: ${jugador.propiedades.map((p) => p.nombre).join(", ") || "Ninguna"
       }`
     );
     console.log(
-      `  Hipotecas: ${
-        jugador.hipotecas.map((p) => p.nombre).join(", ") || "Ninguna"
+      `  Hipotecas: ${jugador.hipotecas.map((p) => p.nombre).join(", ") || "Ninguna"
       }`
     );
     console.log(`  Préstamos: ${jugador.prestamos.length}`);
@@ -170,9 +168,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 ? `<p>$${casilla.price}</p>`
                 : "";
               top.innerHTML += `
-                          <div class="casilla ${casilla.color || ""}" id="${
-                casilla.id
-              }">
+                          <div class="casilla ${casilla.color || ""}" id="${casilla.id
+                }">
                               ${casilla.name}
                               ${precioHtml}
                           </div>`;
@@ -187,9 +184,8 @@ document.addEventListener("DOMContentLoaded", () => {
               const precioHtml = casillaObjeto.price
                 ? `<p>$${casillaObjeto.price}</p>`
                 : "";
-              bottom.innerHTML += `<div class="casilla bottom ${
-                casillaObjeto.color || ""
-              }" id="${casillaObjeto.id}">
+              bottom.innerHTML += `<div class="casilla bottom ${casillaObjeto.color || ""
+                }" id="${casillaObjeto.id}">
                 ${casillaObjeto.name}
                 ${precioHtml}
             </div>`;
@@ -200,9 +196,8 @@ document.addEventListener("DOMContentLoaded", () => {
               const precioHtml = casillaObjeto.price
                 ? `<p>$${casillaObjeto.price}</p>`
                 : "";
-              left.innerHTML += `<div class="casilla left ${
-                casillaObjeto.color || ""
-              }" id="${casillaObjeto.id}">
+              left.innerHTML += `<div class="casilla left ${casillaObjeto.color || ""
+                }" id="${casillaObjeto.id}">
                 ${casillaObjeto.name}
                 ${precioHtml}
             </div>`;
@@ -213,9 +208,8 @@ document.addEventListener("DOMContentLoaded", () => {
               const precioHtml = casillaObjeto.price
                 ? `<p>$${casillaObjeto.price}</p>`
                 : "";
-              top.innerHTML += `<div class="casilla top ${
-                casillaObjeto.color || ""
-              }" id="${casillaObjeto.id}">
+              top.innerHTML += `<div class="casilla top ${casillaObjeto.color || ""
+                }" id="${casillaObjeto.id}">
                 ${casillaObjeto.name}
                 ${precioHtml}
             </div>`;
@@ -226,9 +220,8 @@ document.addEventListener("DOMContentLoaded", () => {
               const precioHtml = casillaObjeto.price
                 ? `<p>$${casillaObjeto.price}</p>`
                 : "";
-              right.innerHTML += `<div class="casilla right ${
-                casillaObjeto.color || ""
-              }" id="${casillaObjeto.id}">
+              right.innerHTML += `<div class="casilla right ${casillaObjeto.color || ""
+                }" id="${casillaObjeto.id}">
                 ${casillaObjeto.name}
                 ${precioHtml}
             </div>`;
@@ -283,20 +276,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (jugador) {
       infoJugador.innerHTML = `
       <p><strong>Usuario:</strong> ${jugador.nombre}</p>
-      <p><strong>País:</strong> <span>${
-        jugador.paisCodigo
-      }</span> <img src="https://flagsapi.com/${
-        jugador.paisCodigo
-      }/shiny/64.png" alt="Bandera de ${jugador.paisNombre}" class="me-2"></p>
+      <p><strong>País:</strong> <span>${jugador.paisCodigo
+        }</span> <img src="https://flagsapi.com/${jugador.paisCodigo
+        }/shiny/64.png" alt="Bandera de ${jugador.paisNombre}" class="me-2"></p>
       <p><strong>Ficha:</strong> ${jugador.colorFicha}</p>
       <p><strong>Dinero:</strong> $${jugador.dinero}</p>
       <p><strong>Puntaje:</strong> ${jugador.puntaje ?? 0}</p>
-      <p><strong>Propiedades:</strong> ${
-        jugador.propiedades?.join(", ") || "Ninguna"
-      }</p>
-      <p><strong>Hipotecas:</strong> ${
-        jugador.hipotecas?.join(", ") || "Ninguna"
-      }</p>
+      <p><strong>Propiedades:</strong> ${jugador.propiedades?.join(", ") || "Ninguna"
+        }</p>
+      <p><strong>Hipotecas:</strong> ${jugador.hipotecas?.join(", ") || "Ninguna"
+        }</p>
       <p><strong>Préstamos:</strong> ${jugador.prestamos?.length || 0}</p>
 
     `;
@@ -326,6 +315,42 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Evento para pruebas rápidas con input de casilla
+  document.getElementById("btnTestDados").addEventListener("click", () => {
+    const idx = selector.value; // jugador seleccionado
+    const jugador = jugadores[idx];
+    if (!jugador) {
+      mostrarToast("Por favor selecciona un jugador");
+      return;
+    }
+
+    const idCasilla = parseInt(document.getElementById("inputDados").value);
+    if (isNaN(idCasilla) || !(idCasilla in partida.casillas)) {
+      mostrarToast("Ingresa un ID de casilla válido");
+      return;
+    }
+
+    // Actualizar posición del jugador
+    jugador.posicion = idCasilla;
+
+    // Mover ficha en el DOM
+    const casillaElem = document.getElementById(idCasilla);
+    posicionarFichaEnCasilla(fichas[jugador.nombre], casillaElem);
+
+    // Obtener casilla lógica
+    const casilla = partida.casillas[idCasilla];
+    console.log("Prueba rápida: jugadorCaeEnCasilla...", idCasilla, casilla);
+
+    // Ejecutar lógica de la casilla
+    partida.jugadorCaeEnCasilla(jugador, casilla);
+
+    // Si es propiedad, mostrar modal
+    if (casilla instanceof Propiedad) {
+      mostrarModalCasilla(casilla, jugador);
+    }
+  });
+
+
   // Evento para tirar dados y mover ficha
   document.getElementById("tirarDados").addEventListener("click", () => {
     const idx = selector.value;
@@ -334,9 +359,34 @@ document.addEventListener("DOMContentLoaded", () => {
       mostrarToast("Por favor selecciona un jugador");
       return;
     }
-    const casillaDestino = partida.tirarDados(jugador, fichas);
-    posicionarFichaEnCasilla(fichas[jugador.nombre], casillaDestino);
+
+    // 1. Posición lógica
+    const posDestino = partida.tirarDados(jugador);
+
+    // 2. Elemento gráfico de la casilla
+    const casillaElem = document.getElementById(posDestino);
+
+    // 3. Mover ficha en el DOM
+    posicionarFichaEnCasilla(fichas[jugador.nombre], casillaElem);
+
+    // 4. Obtener casilla lógica
+    const casilla = partida.casillas[posDestino];
+    console.log("DEBUG casilla destino:", posDestino, casilla);
+
+    // 5. Ejecutar lógica de la casilla
+    if (casilla) {
+    
+      partida.jugadorCaeEnCasilla(jugador, casilla);
+      if (casilla instanceof Propiedad) {
+      mostrarModalCasilla(casilla, jugador);
+    }
+    
+    } else {
+      console.warn("No existe casilla en partida.casillas para la posición:", posDestino);
+    }
+
   });
+
 
   document.getElementById("comprarPropiedad").addEventListener("click", () => {
     const idx = selector.value;
@@ -394,4 +444,10 @@ document.addEventListener("DOMContentLoaded", () => {
       mostrarToast("El jugador no está en una propiedad.");
     }
   });
+
+  let resultado = partida.jugadorCaeEnCasilla(jugador, casilla);
+  mostrarInfoCasilla(casilla, jugador, resultado);
+
+
+
 });
