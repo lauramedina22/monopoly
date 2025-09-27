@@ -3,6 +3,8 @@ import { Jugador } from "../models/Jugador.js";
 import { Casilla } from "../models/Casilla.js";
 import { Propiedad } from "../models/Propiedad.js";
 import { Impuesto } from "../models/Impuesto.js";
+import { Ferrocarril } from "../models/Ferrocarril.js";
+import { CofreComunidad } from "../models/CofreComunidad.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   let btnCargar = document.getElementById("generarTablero");
@@ -51,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((casillas) => {
         // Agrego una clase al tablero para marcar que ya se generó
         tablero.classList.add("tablero-generado");
+        btnCargar.style.display = "none";
 
         //  Ajuste de las esquinas para que encajen correctamente
         let primeraCasillaIzquierda = casillas.left.pop();
@@ -81,8 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
             let casillaObjeto;
             if (casillaData.type === "property") {
               casillaObjeto = new Propiedad(casillaData);
-            }else if (casillaData.type === "tax") {
+            } else if (casillaData.type === "tax") {
               casillaObjeto = new Impuesto(casillaData);
+            } else if (casillaData.type === "railroad") {
+              casillaObjeto = new Ferrocarril(casillaData);
             } else {
               casillaObjeto = new Casilla(casillaData);
             }
@@ -96,6 +101,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         console.log("Casillas objetos creadas:", casillasObjetos);
+
+        // Crear mazo de cartas de Caja de Comunidad
+        partida.communityChestDeck = [];
+        for (let cartaData of casillas.community_chest) {
+          const carta = new CofreComunidad(cartaData);
+          partida.communityChestDeck.push(carta);
+        }
+
+        console.log("Cartas de Caja de Comunidad creadas:", partida.communityChestDeck);
 
         /**
          * Función interna `render`
@@ -151,7 +165,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Lado izquierdo (left) → orden invertido
             for (let casillaObjeto of casillasObjetos.left.slice().reverse()) {
-              console.log(partida.casillas);
               const precioHtml = casillaObjeto.price
                 ? `<p>$${casillaObjeto.price}</p>`
                 : "";

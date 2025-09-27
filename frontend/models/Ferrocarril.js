@@ -1,6 +1,6 @@
 import { Propiedad } from "./Propiedad.js";
 
-export class Railroad extends Propiedad {
+export class Ferrocarril extends Propiedad {
   constructor(data) {
     super(data); // reutilizamos name, price, mortgage, rent...
     this.type = "railroad"; // forzar tipo
