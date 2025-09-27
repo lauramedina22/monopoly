@@ -1,4 +1,6 @@
 import { mostrarToast } from "../controllers/toast.js";
+import { Propiedad } from "../models/Propiedad.js";
+import { Ferrocarril } from "../models/Ferrocarril.js";
 
 function mostrarModalCasilla(casilla, jugador, turnoActual = false) {
     // Actualizar datos del modal
@@ -77,7 +79,7 @@ function mostrarModalCasilla(casilla, jugador, turnoActual = false) {
             };
         }
     } else {
-    
+
     }
 
     // Mostrar modal sin crear backdrops extra
@@ -85,5 +87,6 @@ function mostrarModalCasilla(casilla, jugador, turnoActual = false) {
     let modalInstance = bootstrap.Modal.getInstance(modalElement);
     if (!modalInstance) modalInstance = new bootstrap.Modal(modalElement);
     modalInstance.show();
+
 }
 export { mostrarModalCasilla };

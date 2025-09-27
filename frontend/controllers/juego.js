@@ -334,10 +334,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // Ejecutar lógica de la casilla
     partida.jugadorCaeEnCasilla(jugador, casilla);
 
-    // Si es propiedad, mostrar modal
-    if (casilla instanceof Propiedad) {
-      mostrarModalCasilla(casilla, jugador);
-    }
   });
 
 
@@ -363,17 +359,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const casilla = partida.casillas[posDestino];
     console.log("DEBUG casilla destino:", posDestino, casilla);
 
-    // 5. Ejecutar lógica de la casilla
-    if (casilla) {
-    
-      partida.jugadorCaeEnCasilla(jugador, casilla);
-      if (casilla instanceof Propiedad) {
-      mostrarModalCasilla(casilla, jugador);
-    }
-    
-    } else {
-      console.warn("No existe casilla en partida.casillas para la posición:", posDestino);
-    }
+
+    partida.jugadorCaeEnCasilla(jugador, casilla);
+
+
 
   });
 
