@@ -8,6 +8,7 @@ export class Partida {
     this.dados = new Dado();      // Instancia de Dado
     this.turnoActual = 0;         // Índice del jugador que juega
     this.enJuego = true;          // Estado de la partida
+
   }
 
   // Método para iniciar la partida
@@ -47,8 +48,8 @@ jugadorCaeEnCasilla(jugador, casilla) {
   switch (casilla.type) {
     case "property":
       if (!casilla.dueno) {
-        console.log(`${jugador.nombre} cayó en ${casilla.name}, está libre por $${casilla.precio}.`);
-        // 👀 Aquí NO se compra automáticamente, se deja la decisión al jugador
+        console.log(`${jugador.nombre} cayó en ${casilla.name}, está libre por $${casilla.price}.`);
+        // aquí el jugador decide si compra
       } else if (casilla.dueno !== jugador) {
         let renta = casilla.getRenta();
         jugador.dinero -= renta;
@@ -60,13 +61,35 @@ jugadorCaeEnCasilla(jugador, casilla) {
       break;
 
     case "railroad":
-      console.log(`${jugador.nombre} cayó en una casilla especial: ${casilla.nombre}`);
+      if (!casilla.dueno) {
+        console.log(`${jugador.nombre} cayó en ${casilla.name}, está libre por $${casilla.price}.`);
+      } else if (casilla.dueno !== jugador) {
+        let renta = casilla.getRenta(this.casillas); // la renta depende de cuántos railroads tiene el dueño
+        jugador.dinero -= renta;
+        casilla.dueno.dinero += renta;
+        console.log(`${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre} por usar el ferrocarril`);
+      } else {
+        console.log(`${jugador.nombre} cayó en su propio ferrocarril`);
+      }
+      break;
+
+    case "tax":
+      casilla.aplicarImpuesto(jugador);
+      break;
+
+    case "community_chest":
+      // Sacar carta al azar
+      const randomIndex = Math.floor(Math.random() * this.communityChestDeck.length);
+      const carta = this.communityChestDeck[randomIndex];
+      console.log(`${jugador.nombre} cayó en ${casilla.name}. Sacó una carta de Caja de Comunidad: "${carta.description}"`);
+      carta.aplicar(jugador);
       break;
 
     default:
       console.log(`${jugador.nombre} cayó en una casilla de tipo ${casilla.type}`);
   }
 }
+
 
 
 

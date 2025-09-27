@@ -2,6 +2,7 @@ import { Partida } from "../models/Partida.js";
 import { Jugador } from "../models/Jugador.js";
 import { Casilla } from "../models/Casilla.js";
 import { Propiedad } from "../models/Propiedad.js";
+import { Impuesto } from "../models/Impuesto.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   let btnCargar = document.getElementById("generarTablero");
@@ -80,6 +81,8 @@ document.addEventListener("DOMContentLoaded", () => {
             let casillaObjeto;
             if (casillaData.type === "property") {
               casillaObjeto = new Propiedad(casillaData);
+            }else if (casillaData.type === "tax") {
+              casillaObjeto = new Impuesto(casillaData);
             } else {
               casillaObjeto = new Casilla(casillaData);
             }
