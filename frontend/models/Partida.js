@@ -1,14 +1,14 @@
+import { mostrarToast } from "../controllers/toast.js";
 import { Dado } from "./Dado.js";
-import { Propiedad } from "./Propiedad.js"
+import { Propiedad } from "./Propiedad.js";
 
 export class Partida {
   constructor(jugadores = [], casillas = []) {
-    this.jugadores = jugadores;   // Array de instancias de Jugador
-    this.casillas = casillas;     // Array de instancias de Casilla
-    this.dados = new Dado();      // Instancia de Dado
-    this.turnoActual = 0;         // Índice del jugador que juega
-    this.enJuego = true;          // Estado de la partida
-
+    this.jugadores = jugadores; // Array de instancias de Jugador
+    this.casillas = casillas; // Array de instancias de Casilla
+    this.dados = new Dado(); // Instancia de Dado
+    this.turnoActual = 0; // Índice del jugador que juega
+    this.enJuego = true; // Estado de la partida
   }
 
   // Método para iniciar la partida
@@ -44,58 +44,76 @@ export class Partida {
   }
 
   // Manejar qué pasa cuando un jugador cae en una casilla
-jugadorCaeEnCasilla(jugador, casilla) {
-  switch (casilla.type) {
-    case "property":
-      if (!casilla.dueno) {
-        console.log(`${jugador.nombre} cayó en ${casilla.name}, está libre por $${casilla.price}.`);
-        // aquí el jugador decide si compra
-      } else if (casilla.dueno !== jugador) {
-        let renta = casilla.getRenta();
-        jugador.dinero -= renta;
-        casilla.dueno.dinero += renta;
-        console.log(`${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre}`);
-      } else {
-        console.log(`${jugador.nombre} cayó en su propia propiedad`);
-      }
-      break;
+  jugadorCaeEnCasilla(jugador, casilla) {
+    switch (casilla.type) {
+      case "property":
+        if (!casilla.dueno) {
+          console.log(
+            `${jugador.nombre} cayó en ${casilla.name}, está libre por $${casilla.price}.`
+          );
+          // aquí el jugador decide si compra
+        } else if (casilla.dueno !== jugador) {
+          let renta = casilla.getRenta();
+          jugador.dinero -= renta;
+          casilla.dueno.dinero += renta;
+          console.log(
+            `${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre}`
+          );
+        } else {
+          console.log(`${jugador.nombre} cayó en su propia propiedad`);
+        }
+        break;
 
-    case "railroad":
-      if (!casilla.dueno) {
-        console.log(`${jugador.nombre} cayó en ${casilla.name}, está libre por $${casilla.price}.`);
-      } else if (casilla.dueno !== jugador) {
-        let renta = casilla.getRenta(this.casillas); // la renta depende de cuántos railroads tiene el dueño
-        jugador.dinero -= renta;
-        casilla.dueno.dinero += renta;
-        console.log(`${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre} por usar el ferrocarril`);
-      } else {
-        console.log(`${jugador.nombre} cayó en su propio ferrocarril`);
-      }
-      break;
+      case "railroad":
+        if (!casilla.dueno) {
+          console.log(
+            `${jugador.nombre} cayó en ${casilla.name}, está libre por $${casilla.price}.`
+          );
+        } else if (casilla.dueno !== jugador) {
+          let renta = casilla.getRenta(this.casillas); // la renta depende de cuántos railroads tiene el dueño
+          jugador.dinero -= renta;
+          casilla.dueno.dinero += renta;
+          console.log(
+            `${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre} por usar el ferrocarril`
+          );
+        } else {
+          console.log(`${jugador.nombre} cayó en su propio ferrocarril`);
+        }
+        break;
 
-    case "tax":
-      casilla.aplicarImpuesto(jugador);
-      break;
+      case "tax":
+        casilla.aplicarImpuesto(jugador);
+        break;
 
-    case "community_chest":
-      // Sacar carta al azar
-      const randomIndex = Math.floor(Math.random() * this.communityChestDeck.length);
-      const carta = this.communityChestDeck[randomIndex];
-      console.log(`${jugador.nombre} cayó en ${casilla.name}. Sacó una carta de Caja de Comunidad: "${carta.description}"`);
-      carta.aplicar(jugador);
-      break;
+      case "community_chest":
+        // Sacar carta al azar
+        const randomIndex = Math.floor(
+          Math.random() * this.communityChestDeck.length
+        );
+        const carta = this.communityChestDeck[randomIndex];
+        console.log(
+          `${jugador.nombre} cayó en ${casilla.name}. Sacó una carta de Caja de Comunidad: "${carta.description}"`
+        );
+        carta.aplicar(jugador);
+        break;
 
-    default:
-      console.log(`${jugador.nombre} cayó en una casilla de tipo ${casilla.type}`);
+      default:
+        console.log(
+          `${jugador.nombre} cayó en una casilla de tipo ${casilla.type}`
+        );
+    }
   }
-}
 
-
-
+  tirarDados(jugador, fichas) {
+    const dado = Dado.lanzar().sumarDados();
+    mostrarToast(
+      `${jugador.nombre} ha sacado un ${Dado.dados[0]} y un ${Dado.dados[1]} (Total: ${dado})`
+    );
+    return jugador.mover(this.casillas.length, dado, fichas);
+  }
 
   // Partida.js
   toString() {
     return `Partida con ${this.jugadores.length} jugadores y ${this.casillas.length} casillas.`;
   }
-
 }
