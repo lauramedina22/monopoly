@@ -15,7 +15,6 @@ export class Jugador {
     this.puntaje = puntaje; // Puntuación del jugador
     this.propiedades = []; // lista de propiedades adquiridas
     this.hipotecas = []; // propiedades hipotecadas
-    this.prestamos = []; // préstamos activos
     this.posicion = 0; // posición en el tablero
     this.enCarcel = false; // estado de cárcel
     this.turnosEnCarcel = 0; // Turnos que lleva en carcel 
@@ -34,7 +33,6 @@ export class Jugador {
       puntaje: this.puntaje,
       propiedades: this.propiedades.map((p) => p.name),
       hipotecas: this.hipotecas.map((p) => p.name),
-      prestamos: this.prestamos,
       posicion: this.posicion,
     };
   }
@@ -67,7 +65,6 @@ export class Jugador {
       puntaje: this.puntaje,
       propiedades: this.propiedades,
       hipotecas: this.hipotecas,
-      prestamos: this.prestamos,
     };
   }
 
