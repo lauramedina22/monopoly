@@ -139,7 +139,7 @@ export class Propiedad extends Casilla {
       return;
     }
 
-    this.hipotecada = true; // <<--- importante
+    this.hipotecada = true; 
     jugador.hipotecas.push(this);
     jugador.dinero += this.mortgage;
     mostrarToast(`${jugador.nombre} hipotecó ${this.name} por $${this.mortgage}`);

@@ -362,10 +362,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     partida.jugadorCaeEnCasilla(jugador, casilla);
 
-
-
   });
-
 
   document.getElementById("comprarPropiedad").addEventListener("click", () => {
     const idx = selector.value;
