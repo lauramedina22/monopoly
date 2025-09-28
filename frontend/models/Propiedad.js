@@ -237,6 +237,6 @@ export class Propiedad extends Casilla {
 
   toString() {
     let duenoNombre = this.dueno ? this.dueno.nombre : "Nadie";
-    return `${this.name} (${this.color}) | Precio: $${this.price} |`;
+    return `${this.name}${this.color ? ` (${this.color})` : ""} | Precio: $${this.price} |`;
   }
 }
