@@ -27,6 +27,33 @@ export class Partida {
     });
   }
 
+  sincronizarJugadores() {
+    const jugadoresParaGuardar = this.jugadores.map((jugador) => ({
+      nombre: jugador.nombre,
+      paisNombre: jugador.paisNombre,
+      paisCodigo: jugador.paisCodigo,
+      colorFicha: jugador.colorFicha,
+      dinero: jugador.dinero,
+      puntaje: jugador.puntaje,
+      propiedades: jugador.propiedades.map((prop) => ({
+        id: prop.id,
+        name: prop.name,
+        price: prop.price,
+        casas: prop.casas,
+        hotel: prop.hotel,
+        hipotecada: prop.hipotecada,
+      })),
+      hipotecas: jugador.hipotecas.map((prop) => ({
+        id: prop.id,
+        name: prop.name,
+        price: prop.price,
+      })),
+      prestamos: jugador.prestamos,
+      posicion: jugador.posicion,
+    }));
+    localStorage.setItem("jugadores", JSON.stringify(jugadoresParaGuardar));
+  }
+
   // Ejecutar el turno de un jugador
   turno() {
     const jugador = this.jugadores[this.turnoActual];
@@ -166,6 +193,7 @@ export class Partida {
           `${jugador.nombre} cayó en una casilla de tipo ${casilla.type}`
         );
     }
+    this.sincronizarJugadores();
   }
 
   posicionarFichaEnCasilla(ficha, casillaElem) {
