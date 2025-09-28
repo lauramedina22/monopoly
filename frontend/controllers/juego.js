@@ -11,7 +11,7 @@ import { Sorpresa } from "../models/Sorpresa.js";
 const colors = {
   rojo: "#ff4d4d",
   azul: "#4d79ff",
-  verde: "#004030",
+  verde: "#079c27ff",
   amarillo: "#ffff4d",
 };
 
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
       `  Hipotecas: ${jugador.hipotecas.map((p) => p.nombre).join(", ") || "Ninguna"
       }`,
     );
-    console.log(`  Puntaje: ${jugador.puntaje}`);
+
   });
 
   btnCargar.addEventListener("click", cargarTablero);
@@ -280,7 +280,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }/shiny/64.png" alt="Bandera de ${jugador.paisNombre}" class="me-2"></p>
       <p><strong>Ficha:</strong> ${jugador.colorFicha}</p>
       <p><strong>Dinero:</strong> $${jugador.dinero}</p>
-      <p><strong>Puntaje:</strong> ${jugador.puntaje ?? 0}</p>
       <p><strong>Propiedades:</strong> ${jugador.propiedades?.join(", ") || "Ninguna"
         }</p>
       <p><strong>Hipotecas:</strong> ${jugador.hipotecas?.join(", ") || "Ninguna"

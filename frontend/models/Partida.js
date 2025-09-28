@@ -48,7 +48,6 @@ export class Partida {
         name: prop.name,
         price: prop.price,
       })),
-      prestamos: jugador.prestamos,
       posicion: jugador.posicion,
     }));
     localStorage.setItem("jugadores", JSON.stringify(jugadoresParaGuardar));
