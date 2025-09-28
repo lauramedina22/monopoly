@@ -2,28 +2,29 @@ import { Propiedad } from "./Propiedad.js";
 
 export class Ferrocarril extends Propiedad {
   constructor(data) {
-    super(data); // reutilizamos name, price, mortgage, rent...
-    this.type = "railroad"; // forzar tipo
+    super(data);
+    this.type = "railroad";
+    this.railRent = data.rent || {};
+  }
+
+  // Anular construcción de casas/hoteles
+  construirCasa() {
+    console.warn("No se pueden construir casas en un ferrocarril.");
+    // opcional: mostrarToast("No se pueden construir casas en un ferrocarril.");
+  }
+
+  construirHotel() {
+    console.warn("No se pueden construir hoteles en un ferrocarril.");
+    // opcional: mostrarToast("No se pueden construir hoteles en un ferrocarril.");
   }
 
   getRenta() {
     if (!this.dueno) return 0;
-
-    // Contar cuántos railroads tiene el mismo dueño
     const cantidad = this.dueno.propiedades.filter(
-      (p) => p.type === "railroad"
+      (p) => p && p.type === "railroad"
     ).length;
-
-    // Tabla de rentas
-    const rentas = [25, 50, 100, 200];
-
-    // Proteger que cantidad no se salga del arreglo
-    return rentas[cantidad - 1] || 25;
-  }
-
-  toString() {
-    return `Railroad ${this.name} | Precio: $${this.price} | Dueño: ${
-      this.dueno ? this.dueno.nombre : "Nadie"
-    }`;
+    const rentValue =
+      this.railRent[cantidad] ?? this.railRent[String(cantidad)];
+    return Number.isFinite(rentValue) ? rentValue : 25;
   }
 }

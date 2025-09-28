@@ -4,11 +4,37 @@ const API_BASE = "http://127.0.0.1:5000";
 
 let jugadores = JSON.parse(localStorage.getItem("jugadores")) || [];
 
+const calcularPatrimonio = (jugador) => {
+  console.log("Calculando patrimonio de:", jugador);
+  let patrimonio = jugador.dinero;
+
+  jugador.propiedades.forEach((prop) => {
+    patrimonio += prop.precio;
+    if (prop.casas) {
+      patrimonio += prop.casas * 100;
+    }
+    if (prop.hotel) {
+      patrimonio += 200;
+    }
+  });
+
+  jugador.hipotecas.forEach((prop) => {
+    patrimonio -= prop.precio;
+    if (prop.casas) {
+      patrimonio -= prop.casas * 100;
+    }
+    if (prop.hotel) {
+      patrimonio -= 200;
+    }
+  });
+  return patrimonio;
+};
+
 async function enviarResultados() {
   if (jugadores.length === 0) {
     mostrarToast(
       "No hay jugadores registrados para finalizar el juego.",
-      "warning"
+      "warning",
     );
     return;
   }
@@ -21,6 +47,8 @@ async function enviarResultados() {
         country_code: jugador.paisCodigo,
       };
 
+      console.log("Enviando al backend:", jugadorData);
+
       const res = await fetch(`${API_BASE}/score-recorder`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -32,13 +60,11 @@ async function enviarResultados() {
       }
     }
 
-    mostrarMensaje(
-      "✅ Resultados enviados correctamente. El juego ha finalizado.",
-      "success"
-    );
+    mostrarToast("✅ Resultados enviados correctamente.", "success");
 
     cargarRanking();
   } catch (err) {
+    console.error(err);
     mostrarToast("❌ Ocurrió un error al enviar los resultados.", "danger");
   }
 }
@@ -68,10 +94,5 @@ async function cargarRanking() {
   }
 }
 
-// === Eventos ===
-document
-  .getElementById("finalizarBtn")
-  .addEventListener("click", enviarResultados);
-
-// === Ranking inicial ===
+enviarResultados();
 cargarRanking();

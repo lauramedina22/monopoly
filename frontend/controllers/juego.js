@@ -6,6 +6,7 @@ import { mostrarToast } from "../controllers/toast.js";
 import { Impuesto } from "../models/Impuesto.js";
 import { Ferrocarril } from "../models/Ferrocarril.js";
 import { CofreComunidad } from "../models/CofreComunidad.js";
+import { Sorpresa } from "../models/Sorpresa.js";
 
 const colors = {
   rojo: "#ff4d4d",
@@ -14,21 +15,21 @@ const colors = {
   amarillo: "#ffff4d",
 };
 
+let partida;
+
 document.addEventListener("DOMContentLoaded", () => {
   let btnCargar = document.getElementById("generarTablero");
   let tablero = document.getElementById("tablero");
-  let fichas = {}; // Almacena los elementos ficha por jugador
-  // 1. Recuperar jugadores desde localStorage
   let jugadoresGuardados = JSON.parse(localStorage.getItem("jugadores")) || [];
 
   // Convertirlos de nuevo en objetos Jugador
   const jugadores = jugadoresGuardados.map(
     (j) =>
-      new Jugador(j.nombre, j.paisNombre, j.paisCodigo, j.colorFicha, j.dinero)
+      new Jugador(j.nombre, j.paisNombre, j.paisCodigo, j.colorFicha, j.dinero),
   );
 
   // 2. Crear la partida con los jugadores
-  const partida = new Partida(jugadores);
+ partida = new Partida(jugadores);
   jugadores.forEach((jugador, idx) => {
     const ficha = document.createElement("div");
     ficha.className = "ficha-jugador";
@@ -36,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ficha.style.backgroundColor =
       colors[jugador.colorFicha.trim().toLowerCase()] || "#000";
     ficha.title = jugador.nombre;
-    fichas[jugador.nombre] = ficha;
+    partida.fichas[jugador.nombre] = ficha;
   });
   // 3. (opcional) Mostrar el estado inicial de cada jugador
   jugadores.forEach((jugador) => {
@@ -45,12 +46,14 @@ document.addEventListener("DOMContentLoaded", () => {
     console.log(`  Color de ficha: ${jugador.colorFicha}`);
     console.log(`  Dinero: $${jugador.dinero}`);
     console.log(
-      `  Propiedades: ${jugador.propiedades.map((p) => p.nombre).join(", ") || "Ninguna"
-      }`
+      `  Propiedades: ${
+        jugador.propiedades.map((p) => p.nombre).join(", ") || "Ninguna"
+      }`,
     );
     console.log(
-      `  Hipotecas: ${jugador.hipotecas.map((p) => p.nombre).join(", ") || "Ninguna"
-      }`
+      `  Hipotecas: ${
+        jugador.hipotecas.map((p) => p.nombre).join(", ") || "Ninguna"
+      }`,
     );
     console.log(`  Préstamos: ${jugador.prestamos.length}`);
     console.log(`  Puntaje: ${jugador.puntaje}`);
@@ -121,8 +124,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         console.log(
           "Cartas de Caja de Comunidad creadas:",
-          partida.communityChestDeck
+          partida.communityChestDeck,
         );
+
+        // Crear mazo de cartas de Sorpresa
+        partida.chancesDeck = [];
+        for (let cartaData of casillas.chance) {
+          const carta = new Sorpresa(cartaData);
+          partida.chancesDeck.push(carta);
+        }
+
+        console.log("Cartas de Sorpresa creadas:", partida.chancesDeck);
 
         /**
          * Función interna `render`
@@ -158,8 +170,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 ? `<p>$${casilla.price}</p>`
                 : "";
               top.innerHTML += `
-                          <div class="casilla ${casilla.color || ""}" id="${casilla.id
-                }">
+                          <div class="casilla ${casilla.color || ""}" id="${
+                            casilla.id
+                          }">
                               ${casilla.name}
                               ${precioHtml}
                           </div>`;
@@ -174,8 +187,9 @@ document.addEventListener("DOMContentLoaded", () => {
               const precioHtml = casillaObjeto.price
                 ? `<p>$${casillaObjeto.price}</p>`
                 : "";
-              bottom.innerHTML += `<div class="casilla bottom ${casillaObjeto.color || ""
-                }" id="${casillaObjeto.id}">
+              bottom.innerHTML += `<div class="casilla bottom ${
+                casillaObjeto.color || ""
+              }" id="${casillaObjeto.id}">
                 ${casillaObjeto.name}
                 ${precioHtml}
             </div>`;
@@ -186,8 +200,9 @@ document.addEventListener("DOMContentLoaded", () => {
               const precioHtml = casillaObjeto.price
                 ? `<p>$${casillaObjeto.price}</p>`
                 : "";
-              left.innerHTML += `<div class="casilla left ${casillaObjeto.color || ""
-                }" id="${casillaObjeto.id}">
+              left.innerHTML += `<div class="casilla left ${
+                casillaObjeto.color || ""
+              }" id="${casillaObjeto.id}">
                 ${casillaObjeto.name}
                 ${precioHtml}
             </div>`;
@@ -198,8 +213,9 @@ document.addEventListener("DOMContentLoaded", () => {
               const precioHtml = casillaObjeto.price
                 ? `<p>$${casillaObjeto.price}</p>`
                 : "";
-              top.innerHTML += `<div class="casilla top ${casillaObjeto.color || ""
-                }" id="${casillaObjeto.id}">
+              top.innerHTML += `<div class="casilla top ${
+                casillaObjeto.color || ""
+              }" id="${casillaObjeto.id}">
                 ${casillaObjeto.name}
                 ${precioHtml}
             </div>`;
@@ -210,8 +226,9 @@ document.addEventListener("DOMContentLoaded", () => {
               const precioHtml = casillaObjeto.price
                 ? `<p>$${casillaObjeto.price}</p>`
                 : "";
-              right.innerHTML += `<div class="casilla right ${casillaObjeto.color || ""
-                }" id="${casillaObjeto.id}">
+              right.innerHTML += `<div class="casilla right ${
+                casillaObjeto.color || ""
+              }" id="${casillaObjeto.id}">
                 ${casillaObjeto.name}
                 ${precioHtml}
             </div>`;
@@ -219,10 +236,10 @@ document.addEventListener("DOMContentLoaded", () => {
           }
 
           jugadores.forEach((jugador, idx) => {
-            const ficha = fichas[jugador.nombre];
+            const ficha = partida.fichas[jugador.nombre];
             const casillaInicial = document.getElementById("0");
             if (casillaInicial && ficha) {
-              posicionarFichaEnCasilla(ficha, casillaInicial);
+              partida.posicionarFichaEnCasilla(ficha, casillaInicial);
               jugador.posicion = 0;
             }
           });
@@ -266,16 +283,20 @@ document.addEventListener("DOMContentLoaded", () => {
     if (jugador) {
       infoJugador.innerHTML = `
       <p><strong>Usuario:</strong> ${jugador.nombre}</p>
-      <p><strong>País:</strong> <span>${jugador.paisCodigo
-        }</span> <img src="https://flagsapi.com/${jugador.paisCodigo
-        }/shiny/64.png" alt="Bandera de ${jugador.paisNombre}" class="me-2"></p>
+      <p><strong>País:</strong> <span>${
+        jugador.paisCodigo
+      }</span> <img src="https://flagsapi.com/${
+        jugador.paisCodigo
+      }/shiny/64.png" alt="Bandera de ${jugador.paisNombre}" class="me-2"></p>
       <p><strong>Ficha:</strong> ${jugador.colorFicha}</p>
       <p><strong>Dinero:</strong> $${jugador.dinero}</p>
       <p><strong>Puntaje:</strong> ${jugador.puntaje ?? 0}</p>
-      <p><strong>Propiedades:</strong> ${jugador.propiedades?.join(", ") || "Ninguna"
-        }</p>
-      <p><strong>Hipotecas:</strong> ${jugador.hipotecas?.join(", ") || "Ninguna"
-        }</p>
+      <p><strong>Propiedades:</strong> ${
+        jugador.propiedades?.join(", ") || "Ninguna"
+      }</p>
+      <p><strong>Hipotecas:</strong> ${
+        jugador.hipotecas?.join(", ") || "Ninguna"
+      }</p>
       <p><strong>Préstamos:</strong> ${jugador.prestamos?.length || 0}</p>
 
     `;
@@ -285,29 +306,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Función para posicionar la ficha en una casilla
-  function posicionarFichaEnCasilla(ficha, casillaElem) {
-    // Busca o crea el contenedor de fichas dentro de la casilla
-    let contenedor = casillaElem.querySelector(".ficha-container");
-    if (!contenedor) {
-      contenedor = document.createElement("div");
-      contenedor.className = "ficha-container";
-      casillaElem.style.position = "relative";
-      casillaElem.appendChild(contenedor);
-    }
-    // Elimina la ficha de cualquier contenedor anterior
-    if (ficha.parentElement && ficha.parentElement !== contenedor) {
-      ficha.parentElement.removeChild(ficha);
-    }
-    // Añade la ficha al contenedor de la casilla
-    if (!contenedor.contains(ficha)) {
-      contenedor.appendChild(ficha);
-    }
-  }
-
   // Evento para pruebas rápidas con input de casilla
   document.getElementById("btnTestDados").addEventListener("click", () => {
-    const idx = selector.value; // jugador seleccionado
+    const idx = selector.value;
     const jugador = jugadores[idx];
     if (!jugador) {
       mostrarToast("Por favor selecciona un jugador");
@@ -325,13 +326,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Mover ficha en el DOM
     const casillaElem = document.getElementById(idCasilla);
-    posicionarFichaEnCasilla(fichas[jugador.nombre], casillaElem);
+    partida.posicionarFichaEnCasilla(
+      partida.fichas[jugador.nombre],
+      casillaElem,
+    );
 
     // Obtener casilla lógica
     const casilla = partida.casillas[idCasilla];
     console.log("Prueba rápida: jugadorCaeEnCasilla...", idCasilla, casilla);
 
-    // Ejecutar lógica de la casilla
     partida.jugadorCaeEnCasilla(jugador, casilla);
 
   });
@@ -362,7 +365,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     partida.jugadorCaeEnCasilla(jugador, casilla);
 
+
+
   });
+
 
   document.getElementById("comprarPropiedad").addEventListener("click", () => {
     const idx = selector.value;

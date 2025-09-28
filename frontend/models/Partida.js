@@ -7,8 +7,9 @@ import { Propiedad } from "./Propiedad.js";
 export class Partida {
   constructor(jugadores = [], casillas = []) {
     this.jugadores = jugadores; // Array de instancias de Jugador
+    this.fichas = {}; // Mapa de fichas por jugador
     this.casillas = casillas; // Array de instancias de Casilla
-    this.dados = new Dado(); // Instancia de Dado
+    this.dado = Dado; // Instancia de Dado
     this.turnoActual = 0; // Índice del jugador que juega
     this.enJuego = true; // Estado de la partida
   }
@@ -29,19 +30,7 @@ export class Partida {
   // Ejecutar el turno de un jugador
   turno() {
     const jugador = this.jugadores[this.turnoActual];
-    console.log(`\nTurno de ${jugador.nombre}`);
-
-    const tirada = this.dados.lanzar();
-    console.log(`${jugador.nombre} lanzó los dados: ${tirada.total}`);
-
-    // mover jugador y obtener casilla donde cae
-    jugador.mover(tirada.total, this.casillas.length);
-    const casilla = this.casillas[jugador.posicion];
-
-    // procesar casilla
-    this.jugadorCaeEnCasilla(jugador, casilla);
-
-    // Avanzar turno al siguiente jugador
+    this.tirarDados(jugador);
     this.turnoActual = (this.turnoActual + 1) % this.jugadores.length;
   }
 
@@ -56,55 +45,110 @@ export class Partida {
           let renta = casilla.getRenta();
           jugador.dinero -= renta;
           casilla.dueno.dinero += renta;
-          mostrarToast(`${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre}`);
+          mostrarToast(
+            `${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre}`,
+          );
         } else if (casilla.dueno !== jugador && casilla.hipotecada) {
-          mostrarToast(`La propiedad ${casilla.name} está hipotecada, no se paga renta.`);
+          mostrarToast(
+            `La propiedad ${casilla.name} está hipotecada, no se paga renta.`,
+          );
         } else {
           mostrarToast(`${jugador.nombre} cayó en su propia propiedad`);
           mostrarModalCasilla(casilla, jugador);
         }
         break;
 
-
       case "railroad":
         if (!casilla.dueno) {
-          mostrarToast(`${jugador.nombre} cayó en ${casilla.name}, libre por $${casilla.price}`);
-        } else if (casilla.dueno !== jugador) {
-          let renta = casilla.getRenta(this.casillas);
+          mostrarModalCasilla(casilla, jugador);
+        } else if (casilla.dueno !== jugador && !casilla.hipotecada) {
+          let renta = casilla.getRenta();
           jugador.dinero -= renta;
           casilla.dueno.dinero += renta;
-          mostrarToast(`${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre} por el ferrocarril`);
+          mostrarToast(
+            `${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre}`,
+          );
+        } else if (casilla.dueno !== jugador && casilla.hipotecada) {
+          mostrarToast(
+            `El ferrocarril ${casilla.name} está hipotecada, no se paga renta.`,
+          );
         } else {
           mostrarToast(`${jugador.nombre} cayó en su propio ferrocarril`);
+          mostrarModalCasilla(casilla, jugador);
         }
         break;
 
       case "tax":
         casilla.aplicarImpuesto(jugador);
+        mostrarToast(`${jugador.nombre} pagó impuesto de $${casilla.monto}`);
         break;
 
       case "community_chest":
-        const randomIndex = Math.floor(Math.random() * this.communityChestDeck.length);
+        const randomIndex = Math.floor(
+          Math.random() * this.communityChestDeck.length,
+        );
         const carta = this.communityChestDeck[randomIndex];
         mostrarToast(`${jugador.nombre} sacó: ${carta.description}`);
         carta.aplicar(jugador);
         break;
 
+      case "chance":
+        const randomChanceIndex = Math.floor(
+          Math.random() * this.chancesDeck.length,
+        );
+        const cartaSorpresa = this.chancesDeck[randomChanceIndex];
+        console.log(`${jugador.nombre} sacó: ${cartaSorpresa.description}`);
+        const montoSorpresa = cartaSorpresa.aplicar(jugador);
+        mostrarToast(`${jugador.nombre} sacó: ${cartaSorpresa.description}`);
+        break;
+
       default:
-        mostrarToast(`${jugador.nombre} cayó en una casilla de tipo ${casilla.type}`);
+        mostrarToast(
+          `${jugador.nombre} cayó en una casilla de tipo ${casilla.type}`,
+        );
+    }
+  }
+
+  posicionarFichaEnCasilla(ficha, casillaElem) {
+    console.log(casillaElem);
+    let contenedor = casillaElem.querySelector(".ficha-container");
+    if (!contenedor) {
+      contenedor = document.createElement("div");
+      contenedor.className = "ficha-container";
+      casillaElem.style.position = "relative";
+      casillaElem.appendChild(contenedor);
+    }
+    if (ficha.parentElement && ficha.parentElement !== contenedor) {
+      ficha.parentElement.removeChild(ficha);
+    }
+    // Añade la ficha al contenedor de la casilla
+    if (!contenedor.contains(ficha)) {
+      contenedor.appendChild(ficha);
     }
   }
 
   tirarDados(jugador) {
-    const dado = Dado.lanzar().sumarDados();
+    const total = this.dado.lanzar().sumarDados();
+
+    if (this.casillas.length === 0) {
+      mostrarToast("Error: No hay casillas definidas en la partida.");
+      return;
+    }
+
     mostrarToast(
-      `${jugador.nombre} ha sacado un ${Dado.dados[0]} y un ${Dado.dados[1]} (Total: ${dado})`
+      `${jugador.nombre} ha sacado un ${Dado.dados[0]} y un ${Dado.dados[1]} (Total: ${total})`,
     );
-    const nuevaPos = jugador.mover(this.casillas.length, dado);
-    return nuevaPos; // número
+
+    const nuevaPos = jugador.mover(this.casillas.length, total);
+    const casillaElem = document.getElementById(nuevaPos);
+
+    this.posicionarFichaEnCasilla(this.fichas[jugador.nombre], casillaElem);
+
+    const casilla = this.casillas[nuevaPos];
+    console.log("DEBUG casilla destino:", nuevaPos, casilla);
+    this.jugadorCaeEnCasilla(jugador, casilla);
   }
 
-  // Partida.js
   toString() {
     return `Partida con ${this.jugadores.length} jugadores y ${this.casillas.length} casillas.`;
   }
