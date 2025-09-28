@@ -55,7 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
         jugador.hipotecas.map((p) => p.nombre).join(", ") || "Ninguna"
       }`,
     );
-    console.log(`  Préstamos: ${jugador.prestamos.length}`);
     console.log(`  Puntaje: ${jugador.puntaje}`);
   });
 
@@ -297,7 +296,6 @@ document.addEventListener("DOMContentLoaded", () => {
       <p><strong>Hipotecas:</strong> ${
         jugador.hipotecas?.join(", ") || "Ninguna"
       }</p>
-      <p><strong>Préstamos:</strong> ${jugador.prestamos?.length || 0}</p>
 
     `;
 
