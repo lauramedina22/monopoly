@@ -1,3 +1,172 @@
+/* Layout principal */
+.contenedor {
+  padding: 2rem;
+  min-height: 100vh;
+  background-color: transparent;
+}
+
+/* Contenedor del tablero - más espacioso */
+.tablero {
+  width: min(95vh, 95vw);
+  height: min(95vh, 95vw);
+  max-width: 90rem;
+  max-height: 90rem;
+  margin: 0 auto 2rem auto;
+}
+
+/* Grid principal del tablero */
+#tablero {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  grid-template-rows: repeat(11, 1fr);
+  width: 100%;
+  height: 100%;
+  border: 0.3rem solid #333;
+  background-color: #e8f5e8;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+/* Contenedores de cada lado del tablero */
+#top {
+  grid-row: 1;
+  grid-column: 1 / span 11;
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+}
+
+#bottom {
+  grid-row: 11;
+  grid-column: 1 / span 11;
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+}
+
+#left {
+  grid-row: 2 / span 9;
+  grid-column: 1;
+  display: grid;
+  grid-template-rows: repeat(9, 1fr);
+}
+
+#right {
+  grid-row: 2 / span 9;
+  grid-column: 11;
+  display: grid;
+  grid-template-rows: repeat(9, 1fr);
+}
+
+/* Centro del tablero */
+#center {
+  grid-row: 2 / span 9;
+  grid-column: 2 / span 9;
+  background: linear-gradient(135deg, #e8f5e8, #d4edda);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Contenedor del logo en el centro */
+.centro-monopoly {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Logo de Monopoly en el centro */
+.logo-monopoly {
+  max-width: 60%;
+  max-height: 60%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0.1rem 0.1rem 0.3rem rgba(0, 0, 0, 0.3));
+  transition: transform 0.2s ease;
+}
+
+.logo-monopoly:hover {
+  transform: scale(1.02);
+}
+
+/* Estado cuando no hay tablero generado */
+#tablero:not(.tablero-generado) .logo-monopoly {
+  max-width: 80%;
+  max-height: 80%;
+}
+
+/* Texto de respaldo si la imagen no carga */
+.centro-monopoly::after {
+  content: "MONOPOLY";
+  font-size: clamp(1.2rem, 3vmin, 2.5rem);
+  font-weight: bold;
+  color: #2c5530;
+  text-shadow: 0.1rem 0.1rem 0.3rem rgba(0, 0, 0, 0.3);
+  position: absolute;
+  z-index: -1;
+  opacity: 0.7;
+}
+
+/* Casillas del tablero */
+.casilla {
+  border: 0.15rem solid #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(0.6rem, 1.5vmin, 0.9rem);
+  text-align: center;
+  box-sizing: border-box;
+  background-color: white;
+  padding: clamp(0.8rem, 2vmin, 1.5rem);
+  font-weight: bold;
+  overflow: hidden;
+  line-height: 1.1;
+  word-wrap: break-word;
+  min-height: 0;
+  aspect-ratio: 1;
+  gap: 0.2rem;
+}
+
+/* Precios en las casillas */
+.casilla p {
+  margin: 0.2rem 0 0 0;
+  font-size: clamp(0.7rem, 1.8vmin, 1rem);
+  font-weight: 600;
+  color: #666;
+}
+
+/* Casillas de esquina */
+.casilla[id="0"],
+.casilla[id="10"],
+.casilla[id="20"],
+.casilla[id="30"] {
+  background-color: #fff8dc;
+  border-width: 0.2rem;
+  font-size: clamp(0.8rem, 2vmin, 1.2rem);
+  padding: clamp(0.5rem, 1.5vmin, 1rem);
+  line-height: 1.2;
+  font-weight: bold;
+}
+
+/* Colores de propiedades */
+.casilla.red {
+  background: linear-gradient(to bottom, #dc3545 0%, #dc3545 25%, white 25%);
+  padding-top: calc(25% + 0.3rem);
+  justify-content: flex-start;
+}
+
+.casilla.blue {
+  background: linear-gradient(to bottom, #0d6efd 0%, #0d6efd 25%, white 25%);
+  padding-top: calc(25% + 0.3rem);
+  justify-content: flex-start;
+
 }
 
 .casilla.green {

@@ -2,16 +2,14 @@ import { mostrarToast } from "../controllers/toast.js";
 
 const API_BASE = "http://127.0.0.1:5000";
 
-let jugadores = JSON.parse(localStorage.getItem("jugadores")) || [];
 
 const calcularPatrimonio = (jugador) => {
-  console.log("Calculando patrimonio de:", jugador);
   let patrimonio = jugador.dinero;
 
   jugador.propiedades.forEach((prop) => {
-    patrimonio += prop.precio;
+    patrimonio += prop.price;
     if (prop.casas) {
-      patrimonio += prop.casas * 100;
+      patrimonio += 100;
     }
     if (prop.hotel) {
       patrimonio += 200;
@@ -19,9 +17,9 @@ const calcularPatrimonio = (jugador) => {
   });
 
   jugador.hipotecas.forEach((prop) => {
-    patrimonio -= prop.precio;
+    patrimonio -= prop.price;
     if (prop.casas) {
-      patrimonio -= prop.casas * 100;
+      patrimonio -= 100;
     }
     if (prop.hotel) {
       patrimonio -= 200;
@@ -31,6 +29,8 @@ const calcularPatrimonio = (jugador) => {
 };
 
 async function enviarResultados() {
+  let jugadores = JSON.parse(localStorage.getItem("jugadores")) || [];
+
   if (jugadores.length === 0) {
     mostrarToast(
       "No hay jugadores registrados para finalizar el juego.",

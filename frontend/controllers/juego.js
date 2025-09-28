@@ -341,4 +341,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("tirarDados")
     .addEventListener("click", partida.turno.bind(partida));
-});
+  document.getElementById("btnFinalizar").addEventListener("click", () => {
+    partida.sincronizarJugadores();
+    window.location.href = "../views/finalizacion.html";
+  });
+  });
+
