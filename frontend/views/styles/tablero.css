@@ -8,8 +8,10 @@
 /* Contenedor del tablero - más espacioso */
 .tablero {
   width: min(95vh, 95vw);
+  /* Usar el menor entre alto y ancho disponible */
   height: min(95vh, 95vw);
   max-width: 90rem;
+  /* Límite más generoso */
   max-height: 90rem;
   margin: 0 auto 2rem auto;
 }
@@ -28,7 +30,7 @@
   overflow: hidden;
 }
 
-/* Contenedores de cada lado del tablero */
+/* Contenedores de cada lado del tablero - volvemos al original */
 #top {
   grid-row: 1;
   grid-column: 1 / span 11;
@@ -57,7 +59,7 @@
   grid-template-rows: repeat(9, 1fr);
 }
 
-/* Centro del tablero */
+/* Centro del tablero - con imagen controlada */
 #center {
   grid-row: 2 / span 9;
   grid-column: 2 / span 9;
@@ -67,6 +69,7 @@
   align-items: center;
   position: relative;
   overflow: hidden;
+  /* Evita que la imagen se desborde */
 }
 
 /* Contenedor del logo en el centro */
@@ -80,7 +83,7 @@
   max-height: 100%;
 }
 
-/* Logo de Monopoly en el centro */
+/* Logo de Monopoly en el centro - controlado y responsive */
 .logo-monopoly {
   max-width: 60%;
   max-height: 60%;
@@ -95,7 +98,7 @@
   transform: scale(1.02);
 }
 
-/* Estado cuando no hay tablero generado */
+/* Estado cuando no hay tablero generado - imagen un poco más grande */
 #tablero:not(.tablero-generado) .logo-monopoly {
   max-width: 80%;
   max-height: 80%;
@@ -113,7 +116,15 @@
   opacity: 0.7;
 }
 
-/* Casillas del tablero */
+/* Precios en las casillas */
+.casilla p {
+  margin: 0.2rem 0 0 0;
+  font-size: clamp(0.7rem, 1.8vmin, 1rem);
+  font-weight: 600;
+  color: #666;
+}
+
+/* Casillas del tablero - cuadradas con más espacio */
 .casilla {
   border: 0.15rem solid #333;
   display: flex;
@@ -125,24 +136,51 @@
   box-sizing: border-box;
   background-color: white;
   padding: clamp(0.8rem, 2vmin, 1.5rem);
+  /* Más padding para más espacio */
   font-weight: bold;
   overflow: hidden;
   line-height: 1.1;
   word-wrap: break-word;
   min-height: 0;
   aspect-ratio: 1;
+  /* Casillas cuadradas */
   gap: 0.2rem;
+  /* Espacio entre la franja y el contenido */
 }
 
-/* Precios en las casillas */
-.casilla p {
-  margin: 0.2rem 0 0 0;
-  font-size: clamp(0.7rem, 1.8vmin, 1rem);
-  font-weight: 600;
-  color: #666;
+.propietario-rojo {
+  background-color: #dc3545;
 }
 
-/* Casillas de esquina */
+.propietario-verde {
+  background-color: #198754;
+}
+
+.propietario-azul {
+  background-color: #0d6efd;
+}
+
+.propietario-amarillo {
+  background-color: #fedc79;
+}
+
+
+
+/* Separación entre franja de color y texto */
+.casilla.red,
+.casilla.blue,
+.casilla.green,
+.casilla.yellow,
+.casilla.pink,
+.casilla.purple,
+.casilla.brown,
+.casilla.orange {
+  padding-top: calc(25% + 0.3rem);
+  /* Margen después de la franja de color */
+  justify-content: flex-start;
+}
+
+/* Casillas de esquina - texto más grande y legible */
 .casilla[id="0"],
 .casilla[id="10"],
 .casilla[id="20"],
@@ -150,7 +188,9 @@
   background-color: #fff8dc;
   border-width: 0.2rem;
   font-size: clamp(0.8rem, 2vmin, 1.2rem);
+  /* Texto mucho más grande */
   padding: clamp(0.5rem, 1.5vmin, 1rem);
+  /* Más padding en esquinas */
   line-height: 1.2;
   font-weight: bold;
 }
@@ -158,53 +198,45 @@
 /* Colores de propiedades */
 .casilla.red {
   background: linear-gradient(to bottom, #dc3545 0%, #dc3545 25%, white 25%);
-  padding-top: calc(25% + 0.3rem);
-  justify-content: flex-start;
 }
 
 .casilla.blue {
   background: linear-gradient(to bottom, #0d6efd 0%, #0d6efd 25%, white 25%);
-  padding-top: calc(25% + 0.3rem);
-  justify-content: flex-start;
 }
 
 .casilla.green {
   background: linear-gradient(to bottom, #198754 0%, #198754 25%, white 25%);
-  padding-top: calc(25% + 0.3rem);
-  justify-content: flex-start;
 }
 
 .casilla.yellow {
   background: linear-gradient(to bottom, #ffc107 0%, #ffc107 25%, white 25%);
-  padding-top: calc(25% + 0.3rem);
-  justify-content: flex-start;
 }
 
 .casilla.pink {
   background: linear-gradient(to bottom, #d63384 0%, #d63384 25%, white 25%);
-  padding-top: calc(25% + 0.3rem);
-  justify-content: flex-start;
 }
 
 .casilla.purple {
   background: linear-gradient(to bottom, #6f42c1 0%, #6f42c1 25%, white 25%);
-  padding-top: calc(25% + 0.3rem);
-  justify-content: flex-start;
 }
 
 .casilla.brown {
   background: linear-gradient(to bottom, #8b4513 0%, #8b4513 25%, white 25%);
-  padding-top: calc(25% + 0.3rem);
-  justify-content: flex-start;
 }
 
 .casilla.orange {
   background: linear-gradient(to bottom, #fd7e14 0%, #fd7e14 25%, white 25%);
-  padding-top: calc(25% + 0.3rem);
-  justify-content: flex-start;
 }
 
-/* Botón "Generar Tablero" */
+/* Casillas especiales */
+.casilla.compania-electrica {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Botón "Generar Tablero" - debajo del tablero y centrado */
 .btn-generar-tablero {
   display: block;
   margin: 1.5rem auto 0 auto;
@@ -225,7 +257,7 @@
   color: white;
 }
 
-/* Panel de controles simplificado */
+/* Panel de controles inferior - mejor organización y centrado */
 .panel-controles {
   background: white;
   border-radius: 1rem;
@@ -233,26 +265,28 @@
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
   margin-top: 2rem;
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Solo 2 columnas: Jugador | Acciones */
-  gap: 4rem;
+  grid-template-columns: 1fr 2fr 1fr;
+  /* Jugador | Acciones | Intercambios */
+  gap: 3rem;
   align-items: start;
 }
 
-/* Secciones del panel */
 .seccion-jugador,
-.seccion-acciones {
+.seccion-acciones,
+.seccion-intercambios {
   text-align: center;
 }
 
 .seccion-jugador h3,
-.seccion-acciones h3 {
+.seccion-acciones h3,
+.seccion-intercambios h3 {
   margin-bottom: 1.5rem;
   color: #333;
   font-size: 1.2rem;
   font-weight: 600;
 }
 
-/* Información del jugador */
+/* Información del jugador - más compacta y centrada */
 .jugador-info {
   display: flex;
   flex-direction: column;
@@ -270,13 +304,26 @@
   margin-bottom: 0.5rem;
 }
 
-/* Controles de test y dados */
-.d-flex.align-items-center.gap-2.mb-2 {
-  justify-content: center;
-  margin-bottom: 1rem;
+.info-usuario {
+  background: #e3f2fd;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  border: 0.1rem solid #90caf9;
+  text-align: center;
 }
 
-/* Botones principales */
+.dinero-actual .etiqueta {
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.dinero-actual .valor {
+  font-weight: bold;
+  color: #0d47a1;
+  font-size: 1.1rem;
+}
+
+/* Botones principales - centrados y bien organizados */
 .botones-principales {
   display: flex;
   flex-direction: column;
@@ -290,7 +337,33 @@
   font-weight: 600;
 }
 
-/* Fichas de jugadores en casillas */
+/* Botones de intercambio - más compactos */
+.botones-intercambios {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.botones-intercambios .btn {
+  min-width: 10rem;
+  padding: 0.5rem 1rem;
+}
+
+#toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+}
+
+.toast {
+  min-width: 220px;
+  margin-bottom: 8px;
+  align-items: center;
+  border: none;
+}
+
 .ficha-container {
   display: flex;
   flex-wrap: wrap;
@@ -312,42 +385,12 @@
   margin: 2px;
 }
 
-/* Colores de propietarios */
-.propietario-rojo {
-  background-color: #dc3545;
-}
 
-.propietario-verde {
-  background-color: #198754;
-}
-
-.propietario-azul {
-  background-color: #0d6efd;
-}
-
-.propietario-amarillo {
-  background-color: #fedc79;
-}
-
-/* Toast notifications */
-#toast-container {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 9999;
-}
-
-.toast {
-  min-width: 220px;
-  margin-bottom: 8px;
-  align-items: center;
-  border: none;
-}
-
-/* Responsive */
+/* Responsive - ajustes para pantallas más pequeñas */
 @media (max-width: 992px) {
   .panel-controles {
     grid-template-columns: 1fr;
+    /* Una columna en pantallas pequeñas */
     gap: 2rem;
   }
 
@@ -367,7 +410,8 @@
     gap: 0.75rem;
   }
 
-  .botones-principales .btn {
+  .botones-principales .btn,
+  .botones-intercambios .btn {
     min-width: 100%;
   }
 
@@ -378,6 +422,7 @@
   #tablero {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
+    /* 5 columnas como "escalera/matriz" */
     grid-auto-rows: minmax(70px, auto);
     width: 100%;
     height: auto;
@@ -393,12 +438,22 @@
 
   #center {
     display: none;
+    /* en móvil no se muestra */
   }
 
+  /* Los lados dejan de tener grid propio */
   #bottom,
   #left,
   #top,
   #right {
     display: contents;
   }
+
+  .casa-icon, .hotel-icon {
+  font-size: 20px;         /* tamaño base */
+  transform: scale(2);     /* los hace el doble de grandes */
+  display: inline-block;
+}
+
+
 }
