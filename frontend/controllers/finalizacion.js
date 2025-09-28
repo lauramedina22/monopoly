@@ -63,6 +63,7 @@ async function enviarResultados() {
     }
 
     mostrarToast("✅ Resultados enviados correctamente.", "success");
+    localStorage.removeItem("jugadores");
 
     cargarRanking();
   } catch (err) {

@@ -38,7 +38,7 @@ function cargarPaises(select) {
 
       // Listener para mostrar bandera
       select.addEventListener("change", function () {
-        const code = select.value; // ej: "CO"
+        const code = select.value.includes("-") ? select.value.split("-")[0] : select.value; // ej: "CO"
         const name = select.options[select.selectedIndex].textContent;
 
         const banderaDiv = document.getElementById("bandera-pais");

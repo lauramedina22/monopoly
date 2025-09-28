@@ -80,6 +80,9 @@ function mostrarModalCasilla(casilla, jugador, turnoActual = false) {
         }
     } else {
 
+        mostrarToast("No ocurre nada especial");
+
+
     }
 
     // Mostrar modal sin crear backdrops extra

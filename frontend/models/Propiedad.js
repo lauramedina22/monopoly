@@ -100,6 +100,7 @@ export class Propiedad extends Casilla {
     return todasDelColor;
   }
 
+
   comprarHotel(jugador) {
     if (!this.puedeComprarHotel(jugador)) {
       console.log(`${jugador.nombre} no puede comprar hotel en ${this.name}`);
@@ -152,7 +153,7 @@ export class Propiedad extends Casilla {
       return;
     }
 
-    this.hipotecada = true; // <<--- importante
+    this.hipotecada = true;
     jugador.hipotecas.push(this);
     jugador.dinero += this.mortgage;
     mostrarToast(
