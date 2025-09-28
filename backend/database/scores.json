@@ -6,5 +6,13 @@
     "arroz con leche": {
         "score": 1500,
         "country_code": "CY"
+    },
+    "Laurita": {
+        "score": 6000,
+        "country_code": "AF"
+    },
+    "Evangely": {
+        "score": 6000,
+        "country_code": "AQ"
     }
 }

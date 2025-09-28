@@ -31,8 +31,16 @@ export class Partida {
   turno() {
     const jugador = this.jugadores[this.turnoActual];
     this.tirarDados(jugador);
+
+    // avanzar turno
     this.turnoActual = (this.turnoActual + 1) % this.jugadores.length;
+
+    // mostrar el siguiente jugador
+    const siguiente = this.jugadores[this.turnoActual];
+    console.log(`Siguiente turno: ${siguiente.nombre}`);
+    document.getElementById("jugadorEnTurno").textContent = siguiente.nombre;
   }
+
 
   // Manejar qué pasa cuando un jugador cae en una casilla
   jugadorCaeEnCasilla(jugador, casilla) {

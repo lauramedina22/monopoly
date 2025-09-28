@@ -74,17 +74,31 @@ export class Propiedad extends Casilla {
   puedeComprarCasa(jugador) {
     if (this.dueno !== jugador) return false;
 
-    // Debe tener todas las propiedades del mismo color
-    let todasDelColor =
-      jugador.propiedades.filter((p) => p.color === this.color).length >= 3;
-    // (luego ajustamos según grupo de color real)
+    // Reglas de cantidad mínima por color
+    const requeridasPorColor = {
+      brown: 2,          
+      blue: 2,          
+      // los demás por defecto son 3
+    };
 
+    // Si no está definido el color en el mapa, toma 3
+    const requeridas = requeridasPorColor[this.color] || 3;
+
+    // Verificar cuántas propiedades del mismo color tiene el jugador
+    const propiedadesDelColor = jugador.propiedades.filter(
+      (p) => p.color === this.color
+    );
+
+    let todasDelColor = propiedadesDelColor.length >= requeridas;
+
+    // Reglas adicionales
     if (this.hotel) return false;
     if (this.casas >= 4) return false;
     if (jugador.dinero < 100) return false;
 
     return todasDelColor;
   }
+
 
   comprarHotel(jugador) {
     if (!this.puedeComprarHotel(jugador)) {
@@ -139,7 +153,7 @@ export class Propiedad extends Casilla {
       return;
     }
 
-    this.hipotecada = true; 
+    this.hipotecada = true;
     jugador.hipotecas.push(this);
     jugador.dinero += this.mortgage;
     mostrarToast(`${jugador.nombre} hipotecó ${this.name} por $${this.mortgage}`);
