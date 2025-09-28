@@ -17,6 +17,8 @@ export class Jugador {
     this.hipotecas = []; // propiedades hipotecadas
     this.prestamos = []; // préstamos activos
     this.posicion = 0; // posición en el tablero
+    this.enCarcel = false; // estado de cárcel
+    this.turnosEnCarcel = 0; // Turnos que lleva en carcel 
   }
 
   // ---- Panel de jugador ----
@@ -41,12 +43,19 @@ export class Jugador {
     this.posicion = (this.posicion + posiciones) % totalCasillas;
     return this.posicion; // devuelve índice, no el div
   }
-  
+
+  moverACarcel(indiceCarcel) {
+    this.posicion = indiceCarcel;
+    this.enCarcel = true;
+    this.turnosEnCarcel = 0;
+    console.log(`${this.nombre} ha sido enviado a la cárcel`);
+  }
+
+
   modificarDinero(monto) {
     this.dinero += monto;
     return this.dinero;
   }
-
 
   toJSON() {
     return {
@@ -68,7 +77,7 @@ export class Jugador {
   }
 
   toString() {
-    let props = this.propiedades.map(p => p.name).join(", ") || "Ninguna";
+    let props = this.propiedades.map((p) => p.name).join(", ") || "Ninguna";
     return `Jugador ${this.nombre} (${this.colorFicha}) | Dinero: $${this.dinero} | Propiedades: ${props} | En Cárcel? ${this.enCarcel} | Posición: ${this.posicion}`;
   }
 }

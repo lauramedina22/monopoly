@@ -7,8 +7,9 @@ import { Propiedad } from "./Propiedad.js";
 export class Partida {
   constructor(jugadores = [], casillas = []) {
     this.jugadores = jugadores; // Array de instancias de Jugador
+    this.fichas = {}; // Mapa de fichas por jugador
     this.casillas = casillas; // Array de instancias de Casilla
-    this.dados = new Dado(); // Instancia de Dado
+    this.dado = Dado; // Instancia de Dado
     this.turnoActual = 0; // Índice del jugador que juega
     this.enJuego = true; // Estado de la partida
   }
@@ -29,21 +30,48 @@ export class Partida {
   // Ejecutar el turno de un jugador
   turno() {
     const jugador = this.jugadores[this.turnoActual];
-    console.log(`\nTurno de ${jugador.nombre}`);
 
-    const tirada = this.dados.lanzar();
-    console.log(`${jugador.nombre} lanzó los dados: ${tirada.total}`);
+    if (jugador.enCarcel) {
+      this.gestionarCarcel(jugador);
+    } else {
+      this.tirarDados(jugador);
+    }
 
-    // mover jugador y obtener casilla donde cae
-    jugador.mover(tirada.total, this.casillas.length);
-    const casilla = this.casillas[jugador.posicion];
-
-    // procesar casilla
-    this.jugadorCaeEnCasilla(jugador, casilla);
-
-    // Avanzar turno al siguiente jugador
     this.turnoActual = (this.turnoActual + 1) % this.jugadores.length;
+     // mostrar el siguiente jugador
+    const siguiente = this.jugadores[this.turnoActual];
+    console.log(`Siguiente turno: ${siguiente.nombre}`);
+    document.getElementById("jugadorEnTurno").textContent = siguiente.nombre;
+
   }
+
+  gestionarCarcel(jugador) {
+  jugador.turnosEnCarcel++;
+
+  // Mostrar opción: pagar para salir
+  const quierePagar = confirm(
+    `${jugador.nombre}, estás en la cárcel 🚔. ¿Quieres pagar $50 para salir?`
+  );
+
+  if (quierePagar && jugador.dinero >= 50) {
+    jugador.modificarDinero(-50);
+    jugador.enCarcel = false;
+    jugador.turnosEnCarcel = 0;
+    mostrarToast(`${jugador.nombre} pagó $50 y salió de la cárcel 🏃‍♂️`);
+    this.tirarDados(jugador); // sigue con su turno
+    return;
+  }
+
+  if (jugador.turnosEnCarcel >= 3) {
+    jugador.enCarcel = false;
+    jugador.turnosEnCarcel = 0;
+    mostrarToast(`${jugador.nombre} cumplió su condena y salió de la cárcel ⏳`);
+    this.tirarDados(jugador);
+  } else {
+    mostrarToast(`${jugador.nombre} sigue en la cárcel. Turno perdido ❌`);
+  }
+}
+
 
   // Manejar qué pasa cuando un jugador cae en una casilla
   jugadorCaeEnCasilla(jugador, casilla) {
@@ -56,34 +84,37 @@ export class Partida {
           let renta = casilla.getRenta();
           jugador.dinero -= renta;
           casilla.dueno.dinero += renta;
-          mostrarToast(`${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre}`);
+          mostrarToast(
+            `${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre}`
+          );
         } else if (casilla.dueno !== jugador && casilla.hipotecada) {
-          mostrarToast(`La propiedad ${casilla.name} está hipotecada, no se paga renta.`);
+          mostrarToast(
+            `La propiedad ${casilla.name} está hipotecada, no se paga renta.`
+          );
         } else {
           mostrarToast(`${jugador.nombre} cayó en su propia propiedad`);
           mostrarModalCasilla(casilla, jugador);
         }
         break;
 
-
       case "railroad":
-              if (!casilla.dueno) {
-                mostrarModalCasilla(casilla, jugador);
-              } else if (casilla.dueno !== jugador && !casilla.hipotecada) {
-                let renta = casilla.getRenta();
-                jugador.dinero -= renta;
-                casilla.dueno.dinero += renta;
-                mostrarToast(
-                  `${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre}`
-                );
-              } else if (casilla.dueno !== jugador && casilla.hipotecada) {
-                mostrarToast(
-                  `El ferrocarril ${casilla.name} está hipotecada, no se paga renta.`
-                );
-              } else {
-                mostrarToast(`${jugador.nombre} cayó en su propio ferrocarril`);
-                mostrarModalCasilla(casilla, jugador);
-              }
+        if (!casilla.dueno) {
+          mostrarModalCasilla(casilla, jugador);
+        } else if (casilla.dueno !== jugador && !casilla.hipotecada) {
+          let renta = casilla.getRenta();
+          jugador.dinero -= renta;
+          casilla.dueno.dinero += renta;
+          mostrarToast(
+            `${jugador.nombre} pagó $${renta} a ${casilla.dueno.nombre}`
+          );
+        } else if (casilla.dueno !== jugador && casilla.hipotecada) {
+          mostrarToast(
+            `El ferrocarril ${casilla.name} está hipotecada, no se paga renta.`
+          );
+        } else {
+          mostrarToast(`${jugador.nombre} cayó en su propio ferrocarril`);
+          mostrarModalCasilla(casilla, jugador);
+        }
         break;
 
       case "tax":
@@ -92,7 +123,9 @@ export class Partida {
         break;
 
       case "community_chest":
-        const randomIndex = Math.floor(Math.random() * this.communityChestDeck.length);
+        const randomIndex = Math.floor(
+          Math.random() * this.communityChestDeck.length
+        );
         const carta = this.communityChestDeck[randomIndex];
         mostrarToast(`${jugador.nombre} sacó: ${carta.description}`);
         carta.aplicar(jugador);
@@ -108,21 +141,73 @@ export class Partida {
         mostrarToast(`${jugador.nombre} sacó: ${cartaSorpresa.description}`);
         break;
 
+      case "special":
+        if (casilla.name === "Salida") {
+          jugador.dinero += casilla.action.money;
+          mostrarToast(
+            `${jugador.nombre} paso por: ${casilla.name} y recibió $${casilla.action.money}`
+          );
+        } else if (casilla.name === "Ve a la Cárcel") {
+          jugador.moverACarcel(10);
+          const carcelElem = document.getElementById("10");
+
+          // Mover la ficha visualmente a esa casilla
+          this.posicionarFichaEnCasilla(
+            this.fichas[jugador.nombre],
+            carcelElem
+          );
+
+          mostrarToast(`${jugador.nombre} fue enviado a la cárcel 🚔`);
+        }
+        break;
+
       default:
-        mostrarToast(`${jugador.nombre} cayó en una casilla de tipo ${casilla.type}`);
+        mostrarToast(
+          `${jugador.nombre} cayó en una casilla de tipo ${casilla.type}`
+        );
+    }
+  }
+
+  posicionarFichaEnCasilla(ficha, casillaElem) {
+    console.log(casillaElem), ficha;
+    let contenedor = casillaElem.querySelector(".ficha-container");
+    if (!contenedor) {
+      contenedor = document.createElement("div");
+      contenedor.className = "ficha-container";
+      casillaElem.style.position = "relative";
+      casillaElem.appendChild(contenedor);
+    }
+    if (ficha.parentElement && ficha.parentElement !== contenedor) {
+      ficha.parentElement.removeChild(ficha);
+    }
+    // Añade la ficha al contenedor de la casilla
+    if (!contenedor.contains(ficha)) {
+      contenedor.appendChild(ficha);
     }
   }
 
   tirarDados(jugador) {
-    const dado = Dado.lanzar().sumarDados();
+    const total = this.dado.lanzar().sumarDados();
+
+    if (this.casillas.length === 0) {
+      mostrarToast("Error: No hay casillas definidas en la partida.");
+      return;
+    }
+
     mostrarToast(
-      `${jugador.nombre} ha sacado un ${Dado.dados[0]} y un ${Dado.dados[1]} (Total: ${dado})`
+      `${jugador.nombre} ha sacado un ${Dado.dados[0]} y un ${Dado.dados[1]} (Total: ${total})`
     );
-    const nuevaPos = jugador.mover(this.casillas.length, dado);
-    return nuevaPos; // número
+
+    const nuevaPos = jugador.mover(this.casillas.length, total);
+    const casillaElem = document.getElementById(nuevaPos);
+
+    this.posicionarFichaEnCasilla(this.fichas[jugador.nombre], casillaElem);
+
+    const casilla = this.casillas[nuevaPos];
+    console.log("DEBUG casilla destino:", nuevaPos, casilla);
+    this.jugadorCaeEnCasilla(jugador, casilla);
   }
 
-  // Partida.js
   toString() {
     return `Partida con ${this.jugadores.length} jugadores y ${this.casillas.length} casillas.`;
   }
